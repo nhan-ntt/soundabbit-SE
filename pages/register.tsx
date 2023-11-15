@@ -15,7 +15,9 @@ const Register: NextPage = () => {
     const { status, user, message } = useSelector((state: any) => state.auth);
     const validationSchema = Yup.object().shape({
         username: Yup.string().required("Username is required"),
-        email: Yup.string().required("Email is required").email("Email is invalid"),
+        email: Yup.string()
+            .required("Email is required")
+            .email("Email is invalid"),
         password: Yup.string()
             .min(8, "Password must be at least 8 characters")
             .max(24, "Password is too long, maximum 24 characters")
@@ -43,7 +45,7 @@ const Register: NextPage = () => {
                 name: data.username,
                 email: data.email,
                 password: data.password,
-            }),
+            })
         );
 
         if (respone.meta.requestStatus == "fulfilled") {
@@ -71,7 +73,12 @@ const Register: NextPage = () => {
           flex flex-col items-center bg-black rounded-xl"
                     >
                         <div className="flex flex-row items-center">
-                            <Image src="/logo.jpeg" width={40} height={40} alt="logo" />
+                            <Image
+                                src="/logo.jpeg"
+                                width={40}
+                                height={40}
+                                alt="logo"
+                            />
                             <h1
                                 className="text-center uppercase mx-2 
               tracking-wider font-ProximaBold"

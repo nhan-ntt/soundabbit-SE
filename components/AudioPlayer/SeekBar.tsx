@@ -1,23 +1,23 @@
 import React from "react";
-import { TrackProps } from "@/interfaces/Track";
+import { SongProps } from "@/interfaces/Song";
 
 interface IProps {
-    trackProgress: number;
+    songProgress: number;
     audioRef: React.MutableRefObject<HTMLAudioElement | null>;
-    activeSong: TrackProps;
+    activeSong: SongProps;
     onScrubEnd: () => void;
     onScrub: (e: any) => void;
-    trackBarStyling: any;
+    songBarStyling: any;
     isFullScreen: boolean;
     changeSeekBarColor: (e: string) => void;
 }
 function SeekBar({
-    trackProgress,
+    songProgress: songProgress,
     audioRef,
     activeSong,
     onScrubEnd,
     onScrub,
-    trackBarStyling,
+    songBarStyling: songBarStyling,
     isFullScreen,
     changeSeekBarColor,
 }: IProps) {
@@ -32,17 +32,17 @@ function SeekBar({
        text-gray-300 text-xs"
             >
                 <p className="w-6">
-                    {audioRef.current ? getTime(trackProgress) : "0:00"}
+                    {audioRef.current ? getTime(songProgress) : "0:00"}
                 </p>
 
                 <input
                     type="range"
-                    value={trackProgress}
+                    value={songProgress}
                     step="1"
                     min="0"
                     onMouseEnter={() => changeSeekBarColor("#2bb540")}
                     onMouseLeave={() => changeSeekBarColor("#fff")}
-                    style={{ background: trackBarStyling }}
+                    style={{ background: songBarStyling }}
                     max={activeSong!.duration}
                     onMouseUp={onScrubEnd}
                     onKeyUp={onScrubEnd}
@@ -65,15 +65,15 @@ function SeekBar({
        text-gray-300 text-xs mobile:hidden tablet:hidden"
         >
             <p className="w-6">
-                {audioRef.current ? getTime(trackProgress) : "0:00"}
+                {audioRef.current ? getTime(songProgress) : "0:00"}
             </p>
 
             <input
                 type="range"
-                value={trackProgress}
+                value={songProgress}
                 step="1"
                 min="0"
-                style={{ background: trackBarStyling }}
+                style={{ background: songBarStyling }}
                 max={activeSong!.duration}
                 onMouseUp={onScrubEnd}
                 onKeyUp={onScrubEnd}

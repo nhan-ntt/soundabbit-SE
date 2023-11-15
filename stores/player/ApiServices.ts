@@ -1,53 +1,51 @@
 import axios from "axios";
-
 import API_URL from "@/configs/apiUrl";
 
-// Register user
-const like = async ({ track_id, token }: any) => {
+const like = async ({ user, song_id }: any) => {
     await axios.post(
-        API_URL + "/like/" + track_id,
+        `/api/users/${user.id}/favorite/songs/${song_id}`,
         {},
         {
             headers: {
-                authorization: "Bearer " + token,
+                authorization: "Bearer " + user.token,
             },
         }
     );
     return true;
 };
 
-const unLike = async ({ track_id, token }: any) => {
-    await axios.post(
-        API_URL + "/unlike/" + track_id,
-        {},
+const unLike = async ({ user, song_id }: any) => {
+    await axios.delete(
+        `/api/users/${user.id}/favorite/songs/${song_id}`,
         {
             headers: {
-                authorization: "Bearer " + token,
+                authorization: "Bearer " + user.token,
             },
         }
     );
     return true;
 };
 
-const idsOflikedTracks = async (token: string) => {
-    const response = await axios.get(API_URL + "/liked", {
+const idsOflikedSongs = async (user: any) => {
+    const response = await axios.get(`api/users/${user.id}/favorite/songs`, {
         headers: {
-            authorization: "Bearer " + token,
+            authorization: "Bearer " + user.token,
+        },
+    });
+
+    return response.data;
+};
+
+const getCollections = async (user: any) => {
+    const response = await axios.get(`api/users/${user.id}/favorite/playlists`, {
+        headers: {
+            authorization: "Bearer " + user.token,
         },
     });
     return response.data;
 };
 
-const getCollections = async (token: string) => {
-    const response = await axios.get(API_URL + "/collections/mylists", {
-        headers: {
-            authorization: "Bearer " + token,
-        },
-    });
-    return response.data;
-};
-
-const addTrackToCollection = async (token: string, data: any) => {
+const addSongToCollection = async (token: string, data: any) => {
     await axios.put(API_URL + "/collections/add/track", data, {
         headers: {
             authorization: "Bearer " + token,
@@ -56,7 +54,7 @@ const addTrackToCollection = async (token: string, data: any) => {
     return data;
 };
 
-const removeTrackFromCollection = async (token: string, data: any) => {
+const removeSongFromCollection = async (token: string, data: any) => {
     const response = await axios.put(
         API_URL + "/collections/remove/track",
         data,
@@ -111,12 +109,12 @@ const ApiService = {
     like,
     unLike,
     createNewCollection,
-    idsOflikedTracks,
-    addTrackToCollection,
+    idsOflikedSongs,
+    addSongToCollection,
     getCollections,
     deleteCollection,
     renameCollection,
-    removeTrackFromCollection,
+    removeSongFromCollection,
 };
 
 export default ApiService;

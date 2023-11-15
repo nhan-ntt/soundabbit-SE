@@ -1,19 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { TrackProps } from "@/interfaces/Track";
+import { SongProps } from "@/interfaces/Song";
 import ApiService from "./ApiServices";
 
-const tracks: TrackProps[] = [
+const songs: SongProps[] = [
     {
         id: 1,
-        duration: 139.493875,
-        track_name: "Welcome here",
-        src: "https://drive.google.com/uc?id=17ZlrPeRBZoPv0OFA8g0RvR__XIWVPW-4&export=download",
-        cover_image: {
-            url: "https://images.unsplash.com/photo-1611339555312-e607c8352fd7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
-            color: "#2bb540",
-        },
-        artist_name: "Rhyme",
-        artist_id: 120,
+        name: "Welcome here",
+        audio_link: "https://drive.google.com/uc?id=17ZlrPeRBZoPv0OFA8g0RvR__XIWVPW-4&export=download",
     },
 ];
 
@@ -34,13 +27,13 @@ export enum CreateCollectionStatus {
     error,
 }
 export interface IStateProps {
-    tracks: TrackProps[];
+    songs: SongProps[];
     liked: number[];
     currentIndex: number;
     showBanner: boolean;
     isPlaying: boolean;
-    activeSong: TrackProps | null;
-    trackProgress: number;
+    activeSong: SongProps | null;
+    songProgress: number;
     isShuffle: boolean;
     isRepeat: boolean;
     collections: [];
@@ -53,7 +46,7 @@ export interface IStateProps {
 }
 
 const initialState: IStateProps = {
-    tracks: tracks,
+    songs: songs,
     currentIndex: 0,
     isModelOpen: false,
     playingPlaylist: "",
@@ -68,8 +61,8 @@ const initialState: IStateProps = {
     isRepeat: false,
     showBanner: false,
     isPlaying: false,
-    activeSong: tracks[0],
-    trackProgress: 0,
+    activeSong: songs[0],
+    songProgress: 0,
 };
 
 const playerSlice = createSlice({
@@ -78,9 +71,9 @@ const playerSlice = createSlice({
     reducers: {
         setActiveSong: (state, action) => {
             state.showBanner = true;
-            state.tracks = action.payload.tracks;
+            state.songs = action.payload.songs;
             state.currentIndex = action.payload.index;
-            state.activeSong = action.payload.tracks[action.payload.index];
+            state.activeSong = action.payload.songs[action.payload.index];
             if (action.payload.playlist) {
                 state.playingPlaylist = action.payload.playlist;
             } else {
@@ -90,7 +83,7 @@ const playerSlice = createSlice({
 
         nextSong: (state, action) => {
             state.currentIndex = action.payload;
-            state.activeSong = state.tracks[action.payload];
+            state.activeSong = state.songs[action.payload];
         },
         onShuffle: (state, action) => {
             state.isShuffle = action.payload;
@@ -98,35 +91,35 @@ const playerSlice = createSlice({
         onRepeat: (state, action) => {
             state.isRepeat = action.payload;
         },
-        setTrackProgress: (state, action) => {
-            state.trackProgress = action.payload;
+        setSongProgress: (state, action) => {
+            state.songProgress = action.payload;
         },
 
         playPause: (state, action) => {
             state.isPlaying = action.payload;
         },
         addLike: (state, action) => {
-            let liked = [...state.liked, action.payload.track_id];
+            let liked = [...state.liked, action.payload.song_id];
             state.liked = liked;
         },
         removeLike: (state, action) => {
             let liked = state.liked.filter(
-                (value: number) => value != action.payload.track_id
+                (value: number) => value != action.payload.song_id
             );
             state.liked = liked;
         },
         reorderQueue: (state, action) => {
-            state.tracks = action.payload;
+            state.songs = action.payload;
         },
         addToQueue: (state, action) => {
-            state.tracks.splice(state.currentIndex + 1, 0, action.payload);
-            state.tracks = state.tracks;
+            state.songs.splice(state.currentIndex + 1, 0, action.payload);
+            state.songs = state.songs;
         },
         removeFromQueue: (state, action) => {
             if (action.payload > -1) {
-                state.tracks.splice(action.payload, 1);
+                state.songs.splice(action.payload, 1);
             }
-            state.tracks = state.tracks;
+            state.songs = state.songs;
         },
 
         toggleModel: (state, action) => {
@@ -135,18 +128,20 @@ const playerSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(addTrackToCollection.fulfilled, (state, action) => {
+        builder.addCase(addSongToCollection.fulfilled, (state, action) => {
             const collection = state.collections.find(
                 (e: any) => e.id == action.payload.collection_id
             );
 
             //@ts-ignore
-            if (collection) collection.total_tracks = collection.total_tracks + 1;
+            if (collection) collection.total_songs = collection.total_songs + 1;
             state.collections = state.collections;
         });
         builder.addCase(getLikedSongs.fulfilled, (state, action) => {
             state.fetchlikedStatus = LikedStatus.success;
-            if (action.payload) state.liked = action.payload.data;
+            if (action.payload) {
+                state.liked = action.payload.list.map((song: any) => song["id"])
+            };
         });
         builder.addCase(getCollections.fulfilled, (state, action) => {
             state.collectionStatus = CollectionsStatus.success;
@@ -185,7 +180,7 @@ const playerSlice = createSlice({
             );
 
             //@ts-ignore
-            if (collection) collection.total_tracks = collection.total_tracks + 1;
+            if (collection) collection.total_songs = collection.total_songs + 1;
             state.collections = collections;
             state.createCollectionStatus = CreateCollectionStatus.done;
         });
@@ -200,11 +195,11 @@ const playerSlice = createSlice({
 
 export const getLikedSongs = createAsyncThunk(
     "ApiServices/idsOflikedSongs",
-    async (token: string, thunkAPI) => {
+    async (user: any, thunkAPI) => {
         try {
-            return await ApiService.idsOflikedTracks(token);
+            return await ApiService.idsOflikedSongs(user);
         } catch (error) {
-            // console.log(error);
+            console.log(error);
         }
     }
 );
@@ -220,11 +215,11 @@ export const getCollections = createAsyncThunk(
 );
 export const Like = createAsyncThunk(
     "ApiServices/addlike",
-    async ({ track_id, token }: any, thunkAPI) => {
+    async ({ user, song_id }: any, thunkAPI) => {
         try {
             return await ApiService.like({
-                track_id,
-                token,
+                user,
+                song_id,
             });
         } catch (error) {
             // console.log(error);
@@ -233,37 +228,37 @@ export const Like = createAsyncThunk(
 );
 export const unLike = createAsyncThunk(
     "ApiServices/removelike",
-    async ({ track_id, token }: any, thunkAPI) => {
+    async ({ user, song_id }: any, thunkAPI) => {
         try {
             return await ApiService.unLike({
-                track_id,
-                token,
+                user,
+                song_id,
             });
         } catch (error) {
             // console.log(error);
         }
     }
 );
-export const addTrackToCollection = createAsyncThunk(
-    "ApiServices/addTrackToCollection",
-    async ({ collection_id, track_id, token }: any, thunkAPI) => {
+export const addSongToCollection = createAsyncThunk(
+    "ApiServices/addSongToCollection",
+    async ({ collection_id, song_id, token }: any, thunkAPI) => {
         try {
-            return await ApiService.addTrackToCollection(token, {
+            return await ApiService.addSongToCollection(token, {
                 collection_id,
-                track_id,
+                song_id,
             });
         } catch (error) {
             // console.log(error);
         }
     }
 );
-export const removeTrackFromCollection = createAsyncThunk(
-    "ApiServices/removeTrackFromCollection",
-    async ({ collection_id, track_id, token }: any, thunkAPI) => {
+export const removeSongFromCollection = createAsyncThunk(
+    "ApiServices/removeSongFromCollection",
+    async ({ collection_id, song_id, token }: any, thunkAPI) => {
         try {
-            return await ApiService.removeTrackFromCollection(token, {
+            return await ApiService.removeSongFromCollection(token, {
                 collection_id,
-                track_id,
+                song_id,
             });
         } catch (error) {
             // console.log(error);
@@ -272,11 +267,11 @@ export const removeTrackFromCollection = createAsyncThunk(
 );
 export const createNewCollection = createAsyncThunk(
     "ApiServices/createNewCollection",
-    async ({ name, track_id, token }: any, thunkAPI) => {
+    async ({ name, song_id, token }: any, thunkAPI) => {
         try {
             return await ApiService.createNewCollection(token, {
                 name,
-                track_id,
+                song_id,
             });
         } catch (error) {
             // console.log(error);
@@ -317,7 +312,7 @@ export const {
     onShuffle,
     addToQueue,
     onRepeat,
-    setTrackProgress,
+    setSongProgress,
     removeFromQueue,
     addLike,
     removeLike,

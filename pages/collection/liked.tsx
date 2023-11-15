@@ -2,7 +2,7 @@ import React from "react";
 import API_URL from "@/configs/apiUrl";
 import axios from "axios";
 import AppLayout from "@/layouts/appLayout";
-import { TrackProps } from "@/interfaces/Track";
+import { SongProps } from "@/interfaces/Song";
 import ListItem from "@/components/ListItem";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,12 +15,12 @@ import NavBar from "@/components/backButton";
 
 function Liked({
     data,
-    tracks,
+    songs,
     success,
 }: {
     success: boolean;
     data: any;
-    tracks: TrackProps[];
+    songs: SongProps[];
 }) {
     const artist = data;
     const router = useRouter();
@@ -40,17 +40,17 @@ function Liked({
     }, 100);
     if (!success) {
         return (
-            <AppLayout title="Liked Tracks">
+            <AppLayout title="Liked Songs">
                 <ErrorComponent />
             </AppLayout>
         );
     }
     return (
-        <AppLayout title="Liked Tracks" color="#48338c" onScroll={onScroll}>
+        <AppLayout title="Liked Songs" color="#48338c" onScroll={onScroll}>
             <NavBar
                 condition={srcollPosition >= 300}
                 color={"#48338c"}
-                title="Liked Tracks"
+                title="Liked Songs"
             />
 
             <div
@@ -60,7 +60,7 @@ function Liked({
        tablet:text-center tablet:pb-3 mobile:pb-3 mobile:text-center"
             >
                 <h1 className="text-[30px] font-ProximaBold  leading-[5rem] mobile:block tablet:block hidden">
-                    Liked Tracks
+                    Liked Songs
                 </h1>
                 <div
                     className="w-fit bg-opacity-70 rounded bg-gradient-to-tl to-[#4C17F3] from-[#ddd7d7]
@@ -76,10 +76,10 @@ function Liked({
                         className="text-[70px] font-ProximaBold  leading-[5rem] 
           mini-laptop:text-[65px] tablet:hidden mobile:hidden"
                     >
-                        Liked Tracks
+                        Liked Songs
                     </h1>
                     <p className="font-ProximaBold text-sm mt-6 tablet:mt-4 opacity-70">
-                        {tracks.length} Tracks
+                        {songs.length} Songs
                     </p>
                 </div>
             </div>
@@ -99,7 +99,7 @@ function Liked({
                                 if (playingPlaylist !== "LIKED") {
                                     dispatch(
                                         setActiveSong({
-                                            tracks: tracks,
+                                            songs: songs,
                                             index: 0,
                                             playlist: "LIKED",
                                         })
@@ -122,17 +122,17 @@ function Liked({
                     </div>
                 </div>
                 <div className="pt-4">
-                    {tracks.map((e: TrackProps, i: number) => (
+                    {songs.map((song: SongProps, i: number) => (
                         <ListItem
                             isScrolling={isScrolling}
-                            key={e.id}
-                            track={e}
+                            key={song.id}
+                            song={song}
                             showNumber={i + 1}
                             onTap={() => {
                                 dispatch(
                                     setActiveSong({
-                                        tracks: tracks,
-                                        index: tracks.indexOf(e),
+                                        songs: songs,
+                                        index: songs.indexOf(song),
                                         playlist: "LIKED",
                                     })
                                 );
@@ -148,6 +148,7 @@ function Liked({
 }
 
 export async function getServerSideProps(context: any) {
+    console.log("test");
     const token = context.req.cookies.user;
 
     if (!token) {
@@ -158,21 +159,26 @@ export async function getServerSideProps(context: any) {
             },
         };
     }
+
     try {
-        const token = JSON.parse(context.req.cookies.user).token;
-        const tracks = await axios.get(API_URL + "/liked/tracks", {
+        console.log("test");
+        const user = JSON.parse(context.req.cookies.user).id;
+        console.log({ user });
+        const songs = await axios.get(`api/users/${user.id}/favorite/songs`, {
             headers: {
-                authorization: "Bearer " + token,
+                authorization: "Bearer " + user.token,
             },
         });
+        console.log(songs);
         return {
             props: {
                 success: true,
                 // data: data.data[0],
-                tracks: tracks.data.data,
+                songs: songs.data.list,
             },
         };
     } catch (e) {
+        console.log(e);
         return {
             props: {
                 success: false,

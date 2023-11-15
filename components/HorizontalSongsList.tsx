@@ -1,11 +1,12 @@
-import { TrackProps } from "../interfaces/Track";
+import { SongProps } from "../interfaces/Song";
 
 import ScrollContainer from "react-indiana-drag-scroll";
 import { useDispatch } from "react-redux";
 import { setActiveSong } from "../stores/player/currentAudioPlayer";
 
-import HorizontalTrackCard from "./HorizontalTrackCard";
-function HorizontalTracksList({ tracks }: { tracks: TrackProps[] }) {
+import HorizontalSongCard from "./HorizontalSongCard";
+
+function HorizontalSongsList({ songs }: { songs: SongProps[] }) {
     const dispatch = useDispatch();
 
     return (
@@ -15,15 +16,15 @@ function HorizontalTracksList({ tracks }: { tracks: TrackProps[] }) {
             className="flex flex-row"
         >
             <div className="mx-4 mobile:mx-2 tablet:mx-6"></div>
-            {tracks.map((track: TrackProps) => (
-                <HorizontalTrackCard
-                    key={track.id}
-                    track={track}
+            {songs.map((song: SongProps) => (
+                <HorizontalSongCard
+                    key={song.id}
+                    song={song}
                     onClick={() =>
                         dispatch(
                             setActiveSong({
-                                index: tracks.indexOf(track),
-                                tracks: tracks,
+                                index: songs.indexOf(song),
+                                songs: songs,
                             })
                         )
                     }
@@ -33,4 +34,4 @@ function HorizontalTracksList({ tracks }: { tracks: TrackProps[] }) {
     );
 }
 
-export default HorizontalTracksList;
+export default HorizontalSongsList;

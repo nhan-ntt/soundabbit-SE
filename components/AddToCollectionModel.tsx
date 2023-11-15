@@ -9,7 +9,7 @@ import {
 } from "../stores/player/currentAudioPlayer";
 import { useRouter } from "next/router";
 import {
-    addTrackToCollection,
+    addSongToCollection,
     createNewCollection,
 } from "../stores/player/currentAudioPlayer";
 import { toast } from "react-toastify";
@@ -39,7 +39,7 @@ function AddToCollectionModel() {
         function handleClick(event: any) {
             // @ts-ignore-comment
             if (model.current && !model.current.contains(event.target)) {
-                dispatch(toggleModel({ data: false, track_id: "" }));
+                dispatch(toggleModel({ data: false, song_id: "" }));
             }
         }
 
@@ -54,19 +54,18 @@ function AddToCollectionModel() {
             name.length !== 0
         ) {
             const collection = collections.find((e: any) => e.name == name);
-            dispatch(toggleModel({ data: false, track_id: "" }));
+            dispatch(toggleModel({ data: false, song_id: "" }));
             router.push(`/collection/${collection.id}`);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [createCollectionStatus]);
-
 
     return (
         <div>
             {isModelOpen && (
                 <div className="fixed inset-0 w-full h-full bg-black z-40 bg-opacity-50 flex items-center justify-center">
                     <div ref={model} className="w-80 rounded-md bg-[#1f1f1f]">
-                        {passedDataToModel.track_id == "NEW" ? (
+                        {passedDataToModel.song_id == "NEW" ? (
                             <div>
                                 <p className="font-ProximaBold px-3 pt-4  text-gray-400">
                                     Chosse a name:
@@ -86,14 +85,15 @@ function AddToCollectionModel() {
                                     <button
                                         disabled={
                                             name.length === 0 ||
-                                            createCollectionStatus == CreateCollectionStatus.waiting
+                                            createCollectionStatus ==
+                                                CreateCollectionStatus.waiting
                                         }
                                         onClick={() => {
                                             dispatch(
                                                 createNewCollection({
                                                     token: user.token,
                                                     name: name,
-                                                    track_id: undefined,
+                                                    song_id: undefined,
                                                 })
                                             );
                                         }}
@@ -103,7 +103,7 @@ function AddToCollectionModel() {
                                     </button>
                                 </div>
                             </div>
-                        ) : passedDataToModel.track_id == "RENAME" ? (
+                        ) : passedDataToModel.song_id == "RENAME" ? (
                             <div>
                                 <p className="font-ProximaBold px-3 pt-4  text-gray-400">
                                     Rename collection:
@@ -128,11 +128,19 @@ function AddToCollectionModel() {
                                                 renameCollection({
                                                     token: user.token,
                                                     collection_name: name,
-                                                    collection_id: passedDataToModel.collection_id,
+                                                    collection_id:
+                                                        passedDataToModel.collection_id,
                                                 })
                                             );
-                                            dispatch(toggleModel({ data: false, track_id: "" }));
-                                            toast.success("Collection Renamed!");
+                                            dispatch(
+                                                toggleModel({
+                                                    data: false,
+                                                    song_id: "",
+                                                })
+                                            );
+                                            toast.success(
+                                                "Collection Renamed!"
+                                            );
                                         }}
                                         className="bg-[#2bb540] disabled:bg-[#287b34] w-full p-1.5 rounded-lg text-center uppercase text-white font-ProximaBold"
                                     >
@@ -156,8 +164,14 @@ function AddToCollectionModel() {
                                             if (e.target.value.length !== 0) {
                                                 setShowResults(true);
                                                 setResults(
-                                                    collections.filter((col: any) =>
-                                                        col.name.toLowerCase().match(e.target.value)
+                                                    collections.filter(
+                                                        (col: any) =>
+                                                            col.name
+                                                                .toLowerCase()
+                                                                .match(
+                                                                    e.target
+                                                                        .value
+                                                                )
                                                     )
                                                 );
                                             } else {
@@ -175,12 +189,22 @@ function AddToCollectionModel() {
                                             dispatch(
                                                 createNewCollection({
                                                     token: user.token,
-                                                    name: "Collection #" + passedDataToModel.track_id,
-                                                    track_id: passedDataToModel.track_id,
+                                                    name:
+                                                        "Collection #" +
+                                                        passedDataToModel.song_id,
+                                                    song_id:
+                                                        passedDataToModel.song_id,
                                                 })
                                             );
-                                            dispatch(toggleModel({ data: false, track_id: "" }));
-                                            toast.success("Created new collection!");
+                                            dispatch(
+                                                toggleModel({
+                                                    data: false,
+                                                    song_id: "",
+                                                })
+                                            );
+                                            toast.success(
+                                                "Created new collection!"
+                                            );
                                         }}
                                         className="font-ProximaBold cursor-pointer hover:bg-[#464646] px-2 py-2 text-white rounded"
                                     >
@@ -197,16 +221,25 @@ function AddToCollectionModel() {
                                                         key={e.id}
                                                         onClick={() => {
                                                             dispatch(
-                                                                addTrackToCollection({
-                                                                    token: user.token,
-                                                                    collection_id: e.id,
-                                                                    track_id: passedDataToModel.track_id,
-                                                                })
+                                                                addSongToCollection(
+                                                                    {
+                                                                        token: user.token,
+                                                                        collection_id:
+                                                                            e.id,
+                                                                        song_id:
+                                                                            passedDataToModel.song_id,
+                                                                    }
+                                                                )
                                                             );
                                                             dispatch(
-                                                                toggleModel({ data: false, track_id: "" })
+                                                                toggleModel({
+                                                                    data: false,
+                                                                    song_id: "",
+                                                                })
                                                             );
-                                                            toast.success("Added to collection!");
+                                                            toast.success(
+                                                                "Added to collection!"
+                                                            );
                                                         }}
                                                     >
                                                         {e.name}
@@ -221,16 +254,25 @@ function AddToCollectionModel() {
                                                         key={e.id}
                                                         onClick={() => {
                                                             dispatch(
-                                                                addTrackToCollection({
-                                                                    token: user.token,
-                                                                    collection_id: e.id,
-                                                                    track_id: passedDataToModel.track_id,
-                                                                })
+                                                                addSongToCollection(
+                                                                    {
+                                                                        token: user.token,
+                                                                        collection_id:
+                                                                            e.id,
+                                                                        song_id:
+                                                                            passedDataToModel.song_id,
+                                                                    }
+                                                                )
                                                             );
                                                             dispatch(
-                                                                toggleModel({ data: false, track_id: "" })
+                                                                toggleModel({
+                                                                    data: false,
+                                                                    song_id: "",
+                                                                })
                                                             );
-                                                            toast.success("Added to collection!");
+                                                            toast.success(
+                                                                "Added to collection!"
+                                                            );
                                                         }}
                                                     >
                                                         {e.name}

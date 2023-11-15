@@ -1,6 +1,6 @@
 import React from "react";
 import CustomImage from "./CustomImage";
-import { TrackProps } from "../interfaces/Track";
+import { SongProps } from "../interfaces/Song";
 import { Artists } from "../interfaces/artist";
 import { shadeColor } from "../configs/utils";
 
@@ -31,7 +31,9 @@ function HorizontalArtistCard({
           tablet:w-[130px] tablet:h-[130px] mobile:w-[100px] mobile:h-[100px]"
                 >
                     <CustomImage
-                        src={"https://images3.alphacoders.com/690/690494.jpg&auto=format&fit=crop&w=400&q=50&h=400"}
+                        src={
+                            "https://images3.alphacoders.com/690/690494.jpg&auto=format&fit=crop&w=400&q=50&h=400"
+                        }
                         className="rounded-full"
                     />
                 </div>

@@ -213,7 +213,7 @@ input[type="range"]:hover::-webkit-slider-thumb {
     height: 5px;
 }
 
-.scrollbar::-webkit-scrollbar-track {
+.scrollbar::-webkit-scrollbar-song {
     border-radius: 100vh;
     background: transparent;
 }

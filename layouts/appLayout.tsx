@@ -13,10 +13,11 @@ function AppLayout({ children, title, color, onScroll }: any) {
     const router = useRouter();
     const dispatch = useDispatch();
     useLogin();
+
     return (
         <div>
             <Head>
-                <title>{"Rhyme / " + title}</title>
+                <title>{`Rhyme / ${title}`}</title>
             </Head>
             <div className="font-ProximaRegular text-white bg-[#121212]">
                 <div className="flex flex-row h-screen w-screen max-w-full">
@@ -49,33 +50,20 @@ function AppLayout({ children, title, color, onScroll }: any) {
                             <SidebarItem name="home" label="Home" />
                             <SidebarItem name="search" label="Search" />
                             <SidebarItem name="library" label="Your Library" />
-                            <div className="my-6 border-b border-slate-800 "></div>
-                            <div
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    dispatch(toggleModel({ data: true, track_id: "NEW" }));
-                                }}
-                                className="group select-none cursor-pointer mt-4 flex flex-row items-center 
-               mini-laptop:hidden tablet:hidden mobile:hidden"
-                            >
-                                <i className="icon-create_new text-[26px] opacity-70 mr-3 group-hover:opacity-100"></i>
-                                <p className="group-hover:opacity-100 text-white opacity-70">
-                                    Create Collection
-                                </p>
-                            </div>
                             <Link href={`/collection/liked`}>
                                 <div
-                                    className={`${router.pathname == "/collection/liked"
-                                        ? "opacity-100 font-ProximaBold"
-                                        : "opacity-70"
-                                        } hover:opacity-100 mini-laptop:hidden tablet:hidden mobile:hidden group select-none cursor-pointer mt-4 flex flex-row items-center 
+                                    className={`${
+                                        router.pathname == "/collection/liked"
+                                            ? "opacity-100 font-ProximaBold"
+                                            : "opacity-70"
+                                    } hover:opacity-100 mini-laptop:hidden tablet:hidden mobile:hidden group select-none cursor-pointer mt-4 flex flex-row items-center 
                mini-laptop:w-full mini-laptop:mt-6 mobile:mt-0 tablet:mt-0 mobile:mx-8 tablet:mx-10`}
                                 >
                                     <div className=" rounded bg-gradient-to-tl to-[#4C17F3] from-[#ddd7d7] px-2 py-2 flex items-center mr-3">
                                         <i className="icon-heart text-[12px]"></i>
                                     </div>
 
-                                    <p className=" text-white ">Liked Tracks</p>
+                                    <p className="text-white">Liked Songs</p>
                                 </div>
                             </Link>
                         </div>

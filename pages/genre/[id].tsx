@@ -6,7 +6,7 @@ import { Artists } from "@/interfaces/artist";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { setActiveSong } from "../../stores/player/currentAudioPlayer";
-import { TrackProps } from "@/interfaces/Track";
+import { SongProps } from "@/interfaces/Song";
 import ListItem from "@/components/ListItem";
 import { tags } from "@/interfaces/genres";
 import HorizontalArtistsList from "@/components/HorizontalArtistsList";
@@ -17,14 +17,14 @@ import ErrorComponent from "@/components/error";
 
 function GenrePage({
     artists,
-    tracks,
+    songs,
     tag,
     success,
 }: {
     tag: any;
     success: boolean;
     artists: Artists[];
-    tracks: TrackProps[];
+    songs: SongProps[];
 }) {
     const dispatch = useDispatch();
     const router = useRouter();
@@ -73,17 +73,19 @@ function GenrePage({
             <HorizontalArtistsList artists={artists} />
             <div className="px-8 mini-laptop:px-6 tablet:px-6 mobile:px-4">
                 <h4 className="pt-8 font-ProximaBold pb-6 text-gray-400">
-                    Popular Tracks:
+                    Popular Songs:
                 </h4>
-                {tracks.map((track: TrackProps, i: number) => {
+                {songs.map((song: SongProps, i: number) => {
                     return (
                         <ListItem
                             isScrolling={isScrolling}
                             onTap={() => {
-                                dispatch(setActiveSong({ tracks: tracks, index: i }));
+                                dispatch(
+                                    setActiveSong({ songs: songs, index: i })
+                                );
                             }}
-                            key={track.id}
-                            track={track}
+                            key={song.id}
+                            song={song}
                             showNumber={i + 1}
                         />
                     );
@@ -99,7 +101,7 @@ export async function getServerSideProps(context: any) {
         const { data } = await axios.get(
             API_URL + "/songs/tag/" + context.params.id
         );
-        const tracks = await axios.get(
+        const songs = await axios.get(
             API_URL + "/artists/tag/" + context.params.id
         );
         const tag = tags.find((tag: any) => {
@@ -109,8 +111,8 @@ export async function getServerSideProps(context: any) {
             props: {
                 success: true,
                 tag: tag,
-                tracks: data.data,
-                artists: tracks.data.data,
+                songs: data.data,
+                artists: songs.data.data,
             },
         };
     } catch (e) {

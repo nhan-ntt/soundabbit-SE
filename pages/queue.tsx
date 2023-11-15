@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import ListItem from "../components/ListItem";
-import { TrackProps } from "../interfaces/Track";
+import { SongProps } from "../interfaces/Song";
 import AppLayout from "@/layouts/appLayout";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {
@@ -12,7 +12,8 @@ import NoSSRWrapper from "../components/noSSRWrapper";
 import NavBar from "../components/backButton";
 import { useState } from "react";
 function Queue() {
-    const { tracks, currentIndex } = useSelector((state: any) => state.player);
+    const { songs, currentIndex } = useSelector((state: any) => state.player);
+    const [srcollPosition, setScrollPosition] = useState(0);
     const dispatch = useDispatch<any>();
 
     const onDragHandle = (result: any) => {
@@ -20,16 +21,17 @@ function Queue() {
             return;
         }
         const newlist = reorder(result.source.index, result.destination.index);
-        dispatch(reorderQueue([...tracks.slice(0, currentIndex + 1), ...newlist]));
+        dispatch(
+            reorderQueue([...songs.slice(0, currentIndex + 1), ...newlist])
+        );
     };
 
     const reorder = (startIndex: number, endIndex: number) => {
-        const result = Array.from(tracks.slice(currentIndex + 1));
+        const result = Array.from(songs.slice(currentIndex + 1));
         const [removed] = result.splice(startIndex, 1);
         result.splice(endIndex, 0, removed);
         return result;
     };
-    const [srcollPosition, setScrollPosition] = useState(0);
 
     const onScroll = (e: any) => {
         setScrollPosition(e.target.scrollTop);
@@ -49,8 +51,8 @@ function Queue() {
                         Now Playing
                     </h1>
                     <ListItem
-                        onTap={() => { }}
-                        track={tracks[currentIndex]}
+                        onTap={() => {}}
+                        song={songs[currentIndex]}
                         showNumber={1}
                     />
                     <h1 className="text-base font-ProximaBold my-5 text-gray-400">
@@ -59,14 +61,17 @@ function Queue() {
                     <DragDropContext onDragEnd={onDragHandle}>
                         <Droppable droppableId="droppable">
                             {(provided, _) => (
-                                <div {...provided.droppableProps} ref={provided.innerRef}>
-                                    {tracks
+                                <div
+                                    {...provided.droppableProps}
+                                    ref={provided.innerRef}
+                                >
+                                    {songs
                                         .slice(currentIndex + 1)
-                                        .map((track: TrackProps, i: any) => (
+                                        .map((song: SongProps, i: any) => (
                                             <Draggable
-                                                key={track.id.toString()}
+                                                key={song.id.toString()}
                                                 index={i}
-                                                draggableId={track.id.toString()}
+                                                draggableId={song.id.toString()}
                                             >
                                                 {(provided, snapshot) => (
                                                     <div
@@ -77,13 +82,17 @@ function Queue() {
                                                         <ListItem
                                                             onTap={() =>
                                                                 dispatch(
-                                                                    setActiveSong({
-                                                                        tracks: tracks,
-                                                                        index: tracks.indexOf(track),
-                                                                    })
+                                                                    setActiveSong(
+                                                                        {
+                                                                            songs: songs,
+                                                                            index: songs.indexOf(
+                                                                                song
+                                                                            ),
+                                                                        }
+                                                                    )
                                                                 )
                                                             }
-                                                            track={track}
+                                                            song={song}
                                                             showNumber={i + 2}
                                                         />
                                                     </div>

@@ -10,9 +10,9 @@ import {
     playPause,
     setActiveSong,
 } from "../../stores/player/currentAudioPlayer";
-import { TrackProps } from "@/interfaces/Track";
+import { SongProps } from "@/interfaces/Song";
 import ListItem from "@/components/ListItem";
-import HorizontalTracksList from "@/components/HorizontalTracksList";
+import HorizontalSongsList from "@/components/HorizontalSongsList";
 import { shadeColor } from "@/configs/utils";
 import { useState } from "react";
 import NavBar from "@/components/backButton";
@@ -21,12 +21,12 @@ import ErrorComponent from "@/components/error";
 function ArtistProfile({
     success,
     data,
-    tracks,
+    songs,
     counts,
 }: {
     data: Artists;
     success: boolean;
-    tracks: TrackProps[];
+    songs: SongProps[];
     counts: number;
 }) {
     const artist = data;
@@ -69,7 +69,9 @@ function ArtistProfile({
 
             <div
                 className="relative w-full h-[400px]  mobile:h-[350px]"
-                style={{ backgroundColor: shadeColor(artist.avatar.color, -40) }}
+                style={{
+                    backgroundColor: shadeColor(artist.avatar.color, -40),
+                }}
             >
                 <div className="flex flex-col justify-end absolute w-full h-full bg-black bg-opacity-40 z-10">
                     <div
@@ -78,7 +80,12 @@ function ArtistProfile({
                     >
                         <div className="flex">
                             <i className="icon-verified mr-2 text-blue-300"></i>
-                            <p>@{artist.display_name.replaceAll(" ", "").toLowerCase()}</p>
+                            <p>
+                                @
+                                {artist.display_name
+                                    .replaceAll(" ", "")
+                                    .toLowerCase()}
+                            </p>
                         </div>
                         <h1
                             className="text-[70px] font-ProximaBold laptop:text-[60px] 
@@ -91,7 +98,9 @@ function ArtistProfile({
                 </div>
 
                 <CustomImage
-                    src={artist.avatar.url + "&auto=format&fit=crop&w=1280&q=80"}
+                    src={
+                        artist.avatar.url + "&auto=format&fit=crop&w=1280&q=80"
+                    }
                 />
             </div>
             <div
@@ -109,13 +118,15 @@ function ArtistProfile({
                 >
                     <div className="pt-6">
                         <div className="w-full flex justify-between">
-                            <h1 className="text-2xl font-ProximaBold">Popular</h1>
+                            <h1 className="text-2xl font-ProximaBold">
+                                Popular
+                            </h1>
                             <div
                                 onClick={() => {
                                     if (playingPlaylist !== data.id) {
                                         dispatch(
                                             setActiveSong({
-                                                tracks: tracks,
+                                                songs: songs,
                                                 index: 0,
                                                 playlist: data.id,
                                             })
@@ -138,44 +149,48 @@ function ArtistProfile({
                         </div>
 
                         <div className="max-w-[700px] pt-4">
-                            {tracks.slice(0, 5).map((e: TrackProps, i: number) => (
-                                <ListItem
-                                    isScrolling={isScrolling}
-                                    key={e.id}
-                                    track={e}
-                                    showNumber={i + 1}
-                                    onTap={() => {
-                                        dispatch(
-                                            setActiveSong({
-                                                tracks: tracks,
-                                                index: tracks.indexOf(e),
-                                                playlist: data.id,
-                                            })
-                                        );
-                                    }}
-                                />
-                            ))}
+                            {songs
+                                .slice(0, 5)
+                                .map((song: SongProps, i: number) => (
+                                    <ListItem
+                                        isScrolling={isScrolling}
+                                        key={song.id}
+                                        song={song}
+                                        showNumber={i + 1}
+                                        onTap={() => {
+                                            dispatch(
+                                                setActiveSong({
+                                                    songs: songs,
+                                                    index: songs.indexOf(song),
+                                                    playlist: data.id,
+                                                })
+                                            );
+                                        }}
+                                    />
+                                ))}
                         </div>
                     </div>
                     <div className="pt-6">
-                        <h1 className="text-2xl font-ProximaBold pb-6">Older Releases</h1>
+                        <h1 className="text-2xl font-ProximaBold pb-6">
+                            Older Releases
+                        </h1>
                     </div>
                 </div>
-                <HorizontalTracksList tracks={tracks.slice(5, 15)} />
+                <HorizontalSongsList songs={songs.slice(5, 15)} />
                 <div className="pt-6 px-8 tablet:px-6 mobile:px-5">
                     <h1 className="text-2xl font-ProximaBold">All</h1>
                     <div className="pt-4">
-                        {tracks.map((e: TrackProps, i: number) => (
+                        {songs.map((song: SongProps, i: number) => (
                             <ListItem
                                 isScrolling={isScrolling}
-                                key={e.id}
-                                track={e}
+                                key={song.id}
+                                song={song}
                                 showNumber={i + 1}
                                 onTap={() => {
                                     dispatch(
                                         setActiveSong({
-                                            tracks: tracks,
-                                            index: tracks.indexOf(e),
+                                            songs: songs,
+                                            index: songs.indexOf(song),
                                             playlist: data.id,
                                         })
                                     );
@@ -196,15 +211,17 @@ function getRndInteger(min: number, max: number) {
 
 export async function getServerSideProps(context: any) {
     try {
-        const { data } = await axios.get(API_URL + "/artists/" + context.params.id);
-        const tracks = await axios.get(
+        const { data } = await axios.get(
+            API_URL + "/artists/" + context.params.id
+        );
+        const songs = await axios.get(
             API_URL + "/songs/artist/" + context.params.id
         );
         return {
             props: {
                 success: true,
                 data: data.data[0],
-                tracks: tracks.data.data,
+                songs: songs.data.data,
                 counts: getRndInteger(20000000, 500000000),
             },
         };

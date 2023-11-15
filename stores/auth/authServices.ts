@@ -25,6 +25,7 @@ const login = async (userData: any) => {
         const response = await axios.post("/api/auth/login", userData);
 
         const user = {
+            id: response.data.id,
             token: response.data.token,
         };
 

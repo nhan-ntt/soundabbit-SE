@@ -18,6 +18,7 @@ export async function getServerSideProps(ctx: any) {
             },
         };
     }
+
     return {
         props: {},
     };
@@ -77,10 +78,17 @@ const Home: NextPage = () => {
                 />
                 <title>Rhyme - Download & use free music anywhere.</title>
             </Head>
+
             <div className="fixed top-0 left-0 right-0 z-40 bg-[#0d0d0d]">
                 <div className="flex flex-row max-w-[1280px] justify-between items-center mx-auto p-2">
                     <div className="flex flex-row items-center">
-                        <Image priority src="/logo.png" width={40} height={40} alt="logo" />
+                        <Image
+                            priority
+                            src="/logo.png"
+                            width={40}
+                            height={40}
+                            alt="logo"
+                        />
                         <h1
                             className="text-center uppercase mx-2 
               tracking-wider font-ProximaBold"
@@ -129,8 +137,8 @@ const Home: NextPage = () => {
                         <br /> Music anywhere!
                     </h1>
                     <p className="text-center mt-4 max-w-[600px] mx-auto text-[18px] px-8">
-                        Explore & download free stock music and use it anywhere you like
-                        with spotify web player experience.
+                        Explore & download free stock music and use it anywhere
+                        you like with spotify web player experience.
                     </p>
                     <Link href={"/register"}>
                         <div className="cursor-pointer shadow-md px-5 py-2 rounded-3xl mt-6 bg-[#2bb540] w-fit">
@@ -190,11 +198,14 @@ const Home: NextPage = () => {
                             <i className="icon-full-screen text-[20px]"></i>
                         </div>
 
-                        <h1 className="text-xl font-ProximaBold mb-2 ">Fully Responsive</h1>
+                        <h1 className="text-xl font-ProximaBold mb-2 ">
+                            Fully Responsive
+                        </h1>
                         <p>
-                            Available for all screen Mobile, tablet, laptop and desktop. The
-                            app is made to give a user full experience of spotify client. it
-                            has almost same Ui as Spotify for every page.
+                            Available for all screen Mobile, tablet, laptop and
+                            desktop. The app is made to give a user full
+                            experience of spotify client. it has almost same Ui
+                            as Spotify for every page.
                         </p>
                     </div>
                     <div
@@ -206,11 +217,14 @@ const Home: NextPage = () => {
                             <i className="icon-add-to-playlist text-[20px]"></i>
                         </div>
 
-                        <h1 className="text-xl font-ProximaBold mb-2 ">Different Themes</h1>
+                        <h1 className="text-xl font-ProximaBold mb-2 ">
+                            Different Themes
+                        </h1>
                         <p>
-                            Stock music with variety of themes. Music for videos, Music for
-                            youtube videos, Vlog music Background, Film music, Podcast music,
-                            Cinematic music and much more.
+                            Stock music with variety of themes. Music for
+                            videos, Music for youtube videos, Vlog music
+                            Background, Film music, Podcast music, Cinematic
+                            music and much more.
                         </p>
                     </div>
                     <div
@@ -222,11 +236,14 @@ const Home: NextPage = () => {
                             <i className="icon-verified text-[24px]"></i>
                         </div>
 
-                        <h1 className="text-xl font-ProximaBold mb-2 ">Safe to use</h1>
+                        <h1 className="text-xl font-ProximaBold mb-2 ">
+                            Safe to use
+                        </h1>
                         <p>
-                            Over 10k+ high quality stock music, shared by community of pixabay
-                            music. safe to use without asking for permission or giving credit
-                            to the artist - even for commercial purposes.
+                            Over 10k+ high quality stock music, shared by
+                            community of pixabay music. safe to use without
+                            asking for permission or giving credit to the artist
+                            - even for commercial purposes.
                         </p>
                     </div>
                 </div>

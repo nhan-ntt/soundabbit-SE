@@ -4,7 +4,7 @@ import { useState } from "react";
 
 function CustomImage({ src, className, objectFit }: any) {
     const [isError, setError] = useState(false);
-    return (!isError) ? (
+    return !isError ? (
         <Image
             src={src}
             alt="img"

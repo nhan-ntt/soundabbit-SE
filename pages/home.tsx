@@ -11,14 +11,14 @@ import {
     RequestStatus,
 } from "../stores/homePage/homePageSlice";
 import CustomImage from "../components/CustomImage";
-import HorizontalTracksList from "../components/HorizontalTracksList";
+import HorizontalSongsList from "../components/HorizontalSongsList";
 import HorizontalArtistsList from "../components/HorizontalArtistsList";
 import { useRouter } from "next/router";
 import ErrorComponent from "@/components/error";
 
 const Home: NextPage = () => {
     const {
-        recentUsers,
+        recentUsers: recentArtist,
         status,
         topHits,
         popularHits,
@@ -67,10 +67,12 @@ const Home: NextPage = () => {
                         className="select-none px-8 tablet:px-6 mobile:px-4 grid grid-cols-3 gap-x-6 gap-y-5 mini-laptop:gap-x-3 
           mini-laptop:gap-y-4 tablet:gap-y-4 tablet:gap-x-3 mobile:grid-cols-2 mobile:gap-x-3 mobile:gap-y-3"
                     >
-                        {recentUsers.map((e: Artists) => (
+                        {recentArtist.map((artist: Artists) => (
                             <div
-                                key={e.id}
-                                onClick={() => router.push(`/artist/${e.id}`)}
+                                key={artist.id}
+                                onClick={() =>
+                                    router.push(`/artist/${artist.id}`)
+                                }
                                 onMouseEnter={() => setColor("black")}
                                 onMouseLeave={() => setColor("black")}
                                 className="flex flex-row items-center
@@ -94,7 +96,7 @@ const Home: NextPage = () => {
                                     />
                                 </div>
                                 <p className="p-4 mini-laptop:p-2 tablet:p-2 tablet:text-[15px] mobile:p-0 mobile:px-2 mobile:text-[14px]">
-                                    {e.name}
+                                    {artist.name}
                                 </p>
                             </div>
                         ))}
@@ -110,7 +112,7 @@ const Home: NextPage = () => {
                         <h1 className="px-8 tablet:px-6 mobile:px-4 text-xl font-ProximaBold mb-6 mobile:text-base">
                             Top Hits this Week
                         </h1>
-                        <HorizontalTracksList tracks={topHits} />
+                        <HorizontalSongsList songs={topHits} />
                     </div>
                     <div className="mt-12">
                         <h1 className="px-8 tablet:px-6 mobile:px-4 text-xl font-ProximaBold mb-6 mobile:text-base">
@@ -122,7 +124,7 @@ const Home: NextPage = () => {
                         <h1 className="px-8 tablet:px-6 mobile:px-4 text-xl font-ProximaBold mb-6 mobile:text-base">
                             Popluar releases
                         </h1>
-                        <HorizontalTracksList tracks={popularHits} />
+                        <HorizontalSongsList songs={popularHits} />
                     </div>
                     <div className="h-40"></div>
                 </div>

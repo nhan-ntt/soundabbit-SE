@@ -1,24 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { playPause } from "../stores/player/currentAudioPlayer";
 import CustomImage from "./CustomImage";
-import { TrackProps } from "../interfaces/Track";
+import { SongProps } from "../interfaces/Song";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { shadeColor } from "../configs/utils";
+import axios from "axios";
 
-function HorizontalTrackCard({
-    track,
+function HorizontalSongCard({
+    song,
     onClick,
 }: {
-    track: TrackProps;
+    song: SongProps;
     onClick: () => void;
 }) {
     const [showPlayButton, setPlayButton] = useState(false);
     const { activeSong, isPlaying } = useSelector((state: any) => state.player);
 
+    let songDemo = JSON.parse(JSON.stringify(song));
+    songDemo.artist_name = "png";
+    songDemo.artist_id = 1;
+    songDemo.duration = 1000;
+    songDemo.cover_image = {
+        color: "black",
+        url: "https://images3.alphacoders.com/690/690494.jpg",
+    };
+
     return (
         <div
-            key={track.id}
+            key={songDemo.id}
             className="mr-4 cursor-grab"
             onClick={onClick}
             onMouseEnter={() => setPlayButton(true)}
@@ -33,7 +43,7 @@ function HorizontalTrackCard({
             >
                 <div
                     style={{
-                        background: shadeColor(track.cover_image.color, -40),
+                        background: shadeColor(songDemo.cover_image.color, -40),
                         boxShadow:
                             "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
                     }}
@@ -41,9 +51,9 @@ function HorizontalTrackCard({
           mini-laptop:w-[140px] mini-laptop:h-[140px] 
           tablet:w-[130px] tablet:h-[130px] mobile:w-[100px] mobile:h-[100px]"
                 >
-                    {activeSong.id === track.id ? (
+                    {activeSong.id === songDemo.id ? (
                         <PlayPauseButton
-                            condition={activeSong.id === track.id}
+                            condition={activeSong.id === songDemo.id}
                             isPlaying={isPlaying}
                         />
                     ) : showPlayButton ? (
@@ -55,19 +65,20 @@ function HorizontalTrackCard({
                     ) : null}
                     <CustomImage
                         src={
-                            track.cover_image.url + "&auto=format&fit=crop&w=400&q=50&h=400"
+                            songDemo.cover_image.url +
+                            "&auto=format&fit=crop&w=400&q=50&h=400"
                         }
                         className="rounded-md"
                     />
                 </div>
                 <p className="line-clamp-2 mt-3 text-base mobile:text-sm tablet:text-sm">
-                    {track.track_name}
+                    {songDemo.name}
                 </p>
                 <p
                     className="line-clamp-2 mt-0.5 text-sm text-gray-400 
             font-ProximaRegular mobile:text-xs tablet:text-xs"
                 >
-                    {track.artist_name}
+                    {songDemo.artist_name}
                 </p>
             </div>
         </div>
@@ -108,4 +119,4 @@ export function PlayPauseButton({
     );
 }
 
-export default HorizontalTrackCard;
+export default HorizontalSongCard;

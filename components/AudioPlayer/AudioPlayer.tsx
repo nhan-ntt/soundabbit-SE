@@ -10,7 +10,7 @@ import {
     onRepeat,
     onShuffle,
     playPause,
-    setTrackProgress,
+    setSongProgress,
 } from "../../stores/player/currentAudioPlayer";
 import { useEffect } from "react";
 import Controls from "./Controls";
@@ -28,17 +28,29 @@ function AudioPlayer({ className }: { className: string }) {
         isPlaying,
         activeSong,
         currentIndex,
-        trackProgress,
+        songProgress: songProgress,
         fetchlikedStatus,
         collectionStatus,
 
-        tracks,
+        songs: songs,
         isShuffle,
         isRepeat,
     }: IStateProps = useSelector((state: any) => state.player);
+
+    let activeSongDemo = JSON.parse(JSON.stringify(activeSong));
+    activeSongDemo.artist_name = "png";
+    activeSongDemo.artist_id = 1;
+    activeSongDemo.duration = 1000;
+    activeSongDemo.cover_image = {
+        color: "black",
+        url: "https://images3.alphacoders.com/690/690494.jpg",
+    };
+
     const dispatch = useDispatch<any>();
     const audioRef = useRef(
-        typeof Audio !== "undefined" ? new Audio(activeSong!.src) : null
+        typeof Audio !== "undefined"
+            ? new Audio(activeSongDemo!.audio_link)
+            : null
     );
     const isReady = useRef(false);
     const [volume, setVolume] = useState(1);
@@ -55,16 +67,16 @@ function AudioPlayer({ className }: { className: string }) {
         }
     }, [isPlaying]);
 
-    const toNextTrack = () => {
+    const toNextSong = () => {
         if (isShuffle) {
-            dispatch(nextSong(Math.floor(Math.random() * tracks.length)));
-        } else if (tracks.length - 1 !== currentIndex) {
+            dispatch(nextSong(Math.floor(Math.random() * songs.length)));
+        } else if (songs.length - 1 !== currentIndex) {
             dispatch(nextSong(currentIndex + 1));
         }
     };
-    const toPrevTrack = () => {
+    const toPrevSong = () => {
         if (isShuffle) {
-            dispatch(nextSong(Math.floor(Math.random() * tracks.length)));
+            dispatch(nextSong(Math.floor(Math.random() * songs.length)));
         } else if (currentIndex !== 0) {
             dispatch(nextSong(currentIndex - 1));
         }
@@ -77,8 +89,8 @@ function AudioPlayer({ className }: { className: string }) {
     useEffect(() => {
         audioRef.current!.pause();
 
-        audioRef.current = new Audio(activeSong!.src);
-        dispatch(setTrackProgress(audioRef.current.currentTime));
+        audioRef.current = new Audio(activeSong!.audio_link);
+        dispatch(setSongProgress(audioRef.current.currentTime));
         audioRef.current.volume = volume;
 
         if (isReady.current) {
@@ -94,7 +106,7 @@ function AudioPlayer({ className }: { className: string }) {
         // Clear any timers already running
         clearInterval(intervalRef.current);
         audioRef.current!.currentTime = value;
-        dispatch(setTrackProgress(audioRef.current!.currentTime));
+        dispatch(setSongProgress(audioRef.current!.currentTime));
     };
 
     const startTimer = () => {
@@ -103,9 +115,9 @@ function AudioPlayer({ className }: { className: string }) {
 
         intervalRef.current = setInterval(() => {
             if (audioRef.current!.ended) {
-                toNextTrack();
+                toNextSong();
             } else {
-                dispatch(setTrackProgress(audioRef.current!.currentTime));
+                dispatch(setSongProgress(audioRef.current!.currentTime));
             }
         }, 1000);
     };
@@ -121,12 +133,12 @@ function AudioPlayer({ className }: { className: string }) {
     useEffect(() => {
         if (fetchlikedStatus == LikedStatus.Initial) {
             if (user) {
-                dispatch(getLikedSongs(user.token));
+                dispatch(getLikedSongs(user));
             }
         } // Pause and clean up on unmount
         if (collectionStatus == CollectionsStatus.Initial) {
             if (user) {
-                dispatch(getCollections(user.token));
+                dispatch(getCollections(user));
             }
         }
         return () => {
@@ -144,10 +156,10 @@ function AudioPlayer({ className }: { className: string }) {
     };
 
     const currentPercentage = activeSong!.duration
-        ? `${(trackProgress / activeSong!.duration) * 100}%`
+        ? `${(songProgress / activeSong!.duration) * 100}%`
         : "0%";
 
-    const trackStyling = `
+    const songStyling = `
     -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, ${seekBarColor}), color-stop(${currentPercentage}, #777))
   `;
 
@@ -158,17 +170,17 @@ function AudioPlayer({ className }: { className: string }) {
                 isShuffle={isShuffle}
                 isRepeat={isRepeat}
                 isPlaying={isPlaying}
-                toNextTrack={toNextTrack}
-                toPrevTrack={toPrevTrack}
-                trackProgress={trackProgress}
-                trackBarStyling={trackStyling}
+                toNextSong={toNextSong}
+                toPrevSong={toPrevSong}
+                songProgress={songProgress}
+                songBarStyling={songStyling}
                 audioRef={audioRef}
-                activeSong={activeSong!}
+                activeSong={activeSongDemo!}
                 onScrubEnd={onScrubEnd}
                 onScrub={onScrub}
                 updateVolume={updateVolume}
                 volume={volume}
-                trackStyling={trackStyling}
+                songStyling={songStyling}
             />
         );
     }
@@ -192,7 +204,7 @@ function AudioPlayer({ className }: { className: string }) {
                 <div className="flex flex-row items-center w-full cursor-pointer">
                     <div
                         style={{
-                            backgroundColor: activeSong!.cover_image.color,
+                            backgroundColor: activeSongDemo!.cover_image.color,
                             boxShadow:
                                 "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
                         }}
@@ -203,7 +215,7 @@ function AudioPlayer({ className }: { className: string }) {
                     >
                         <CustomImage
                             src={
-                                activeSong!.cover_image.url +
+                                activeSongDemo!.cover_image.url +
                                 "&auto=format&fit=crop&w=400&q=50&h=400"
                             }
                             className="rounded-sm w-[50px] h-[50px]"
@@ -215,7 +227,7 @@ function AudioPlayer({ className }: { className: string }) {
                             className="text-gray-300 
           cursor-pointer line-clamp-1 mobile:text-sm"
                         >
-                            {activeSong!.track_name}
+                            {activeSongDemo!.name}
                         </p>
 
                         <p
@@ -223,14 +235,19 @@ function AudioPlayer({ className }: { className: string }) {
             hover:underline cursor-pointer"
                             onClick={(e) => {
                                 e.stopPropagation();
-                                if (activeSong?.artist_id == 120) {
-                                    window.open(`https://anshrathod.com`, "_blank");
+                                if (activeSongDemo?.artist_id == 120) {
+                                    window.open(
+                                        `https://anshrathod.com`,
+                                        "_blank"
+                                    );
                                 } else {
-                                    router.push(`/artist/${activeSong?.artist_id}`);
+                                    router.push(
+                                        `/artist/${activeSongDemo?.artist_id}`
+                                    );
                                 }
                             }}
                         >
-                            {activeSong!.artist_name}
+                            {activeSongDemo!.artist_name}
                         </p>
                     </div>
                 </div>
@@ -243,23 +260,23 @@ function AudioPlayer({ className }: { className: string }) {
                         onShuffle={() => dispatch(onShuffle(!isShuffle))}
                         playPause={() => dispatch(playPause(!isPlaying))}
                         isPlaying={isPlaying}
-                        nextSong={toNextTrack}
-                        prevSong={toPrevTrack}
+                        nextSong={toNextSong}
+                        prevSong={toPrevSong}
                     />
                     <SeekBar
                         changeSeekBarColor={changeSeekBarColor}
-                        trackProgress={trackProgress}
-                        trackBarStyling={trackStyling}
+                        songProgress={songProgress}
+                        songBarStyling={songStyling}
                         audioRef={audioRef}
                         isFullScreen={false}
-                        activeSong={activeSong!}
+                        activeSong={activeSongDemo!}
                         onScrubEnd={onScrubEnd}
                         onScrub={onScrub}
                     />
                 </div>
                 <Buttons
-                    download_url={activeSong!.src}
-                    track_id={activeSong!.id}
+                    download_url={activeSongDemo!.audio_link}
+                    song_id={activeSongDemo!.id}
                     updateVolume={updateVolume}
                     showVolumeSeekBar
                     volume={volume}
