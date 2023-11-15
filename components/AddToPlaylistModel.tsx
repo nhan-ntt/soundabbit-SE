@@ -4,23 +4,19 @@ import { useEffect, useRef } from "react";
 import { toggleModel } from "@/stores/player/currentAudioPlayer";
 import { useState } from "react";
 import {
-    CreateCollectionStatus,
-    renameCollection,
+    CreatePlaylistStatus,
+    renamePlaylist,
 } from "../stores/player/currentAudioPlayer";
 import { useRouter } from "next/router";
 import {
-    addSongToCollection,
-    createNewCollection,
+    addSongToPlaylist,
+    createNewPlaylist,
 } from "../stores/player/currentAudioPlayer";
 import { toast } from "react-toastify";
 
-function AddToCollectionModel() {
-    const {
-        isModelOpen,
-        collections,
-        passedDataToModel,
-        createCollectionStatus,
-    } = useSelector((state: any) => state.player);
+function AddToPlaylistModel() {
+    const { isModelOpen, playlists, passedDataToModel, createPlaylistStatus } =
+        useSelector((state: any) => state.player);
 
     const { user } = useSelector((state: any) => state.auth);
     const router = useRouter();
@@ -32,8 +28,8 @@ function AddToCollectionModel() {
     useEffect(() => {
         if (!isModelOpen) return;
 
-        if (passedDataToModel.collection_name) {
-            setname(passedDataToModel.collection_name);
+        if (passedDataToModel.playlist_name) {
+            setname(passedDataToModel.playlist_name);
         }
 
         function handleClick(event: any) {
@@ -50,15 +46,15 @@ function AddToCollectionModel() {
 
     useEffect(() => {
         if (
-            createCollectionStatus == CreateCollectionStatus.done &&
+            createPlaylistStatus == CreatePlaylistStatus.done &&
             name.length !== 0
         ) {
-            const collection = collections.find((e: any) => e.name == name);
+            const playlist = playlists.find((e: any) => e.name == name);
             dispatch(toggleModel({ data: false, song_id: "" }));
-            router.push(`/collection/${collection.id}`);
+            router.push(`/playlist/${playlist.id}`);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [createCollectionStatus]);
+    }, [createPlaylistStatus]);
 
     return (
         <div>
@@ -73,7 +69,7 @@ function AddToCollectionModel() {
                                 <div className="rounded-md p-2.5 flex item-center justify-center flex-row">
                                     <input
                                         type="search"
-                                        placeholder="Collection #1"
+                                        placeholder="Playlist #1"
                                         onChange={(e) => {
                                             setname(e.target.value);
                                         }}
@@ -85,12 +81,12 @@ function AddToCollectionModel() {
                                     <button
                                         disabled={
                                             name.length === 0 ||
-                                            createCollectionStatus ==
-                                                CreateCollectionStatus.waiting
+                                            createPlaylistStatus ==
+                                                CreatePlaylistStatus.waiting
                                         }
                                         onClick={() => {
                                             dispatch(
-                                                createNewCollection({
+                                                createNewPlaylist({
                                                     token: user.token,
                                                     name: name,
                                                     song_id: undefined,
@@ -106,12 +102,12 @@ function AddToCollectionModel() {
                         ) : passedDataToModel.song_id == "RENAME" ? (
                             <div>
                                 <p className="font-ProximaBold px-3 pt-4  text-gray-400">
-                                    Rename collection:
+                                    Rename Playlist:
                                 </p>
                                 <div className="rounded-md p-2.5 flex item-center justify-center flex-row">
                                     <input
                                         type="search"
-                                        placeholder="Collection #1"
+                                        placeholder="Playlist #1"
                                         value={name}
                                         onChange={(e) => {
                                             setname(e.target.value);
@@ -125,11 +121,11 @@ function AddToCollectionModel() {
                                         disabled={name.length === 0}
                                         onClick={() => {
                                             dispatch(
-                                                renameCollection({
+                                                renamePlaylist({
                                                     token: user.token,
-                                                    collection_name: name,
-                                                    collection_id:
-                                                        passedDataToModel.collection_id,
+                                                    playlist_name: name,
+                                                    playlist_id:
+                                                        passedDataToModel.playlist_id,
                                                 })
                                             );
                                             dispatch(
@@ -138,20 +134,18 @@ function AddToCollectionModel() {
                                                     song_id: "",
                                                 })
                                             );
-                                            toast.success(
-                                                "Collection Renamed!"
-                                            );
+                                            toast.success("Playlist Renamed!");
                                         }}
                                         className="bg-[#2bb540] disabled:bg-[#287b34] w-full p-1.5 rounded-lg text-center uppercase text-white font-ProximaBold"
                                     >
-                                        <p>Rename collection</p>
+                                        <p>Rename playlist</p>
                                     </button>
                                 </div>
                             </div>
                         ) : (
                             <div>
                                 <p className="font-ProximaBold px-3 pt-3 pb-1.5 text-gray-400">
-                                    Add to collection:
+                                    Add to playlist:
                                 </p>
                                 <div className="rounded-md p-2.5 flex item-center justify-center flex-row">
                                     <div className="rounded-tl-md rounded-bl-md bg-[#4a4a4a] flex items-center px-2">
@@ -164,7 +158,7 @@ function AddToCollectionModel() {
                                             if (e.target.value.length !== 0) {
                                                 setShowResults(true);
                                                 setResults(
-                                                    collections.filter(
+                                                    playlists.filter(
                                                         (col: any) =>
                                                             col.name
                                                                 .toLowerCase()
@@ -178,7 +172,7 @@ function AddToCollectionModel() {
                                                 setShowResults(false);
                                             }
                                         }}
-                                        placeholder="Find collections.."
+                                        placeholder="Find playlists.."
                                         className="w-full px-0 py-1.5 outline-0 border-none
                  text-white bg-[#4a4a4a] rounded-tr-md rounded-br-md"
                                     />
@@ -187,10 +181,10 @@ function AddToCollectionModel() {
                                     <div
                                         onClick={() => {
                                             dispatch(
-                                                createNewCollection({
+                                                createNewPlaylist({
                                                     token: user.token,
                                                     name:
-                                                        "Collection #" +
+                                                        "Playlist #" +
                                                         passedDataToModel.song_id,
                                                     song_id:
                                                         passedDataToModel.song_id,
@@ -203,28 +197,28 @@ function AddToCollectionModel() {
                                                 })
                                             );
                                             toast.success(
-                                                "Created new collection!"
+                                                "Created new playlist!"
                                             );
                                         }}
                                         className="font-ProximaBold cursor-pointer hover:bg-[#464646] px-2 py-2 text-white rounded"
                                     >
-                                        <p> Create collection</p>
+                                        <p> Create playlist</p>
                                     </div>
 
                                     <div className="border-b border-slate-700 py-1"></div>
                                     <div className="h-[400px] overflow-y-scroll scroll scrollbar">
                                         {!showResults ? (
                                             <div>
-                                                {collections.map((e: any) => (
+                                                {playlists.map((e: any) => (
                                                     <div
                                                         className="font-ProximaRegular tracking-wide text-[15px] hover:bg-[#4a4a4a] px-2 py-2 text-slate-200 rounded cursor-pointer"
                                                         key={e.id}
                                                         onClick={() => {
                                                             dispatch(
-                                                                addSongToCollection(
+                                                                addSongToPlaylist(
                                                                     {
                                                                         token: user.token,
-                                                                        collection_id:
+                                                                        playlist_id:
                                                                             e.id,
                                                                         song_id:
                                                                             passedDataToModel.song_id,
@@ -238,7 +232,7 @@ function AddToCollectionModel() {
                                                                 })
                                                             );
                                                             toast.success(
-                                                                "Added to collection!"
+                                                                "Added to playlist!"
                                                             );
                                                         }}
                                                     >
@@ -254,10 +248,10 @@ function AddToCollectionModel() {
                                                         key={e.id}
                                                         onClick={() => {
                                                             dispatch(
-                                                                addSongToCollection(
+                                                                addSongToPlaylist(
                                                                     {
                                                                         token: user.token,
-                                                                        collection_id:
+                                                                        playlist_id:
                                                                             e.id,
                                                                         song_id:
                                                                             passedDataToModel.song_id,
@@ -271,7 +265,7 @@ function AddToCollectionModel() {
                                                                 })
                                                             );
                                                             toast.success(
-                                                                "Added to collection!"
+                                                                "Added to playlist!"
                                                             );
                                                         }}
                                                     >
@@ -291,4 +285,4 @@ function AddToCollectionModel() {
     );
 }
 
-export default AddToCollectionModel;
+export default AddToPlaylistModel;

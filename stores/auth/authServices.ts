@@ -6,7 +6,7 @@ import API_URL from "@/configs/apiUrl";
 // Register user
 const register = async (userData: any) => {
     try {
-        return await axios.post("/api/auth/register", userData);
+        return await axios.post(`${API_URL}/auth/register`, userData);
     } catch (error: any) {
         if (error.response) {
             throw {
@@ -22,7 +22,7 @@ const register = async (userData: any) => {
 
 const login = async (userData: any) => {
     try {
-        const response = await axios.post("/api/auth/login", userData);
+        const response = await axios.post(`${API_URL}/auth/login`, userData);
 
         const user = {
             id: response.data.id,
@@ -30,7 +30,9 @@ const login = async (userData: any) => {
         };
 
         if (response.data) {
-            setCookie("user", JSON.stringify(user), { maxAge: 60 * 60 * 24 * 30 });
+            setCookie("user", JSON.stringify(user), {
+                maxAge: 60 * 60 * 24 * 30,
+            });
         }
 
         return user;

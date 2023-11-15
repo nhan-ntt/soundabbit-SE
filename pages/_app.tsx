@@ -9,7 +9,7 @@ import SidebarItem from "../components/sidebarItem";
 import Head from "next/head";
 import "react-toastify/dist/ReactToastify.css";
 import useDetectKeyboardOpen from "use-detect-keyboard-open";
-import AddToCollectionModel from "@/components/AddToCollectionModel";
+import AddToPlaylistModel from "@/components/AddToPlaylistModel";
 import { ToastContainer } from "react-toastify";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -68,7 +68,7 @@ function AudioPlayerComponent() {
                 pauseOnHover
                 theme="dark"
             />
-            <AddToCollectionModel />
+            <AddToPlaylistModel />
             {router.pathname !== "/login" &&
             router.pathname !== "/register" &&
             router.pathname !== "/_error" &&

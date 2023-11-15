@@ -179,7 +179,6 @@ export default Search;
 
 function TopResult({ object, onTap }: any) {
     const [showPlayButton, setPlayButton] = useState(false);
-
     const { activeSong, isPlaying } = useSelector((state: any) => state.player);
 
     if (object.type == "song") {
@@ -238,33 +237,33 @@ function TopResult({ object, onTap }: any) {
                 </div>
             </div>
         );
-    } else {
-        return (
-            <Link href={`/artist/${object.artist_id}`}>
-                <div
-                    className=" mobile:hidden tablet:hidden h-[250px] flex flex-col p-6 bg-[#5f5d5d2f] 
-              hover:bg-[#5f5d5d72] rounded-md tablet:h-full mobile:h-full"
-                >
-                    <div
-                        className="rounded-full relative w-24 h-24"
-                        style={{
-                            backgroundColor: object.avatar.color,
-                            boxShadow:
-                                "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
-                        }}
-                    >
-                        <CustomImage
-                            src={`${object.avatar.url}&auto=format&fit=crop&w=400&q=50&h=400`}
-                            className="rounded-full"
-                        />
-                    </div>
-
-                    <p className="mt-4 text-2xl font-ProximaBold line-clamp-1">
-                        {object.artist_name}
-                    </p>
-                    <p>Artist</p>
-                </div>
-            </Link>
-        );
     }
+
+    return (
+        <Link href={`/artist/${object.artist_id}`}>
+            <div
+                className=" mobile:hidden tablet:hidden h-[250px] flex flex-col p-6 bg-[#5f5d5d2f] 
+              hover:bg-[#5f5d5d72] rounded-md tablet:h-full mobile:h-full"
+            >
+                <div
+                    className="rounded-full relative w-24 h-24"
+                    style={{
+                        backgroundColor: object.avatar.color,
+                        boxShadow:
+                            "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
+                    }}
+                >
+                    <CustomImage
+                        src={`${object.avatar.url}&auto=format&fit=crop&w=400&q=50&h=400`}
+                        className="rounded-full"
+                    />
+                </div>
+
+                <p className="mt-4 text-2xl font-ProximaBold line-clamp-1">
+                    {object.artist_name}
+                </p>
+                <p>Artist</p>
+            </div>
+        </Link>
+    );
 }

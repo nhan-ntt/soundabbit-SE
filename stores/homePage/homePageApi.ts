@@ -1,12 +1,12 @@
-import axios from "axios";
-import API_URL from "@/configs/apiUrl";
+import API_URL from '@/configs/apiUrl';
+import axios from 'axios';
 
 // Register user
 const getRandomArtists = async () => {
     try {
         const response = await axios.all([
-            axios.get("/api/artists"),
-            axios.get("/api/songs"),
+            axios.get(`${API_URL}/artists`),
+            axios.get(`${API_URL}/songs`),
         ]);
 
         console.log(response[0].data.list);
@@ -30,6 +30,6 @@ const getRandomArtists = async () => {
     }
 };
 
-const homePageApi = { getRandomArtists };
+const homePageApi = {getRandomArtists};
 
 export default homePageApi;

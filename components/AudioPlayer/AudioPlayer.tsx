@@ -2,7 +2,7 @@
 import React, { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-    CollectionsStatus,
+    PlaylistsStatus,
     getLikedSongs,
     IStateProps,
     LikedStatus,
@@ -19,7 +19,7 @@ import Buttons from "./Buttons";
 import { useRouter } from "next/router";
 import FullScreenPlayer from "./FullScreenPlayer";
 import CustomImage from "../CustomImage";
-import { getCollections } from "../../stores/player/currentAudioPlayer";
+import { getPlaylists } from "../../stores/player/currentAudioPlayer";
 
 function AudioPlayer({ className }: { className: string }) {
     const router = useRouter();
@@ -28,11 +28,10 @@ function AudioPlayer({ className }: { className: string }) {
         isPlaying,
         activeSong,
         currentIndex,
-        songProgress: songProgress,
+        songProgress,
         fetchlikedStatus,
-        collectionStatus,
-
-        songs: songs,
+        playlistStatus,
+        songs,
         isShuffle,
         isRepeat,
     }: IStateProps = useSelector((state: any) => state.player);
@@ -136,9 +135,9 @@ function AudioPlayer({ className }: { className: string }) {
                 dispatch(getLikedSongs(user));
             }
         } // Pause and clean up on unmount
-        if (collectionStatus == CollectionsStatus.Initial) {
+        if (playlistStatus == PlaylistsStatus.Initial) {
             if (user) {
-                dispatch(getCollections(user));
+                dispatch(getPlaylists(user));
             }
         }
         return () => {

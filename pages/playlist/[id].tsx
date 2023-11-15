@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useRef, useEffect } from "react";
 import {
-    deleteCollection,
+    deletePlaylist,
     playPause,
     setActiveSong,
     toggleModel,
@@ -18,7 +18,7 @@ import { shadeColor } from "@/configs/utils";
 import CustomImage from "@/components/CustomImage";
 import NavBar from "@/components/backButton";
 
-function Liked({
+function Playlist({
     data,
     songs,
     success,
@@ -29,7 +29,7 @@ function Liked({
 }) {
     const router = useRouter();
     const dispatch = useDispatch<any>();
-    const { isPlaying, playingPlaylist, collections } = useSelector(
+    const { isPlaying, playingPlaylist, playlists } = useSelector(
         (state: any) => state.player
     );
     const { user } = useSelector((state: any) => state.auth);
@@ -40,13 +40,17 @@ function Liked({
     const [showDropdown, setShowDropdown] = useState(false);
 
     useEffect(() => {
-        if (!showDropdown) return;
+        if (!showDropdown) {
+            return;
+        }
+
         function handleClick(event: any) {
             // @ts-ignore-comment
             if (dropdown.current && !dropdown.current.contains(event.target)) {
                 setShowDropdown(false);
             }
         }
+
         window.addEventListener("click", handleClick);
         return () => window.removeEventListener("click", handleClick);
     }, [showDropdown]);
@@ -57,24 +61,25 @@ function Liked({
     };
 
     useEffect(() => {
-        if (isScrolling) setShowDropdown(false);
+        if (isScrolling) {
+            setShowDropdown(false);
+        }
     }, [isScrolling]);
 
     setTimeout(() => {
         setScrolling(false);
     }, 100);
 
-    const [collectionName, setCollectionName] = useState(data.name);
+    const [playlistName, setPlaylistName] = useState(data.name);
 
     useEffect(() => {
-        const renamedCollectionName = collections.find(
-            (e: any) => e.id == data.id
-        );
+        const renamedPlaylistName = playlists.find((e: any) => e.id == data.id);
 
-        if (renamedCollectionName)
-            setCollectionName(renamedCollectionName.name);
+        if (renamedPlaylistName) {
+            setPlaylistName(renamedPlaylistName.name);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [collections]);
+    }, [playlists]);
 
     if (!success) {
         return (
@@ -83,6 +88,7 @@ function Liked({
             </AppLayout>
         );
     }
+
     return (
         <AppLayout title={data.name} color={data.color} onScroll={onScroll}>
             <NavBar
@@ -99,7 +105,7 @@ function Liked({
        tablet:text-center tablet:pb-3 mobile:pb-3 mobile:text-center"
             >
                 <h1 className="text-[30px] font-ProximaBold  leading-[5rem] mobile:block tablet:block hidden">
-                    {collectionName}
+                    {playlistName}
                 </h1>
                 <div
                     style={{
@@ -118,13 +124,13 @@ function Liked({
                 </div>
                 <div>
                     <p className="uppercase font-ProximaBold text-sm tablet:hidden mobile:hidden">
-                        Collection
+                        Playlist
                     </p>
                     <h1
                         className="text-[70px] font-ProximaBold  leading-[5rem] 
           mini-laptop:text-[65px] tablet:hidden mobile:hidden line-clamp-2"
                     >
-                        {collectionName}
+                        {playlistName}
                     </h1>
                     <p className="font-ProximaBold text-sm mt-6 tablet:mt-4 opacity-70">
                         {songs.length} Songs
@@ -188,23 +194,23 @@ function Liked({
                                                 toggleModel({
                                                     data: true,
                                                     song_id: "RENAME",
-                                                    collection_name: data.name,
-                                                    collection_id: data.id,
+                                                    playlist_name: data.name,
+                                                    playlist_id: data.id,
                                                 })
                                             );
                                             setShowDropdown(false);
                                         }}
                                         className="px-4 rounded py-1.5 hover:bg-[#323232] border-b border-b-[#3e3e3e]"
                                     >
-                                        Rename Collection
+                                        Rename Playlist
                                     </div>
                                     <div
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             dispatch(
-                                                deleteCollection({
+                                                deletePlaylist({
                                                     token: user.token,
-                                                    collection_id: data.id,
+                                                    playlist_id: data.id,
                                                 })
                                             );
                                             setShowDropdown(false);
@@ -212,7 +218,7 @@ function Liked({
                                         }}
                                         className="px-4 rounded py-1.5 hover:bg-[#323232] border-b border-b-[#3e3e3e]"
                                     >
-                                        Delete Collection
+                                        Delete Playlist
                                     </div>
                                 </div>
                             )}
@@ -226,7 +232,7 @@ function Liked({
                             key={song.id}
                             song={song}
                             showNumber={i + 1}
-                            collection={data.id}
+                            playlist={data.id}
                             onTap={() => {
                                 dispatch(
                                     setActiveSong({
@@ -247,9 +253,9 @@ function Liked({
 }
 
 export async function getServerSideProps(context: any) {
-    const token = context.req.cookies.user;
+    const userCookie = context.req.cookies.user;
 
-    if (!token) {
+    if (!userCookie) {
         return {
             redirect: {
                 destination: `/login`,
@@ -257,31 +263,38 @@ export async function getServerSideProps(context: any) {
             },
         };
     }
+
     try {
-        const token = JSON.parse(context.req.cookies.user).token;
-        const { data } = await axios.get(
-            API_URL + "/collections/info/" + context.params.id,
+        const user = JSON.parse(userCookie);
+
+        const playlist = await axios.get(
+            `${API_URL}/playlists/${context.params.id}`,
             {
                 headers: {
-                    authorization: "Bearer " + token,
+                    authorization: "Bearer " + user.token,
                 },
             }
         );
+
         const songs = await axios.get(
-            API_URL + "/collections/tracks/" + context.params.id,
+            `${API_URL}/playlists/${context.params.id}/songs`,
             {
                 headers: {
-                    authorization: "Bearer " + token,
+                    authorization: "Bearer " + user.token,
                 },
             }
         );
+        console.log(`${API_URL}/playlists/${context.params.id}/songs`);
+        console.log(songs);
+
         return {
             props: {
                 success: true,
-                data: data.data[0],
-                songs: songs.data.data,
+                data: playlist.data,
+                songs: songs.data.list,
             },
         };
+
     } catch (e) {
         return {
             props: {
@@ -290,4 +303,5 @@ export async function getServerSideProps(context: any) {
         };
     }
 }
-export default Liked;
+
+export default Playlist;

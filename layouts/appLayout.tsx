@@ -17,7 +17,7 @@ function AppLayout({ children, title, color, onScroll }: any) {
     return (
         <div>
             <Head>
-                <title>{`Rhyme / ${title}`}</title>
+                <title>{`Rhyme | ${title}`}</title>
             </Head>
             <div className="font-ProximaRegular text-white bg-[#121212]">
                 <div className="flex flex-row h-screen w-screen max-w-full">
@@ -50,10 +50,10 @@ function AppLayout({ children, title, color, onScroll }: any) {
                             <SidebarItem name="home" label="Home" />
                             <SidebarItem name="search" label="Search" />
                             <SidebarItem name="library" label="Your Library" />
-                            <Link href={`/collection/liked`}>
+                            <Link href={`/playlist/liked`}>
                                 <div
                                     className={`${
-                                        router.pathname == "/collection/liked"
+                                        router.pathname == "/playlist/liked"
                                             ? "opacity-100 font-ProximaBold"
                                             : "opacity-70"
                                     } hover:opacity-100 mini-laptop:hidden tablet:hidden mobile:hidden group select-none cursor-pointer mt-4 flex flex-row items-center 

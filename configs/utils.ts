@@ -17,11 +17,14 @@ export function shadeColor(color: string, percent: number) {
     G = G < 255 ? G : 255;
     B = B < 255 ? B : 255;
 
-    const RR = R.toString(16).length == 1 ? "0" + R.toString(16) : R.toString(16);
-    const GG = G.toString(16).length == 1 ? "0" + G.toString(16) : G.toString(16);
-    const BB = B.toString(16).length == 1 ? "0" + B.toString(16) : B.toString(16);
+    const RR =
+        R.toString(16).length == 1 ? "0" + R.toString(16) : R.toString(16);
+    const GG =
+        G.toString(16).length == 1 ? "0" + G.toString(16) : G.toString(16);
+    const BB =
+        B.toString(16).length == 1 ? "0" + B.toString(16) : B.toString(16);
 
-    return "#" + RR + GG + BB;
+    return `#${RR}${GG}${BB}`;
 }
 
 export const removeDuplicate = (array: any) => {
@@ -38,4 +41,11 @@ export const removeDuplicate = (array: any) => {
 
 export function capitalize(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export function getGreetings() {
+    let hrs = new Date().getHours();
+    if (hrs < 12) return "Good Morning";
+    if (hrs >= 12 && hrs <= 17) return "Good Afternoon";
+    if (hrs >= 17 && hrs <= 24) return "Good Evening";
 }

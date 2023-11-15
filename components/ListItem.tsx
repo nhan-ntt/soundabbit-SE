@@ -7,17 +7,10 @@ import {
 } from "../stores/player/currentAudioPlayer";
 import LikeButton from "./AudioPlayer/LikeButton";
 import CustomImage from "./CustomImage";
-import { removeSongFromCollection } from "../stores/player/currentAudioPlayer";
+import { removeSongFromPlaylist } from "../stores/player/currentAudioPlayer";
 import { toast } from "react-toastify";
 
-function ListItem({
-    song,
-    showNumber,
-    onTap,
-    isScrolling,
-
-    collection,
-}: any) {
+function ListItem({ song, showNumber, onTap, isScrolling, playlist }: any) {
     const { activeSong, songs } = useSelector((state: any) => state.player);
     const { user } = useSelector((state: any) => state.auth);
     const dropdown = useRef(null);
@@ -155,21 +148,21 @@ function ListItem({
                         >
                             Play Next
                         </div>
-                        {collection ? (
+                        {playlist ? (
                             <div
                                 className="cursor-pointer  rounded px-4 py-1.5 hover:bg-[#323232]"
                                 onClick={() => {
                                     dispatch(
-                                        removeSongFromCollection({
+                                        removeSongFromPlaylist({
                                             token: user.token,
-                                            collection_id: collection,
+                                            playlist_id: playlist,
                                             song_id: song.id,
                                         })
                                     );
-                                    toast.success("Removed from collection!");
+                                    toast.success("Removed from playlist!");
                                 }}
                             >
-                                Remove from collection
+                                Remove from Playlist
                             </div>
                         ) : (
                             <div
@@ -183,7 +176,7 @@ function ListItem({
                                     )
                                 }
                             >
-                                Add to Collection
+                                Add to Playlist
                             </div>
                         )}
                     </div>

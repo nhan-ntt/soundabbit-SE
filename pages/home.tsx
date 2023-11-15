@@ -15,6 +15,7 @@ import HorizontalSongsList from "../components/HorizontalSongsList";
 import HorizontalArtistsList from "../components/HorizontalArtistsList";
 import { useRouter } from "next/router";
 import ErrorComponent from "@/components/error";
+import { getGreetings } from "@/configs/utils";
 
 const Home: NextPage = () => {
     const {
@@ -29,6 +30,7 @@ const Home: NextPage = () => {
 
     const dispatch = useDispatch<any>();
     const [color, setColor] = useState("#2bb540");
+    const router = useRouter();
 
     useEffect(() => {
         if (user) {
@@ -42,7 +44,6 @@ const Home: NextPage = () => {
         }
     }, []);
 
-    const router = useRouter();
     return (
         <AppLayout title="Home" color={color}>
             {status == RequestStatus.Loading ? (
@@ -133,13 +134,6 @@ const Home: NextPage = () => {
             )}
         </AppLayout>
     );
-};
-
-const getGreetings = () => {
-    let hrs = new Date().getHours();
-    if (hrs < 12) return "Good Morning";
-    if (hrs >= 12 && hrs <= 17) return "Good Afternoon";
-    if (hrs >= 17 && hrs <= 24) return "Good Evening";
 };
 
 export default Home;

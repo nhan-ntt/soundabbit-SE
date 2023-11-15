@@ -1,9 +1,9 @@
-import axios from "axios";
 import API_URL from "@/configs/apiUrl";
+import axios from "axios";
 
 const like = async ({ user, song_id }: any) => {
     await axios.post(
-        `/api/users/${user.id}/favorite/songs/${song_id}`,
+        `${API_URL}/users/${user.id}/favorite/songs/${song_id}`,
         {},
         {
             headers: {
@@ -11,33 +11,38 @@ const like = async ({ user, song_id }: any) => {
             },
         }
     );
+
     return true;
 };
 
 const unLike = async ({ user, song_id }: any) => {
     await axios.delete(
-        `/api/users/${user.id}/favorite/songs/${song_id}`,
+        `${API_URL}/users/${user.id}/favorite/songs/${song_id}`,
         {
             headers: {
                 authorization: "Bearer " + user.token,
             },
         }
     );
+
     return true;
 };
 
 const idsOflikedSongs = async (user: any) => {
-    const response = await axios.get(`api/users/${user.id}/favorite/songs`, {
-        headers: {
-            authorization: "Bearer " + user.token,
-        },
-    });
+    const response = await axios.get(
+        `${API_URL}/users/${user.id}/favorite/songs`,
+        {
+            headers: {
+                authorization: "Bearer " + user.token,
+            },
+        }
+    );
 
     return response.data;
 };
 
-const getCollections = async (user: any) => {
-    const response = await axios.get(`api/users/${user.id}/favorite/playlists`, {
+const getPlaylists = async (user: any) => {
+    const response = await axios.get(`${API_URL}/playlists`, {
         headers: {
             authorization: "Bearer " + user.token,
         },
@@ -45,18 +50,14 @@ const getCollections = async (user: any) => {
     return response.data;
 };
 
-const addSongToCollection = async (token: string, data: any) => {
-    await axios.put(API_URL + "/collections/add/track", data, {
-        headers: {
-            authorization: "Bearer " + token,
-        },
-    });
-    return data;
-};
-
-const removeSongFromCollection = async (token: string, data: any) => {
-    const response = await axios.put(
-        API_URL + "/collections/remove/track",
+const addSongToPlaylist = async (
+    token: string,
+    playlist_id: string,
+    song_id: string,
+    data: any
+) => {
+    await axios.put(
+        `${API_URL}/playlists/${playlist_id}/songs/${song_id}`,
         data,
         {
             headers: {
@@ -64,57 +65,65 @@ const removeSongFromCollection = async (token: string, data: any) => {
             },
         }
     );
+
+    return data;
+};
+
+const removeSongFromPlaylist = async (
+    token: string,
+    playlist_id: string,
+    song_id: string
+) => {
+    const response = await axios.delete(
+        `${API_URL}/playlists/${playlist_id}/songs/${song_id}`,
+        {
+            headers: {
+                authorization: "Bearer " + token,
+            },
+        }
+    );
     return response.data;
 };
 
-const createNewCollection = async (token: string, data: any) => {
-    const response = await axios.post(API_URL + "/collections/new", data, {
+const createNewPlaylist = async (token: string, data: any) => {
+    const response = await axios.post(`${API_URL}/playlists`, data, {
         headers: {
             authorization: "Bearer " + token,
         },
     });
+
     return response.data;
 };
 
-const renameCollection = async (token: string, data: any) => {
-    await axios.put(
-        API_URL +
-        "/collections/rename/" +
-        data.collection_id +
-        "?name=" +
-        data.collection_name,
-        {},
-        {
-            headers: {
-                authorization: "Bearer " + token,
-            },
-        }
-    );
+const renamePlaylist = async (token: string, data: any) => {
+    await axios.put(`${API_URL}/playlists`, data, {
+        headers: {
+            authorization: "Bearer " + token,
+        },
+    });
+
     return data;
 };
 
-const deleteCollection = async (token: string, data: any) => {
-    const response = await axios.delete(
-        API_URL + "/collections/" + data.collection_id,
-        {
-            headers: {
-                authorization: "Bearer " + token,
-            },
-        }
-    );
-    return data;
+const deletePlaylist = async (token: string, playlist_id: string) => {
+    await axios.delete(`${API_URL}/playlists/${playlist_id}`, {
+        headers: {
+            authorization: "Bearer " + token,
+        },
+    });
+    return { playlist_id };
 };
 
 const ApiService = {
     like,
     unLike,
-    createNewCollection,
+    createNewPlaylist,
     idsOflikedSongs,
-    addSongToCollection,
-    getCollections,
-    deleteCollection,
-    renameCollection,
-    removeSongFromCollection,
+    addSongToPlaylist,
+    removeSongFromPlaylist,
+    getPlaylists,
+    deletePlaylist,
+    renamePlaylist,
 };
 
 export default ApiService;

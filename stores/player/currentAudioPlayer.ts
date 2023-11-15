@@ -1,12 +1,14 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { SongProps } from "@/interfaces/Song";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
 import ApiService from "./ApiServices";
 
 const songs: SongProps[] = [
     {
         id: 1,
         name: "Welcome here",
-        audio_link: "https://drive.google.com/uc?id=17ZlrPeRBZoPv0OFA8g0RvR__XIWVPW-4&export=download",
+        audio_link:
+            "https://drive.google.com/uc?id=17ZlrPeRBZoPv0OFA8g0RvR__XIWVPW-4&export=download",
     },
 ];
 
@@ -15,12 +17,12 @@ export enum LikedStatus {
     success,
     error,
 }
-export enum CollectionsStatus {
+export enum PlaylistsStatus {
     Initial,
     success,
     error,
 }
-export enum CreateCollectionStatus {
+export enum CreatePlaylistStatus {
     waiting,
     done,
     Initial,
@@ -36,12 +38,12 @@ export interface IStateProps {
     songProgress: number;
     isShuffle: boolean;
     isRepeat: boolean;
-    collections: [];
-    createCollectionStatus: CreateCollectionStatus;
+    playlists: [];
+    createPlaylistStatus: CreatePlaylistStatus;
     isModelOpen: boolean;
     playingPlaylist: string;
     fetchlikedStatus: LikedStatus;
-    collectionStatus: CollectionsStatus;
+    playlistStatus: PlaylistsStatus;
     passedDataToModel: object;
 }
 
@@ -51,11 +53,11 @@ const initialState: IStateProps = {
     isModelOpen: false,
     playingPlaylist: "",
     liked: [],
-    collections: [],
+    playlists: [],
     fetchlikedStatus: LikedStatus.Initial,
-    createCollectionStatus: CreateCollectionStatus.Initial,
+    createPlaylistStatus: CreatePlaylistStatus.Initial,
 
-    collectionStatus: CollectionsStatus.Initial,
+    playlistStatus: PlaylistsStatus.Initial,
     passedDataToModel: {},
     isShuffle: false,
     isRepeat: false,
@@ -128,65 +130,79 @@ const playerSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(addSongToCollection.fulfilled, (state, action) => {
-            const collection = state.collections.find(
-                (e: any) => e.id == action.payload.collection_id
+        builder.addCase(addSongToPlaylist.fulfilled, (state, action) => {
+            const playlist = state.playlists.find(
+                (e: any) => e.id == action.payload.playlist_id
             );
-
             //@ts-ignore
-            if (collection) collection.total_songs = collection.total_songs + 1;
-            state.collections = state.collections;
+            if (playlist) playlist.total_songs = playlist.total_songs + 1;
+            state.playlists = state.playlists;
         });
+
         builder.addCase(getLikedSongs.fulfilled, (state, action) => {
             state.fetchlikedStatus = LikedStatus.success;
             if (action.payload) {
-                state.liked = action.payload.list.map((song: any) => song["id"])
-            };
+                state.liked = action.payload.list.map(
+                    (song: any) => song["id"]
+                );
+            }
         });
-        builder.addCase(getCollections.fulfilled, (state, action) => {
-            state.collectionStatus = CollectionsStatus.success;
-            if (action.payload) state.collections = action.payload.data;
-        });
-        builder.addCase(createNewCollection.pending, (state, action) => {
-            state.createCollectionStatus = CreateCollectionStatus.waiting;
-        });
-        builder.addCase(createNewCollection.rejected, (state, action) => {
-            state.createCollectionStatus = CreateCollectionStatus.error;
-        });
-        builder.addCase(renameCollection.fulfilled, (state, action) => {
-            const collection = state.collections.find(
-                (e: any) => e.id == action.payload!.collection_id
-            );
-            if (collection)
-                // @ts-ignore
-                collection.name = action.payload!.collection_name;
 
-            state.collections = state.collections;
+        builder.addCase(getPlaylists.fulfilled, (state, action) => {
+            state.playlistStatus = PlaylistsStatus.success;
+            if (action.payload) {
+                console.log("getPlaylsit");
+                console.log(action.payload.list);
+                state.playlists = action.payload.list;
+            }
         });
-        builder.addCase(deleteCollection.fulfilled, (state, action) => {
-            const collections = state.collections.filter(
-                (e: any) => e.id !== action.payload!.collection_id
+
+        builder.addCase(createNewPlaylist.pending, (state, action) => {
+            state.createPlaylistStatus = CreatePlaylistStatus.waiting;
+        });
+
+        builder.addCase(createNewPlaylist.rejected, (state, action) => {
+            state.createPlaylistStatus = CreatePlaylistStatus.error;
+        });
+
+        builder.addCase(renamePlaylist.fulfilled, (state, action) => {
+            const playlist = state.playlists.find(
+                (e: any) => e.id == action.payload!.playlist_id
+            );
+            if (playlist)
+                // @ts-ignore
+                playlist.name = action.payload!.playlist_name;
+
+            state.playlists = state.playlists;
+        });
+
+        builder.addCase(deletePlaylist.fulfilled, (state, action) => {
+            const playlists = state.playlists.filter(
+                (playlist: any) => playlist.id !== action.payload!.playlist_id
             );
             //@ts-ignore
-            state.collections = collections;
+            state.playlists = playlists;
         });
-        builder.addCase(createNewCollection.fulfilled, (state, action) => {
-            let collections = state.collections;
-            // @ts-ignore
-            collections.push(action.payload.data[0]);
 
-            const collection = collections.find(
+        builder.addCase(createNewPlaylist.fulfilled, (state, action) => {
+            let playlists = state.playlists;
+            // @ts-ignore
+            playlists.push(action.payload.data[0]);
+
+            const playlist = playlists.find(
                 (e: any) => e.id == action.payload.data[0].id
             );
 
             //@ts-ignore
-            if (collection) collection.total_songs = collection.total_songs + 1;
-            state.collections = collections;
-            state.createCollectionStatus = CreateCollectionStatus.done;
+            if (playlist) playlist.total_songs = playlist.total_songs + 1;
+            state.playlists = playlists;
+            state.createPlaylistStatus = CreatePlaylistStatus.done;
         });
-        builder.addCase(getCollections.rejected, (state, action) => {
-            state.collectionStatus = CollectionsStatus.error;
+
+        builder.addCase(getPlaylists.rejected, (state, action) => {
+            state.playlistStatus = PlaylistsStatus.error;
         });
+
         builder.addCase(getLikedSongs.rejected, (state, action) => {
             state.fetchlikedStatus = LikedStatus.error;
         });
@@ -203,16 +219,18 @@ export const getLikedSongs = createAsyncThunk(
         }
     }
 );
-export const getCollections = createAsyncThunk(
-    "ApiServices/getCollections",
-    async (token: string, thunkAPI) => {
+
+export const getPlaylists = createAsyncThunk(
+    "ApiServices/getPlaylists",
+    async (user: any, thunkAPI) => {
         try {
-            return await ApiService.getCollections(token);
+            return await ApiService.getPlaylists(user);
         } catch (error) {
             // console.log(error);
         }
     }
 );
+
 export const Like = createAsyncThunk(
     "ApiServices/addlike",
     async ({ user, song_id }: any, thunkAPI) => {
@@ -226,6 +244,7 @@ export const Like = createAsyncThunk(
         }
     }
 );
+
 export const unLike = createAsyncThunk(
     "ApiServices/removelike",
     async ({ user, song_id }: any, thunkAPI) => {
@@ -239,12 +258,13 @@ export const unLike = createAsyncThunk(
         }
     }
 );
-export const addSongToCollection = createAsyncThunk(
-    "ApiServices/addSongToCollection",
-    async ({ collection_id, song_id, token }: any, thunkAPI) => {
+
+export const addSongToPlaylist = createAsyncThunk(
+    "ApiServices/addSongToPlaylist",
+    async ({ playlist_id, song_id, token }: any, thunkAPI) => {
         try {
-            return await ApiService.addSongToCollection(token, {
-                collection_id,
+            return await ApiService.addSongToPlaylist(token, {
+                playlist_id,
                 song_id,
             });
         } catch (error) {
@@ -252,24 +272,27 @@ export const addSongToCollection = createAsyncThunk(
         }
     }
 );
-export const removeSongFromCollection = createAsyncThunk(
-    "ApiServices/removeSongFromCollection",
-    async ({ collection_id, song_id, token }: any, thunkAPI) => {
+
+export const removeSongFromPlaylist = createAsyncThunk(
+    "ApiServices/removeSongFromPlaylist",
+    async ({ playlist_id, song_id, token }: any, thunkAPI) => {
         try {
-            return await ApiService.removeSongFromCollection(token, {
-                collection_id,
-                song_id,
-            });
+            return await ApiService.removeSongFromPlaylist(
+                token,
+                playlist_id,
+                song_id
+            );
         } catch (error) {
             // console.log(error);
         }
     }
 );
-export const createNewCollection = createAsyncThunk(
-    "ApiServices/createNewCollection",
+
+export const createNewPlaylist = createAsyncThunk(
+    "ApiServices/createNewPlaylist",
     async ({ name, song_id, token }: any, thunkAPI) => {
         try {
-            return await ApiService.createNewCollection(token, {
+            return await ApiService.createNewPlaylist(token, {
                 name,
                 song_id,
             });
@@ -278,13 +301,14 @@ export const createNewCollection = createAsyncThunk(
         }
     }
 );
-export const renameCollection = createAsyncThunk(
-    "ApiServices/renameCollection",
-    async ({ collection_id, collection_name, token }: any, thunkAPI) => {
+
+export const renamePlaylist = createAsyncThunk(
+    "ApiServices/renamePlaylist",
+    async ({ playlist_id, playlist_name, token }: any, thunkAPI) => {
         try {
-            return await ApiService.renameCollection(token, {
-                collection_id,
-                collection_name,
+            return await ApiService.renamePlaylist(token, {
+                playlist_id,
+                playlist_name,
             });
         } catch (error) {
             // console.log(error);
@@ -292,13 +316,11 @@ export const renameCollection = createAsyncThunk(
     }
 );
 
-export const deleteCollection = createAsyncThunk(
-    "ApiServices/deleteCollection",
-    async ({ collection_id, token }: any, thunkAPI) => {
+export const deletePlaylist = createAsyncThunk(
+    "ApiServices/deletePlaylist",
+    async ({ playlist_id, token }: any, thunkAPI) => {
         try {
-            return await ApiService.deleteCollection(token, {
-                collection_id,
-            });
+            return await ApiService.deletePlaylist(token, playlist_id);
         } catch (error) {
             // console.log(error);
         }

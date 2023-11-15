@@ -22,7 +22,6 @@ function Liked({
     data: any;
     songs: SongProps[];
 }) {
-    const artist = data;
     const router = useRouter();
     const dispatch = useDispatch();
     const { isPlaying, playingPlaylist } = useSelector(
@@ -35,9 +34,11 @@ function Liked({
         setScrolling(true);
         setScrollPosition(e.target.scrollTop);
     };
+
     setTimeout(() => {
         setScrolling(false);
     }, 100);
+
     if (!success) {
         return (
             <AppLayout title="Liked Songs">
@@ -45,6 +46,7 @@ function Liked({
             </AppLayout>
         );
     }
+
     return (
         <AppLayout title="Liked Songs" color="#48338c" onScroll={onScroll}>
             <NavBar
@@ -70,7 +72,7 @@ function Liked({
                 </div>
                 <div>
                     <p className="uppercase font-ProximaBold text-sm tablet:hidden mobile:hidden">
-                        Collection
+                        Playlist
                     </p>
                     <h1
                         className="text-[70px] font-ProximaBold  leading-[5rem] 
@@ -148,10 +150,8 @@ function Liked({
 }
 
 export async function getServerSideProps(context: any) {
-    console.log("test");
-    const token = context.req.cookies.user;
-
-    if (!token) {
+    const userCookie = context.req.cookies.user;
+    if (!userCookie) {
         return {
             redirect: {
                 destination: `/login`,
@@ -161,24 +161,24 @@ export async function getServerSideProps(context: any) {
     }
 
     try {
-        console.log("test");
-        const user = JSON.parse(context.req.cookies.user).id;
-        console.log({ user });
-        const songs = await axios.get(`api/users/${user.id}/favorite/songs`, {
-            headers: {
-                authorization: "Bearer " + user.token,
-            },
-        });
-        console.log(songs);
+        const user = JSON.parse(userCookie);
+        const response = await axios.get(
+            `${API_URL}/users/${user.id}/favorite/songs`,
+            {
+                headers: {
+                    authorization: "Bearer " + user.token,
+                },
+            }
+        );
+        console.log({ response });
+
         return {
             props: {
                 success: true,
-                // data: data.data[0],
-                songs: songs.data.list,
+                songs: response.data.list,
             },
         };
     } catch (e) {
-        console.log(e);
         return {
             props: {
                 success: false,
@@ -186,4 +186,5 @@ export async function getServerSideProps(context: any) {
         };
     }
 }
+
 export default Liked;

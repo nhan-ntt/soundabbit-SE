@@ -8,7 +8,7 @@ import Link from "next/link";
 
 function Library() {
     const [srcollPosition, setScrollPosition] = useState(0);
-    const { liked, collections } = useSelector((state: any) => state.player);
+    const { liked, playlists } = useSelector((state: any) => state.player);
     const onScroll = (e: any) => {
         setScrollPosition(e.target.scrollTop);
     };
@@ -31,7 +31,7 @@ function Library() {
          
           mobile:grid-cols-2 mobile:gap-4"
                 >
-                    <Link href="/collection/liked">
+                    <Link href="/playlist/liked">
                         <div
                             className="flex flex-col p-3.5cursor-pointer p-3.5 bg-gradient-to-t from-[#2c2a2a4a] to-[#2c2a2ac7] hover:bg-[#4340409d]
            tablet:hover:bg-transparent mobile:hover:bg-transparent 
@@ -55,49 +55,48 @@ function Library() {
                             </div>
                         </div>
                     </Link>
-                    {collections.map((collection: any) => {
-                        return (
-                            <Link
-                                key={collection.id}
-                                href={`/collection/${collection.id}`}
-                            >
-                                <div
-                                    className="cursor-pointer p-3.5 bg-gradient-to-t from-[#2c2a2a4a] to-[#2c2a2ac7] hover:bg-[#4340409d]
+                    {playlists &&
+                        playlists.map((playlist: any) => {
+                            return (
+                                <Link
+                                    key={playlist.id}
+                                    href={`/playlist/${playlist.id}`}
+                                >
+                                    <div
+                                        className="cursor-pointer p-3.5 bg-gradient-to-t from-[#2c2a2a4a] to-[#2c2a2ac7] hover:bg-[#4340409d]
            tablet:hover:bg-transparent mobile:hover:bg-transparent 
            rounded-md h-full mini-laptop:p-3 tablet:p-0 tablet:from-transparent tablet:to-transparent
            mobile:from-transparent mobile:to-transparent mobile:p-0 mobile:mr-0
            "
-                                >
-                                    <div
-                                        style={{
-                                            backgroundColor: collection.color,
-                                        }}
-                                        className="p-0 m-0 rounded-md"
                                     >
-                                        <Image
-                                            src={
-                                                collection.cover_image +
-                                                "&auto=format&fit=crop&w=400&q=50&h=400"
-                                            }
-                                            width="300"
-                                            height="300"
-                                            objectFit="cover"
-                                            layout="responsive"
-                                            className="rounded-md noDrag m-0 p-0"
-                                            alt="image"
-                                        />
-                                    </div>
+                                        <div
+                                            style={{
+                                                backgroundColor: playlist.color,
+                                            }}
+                                            className="p-0 m-0 rounded-md"
+                                        >
+                                            <Image
+                                                // src={`${playlist.cover_image}&auto=format&fit=crop&w=400&q=50&h=400`}
+                                                src=""
+                                                width="300"
+                                                height="300"
+                                                objectFit="cover"
+                                                layout="responsive"
+                                                className="rounded-md noDrag m-0 p-0"
+                                                alt="image"
+                                            />
+                                        </div>
 
-                                    <div className="py-3">
-                                        <p className="">{collection.name}</p>
-                                        <p className="text-gray-300 text-sm mt-1">
-                                            {collection.total_song} Songs
-                                        </p>
+                                        <div className="py-3">
+                                            <p className="">{playlist.name}</p>
+                                            <p className="text-gray-300 text-sm mt-1">
+                                                {playlist.total_song} Songs
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            </Link>
-                        );
-                    })}
+                                </Link>
+                            );
+                        })}
                 </div>
                 <div className="pb-32"></div>
             </div>

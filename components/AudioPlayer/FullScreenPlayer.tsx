@@ -163,7 +163,7 @@ function FullScreenPlayer({
                                                         setShowDropdown(false);
                                                     }}
                                                 >
-                                                    Add to Collection
+                                                    Add to Playlist
                                                 </div>
                                             </div>
                                         )}
