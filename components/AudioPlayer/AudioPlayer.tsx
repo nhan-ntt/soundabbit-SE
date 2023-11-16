@@ -31,7 +31,7 @@ function AudioPlayer({ className }: { className: string }) {
         songProgress,
         fetchlikedStatus,
         playlistStatus,
-        songs,
+        queue: songs,
         isShuffle,
         isRepeat,
     }: IStateProps = useSelector((state: any) => state.player);
@@ -136,7 +136,7 @@ function AudioPlayer({ className }: { className: string }) {
         } // Pause and clean up on unmount
         if (playlistStatus == PlaylistsStatus.Initial) {
             if (user) {
-                dispatch(getPlaylists(user));
+                dispatch(getPlaylists(user.token));
             }
         }
         return () => {

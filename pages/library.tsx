@@ -49,9 +49,6 @@ function Library() {
                             </div>
                             <div className="py-3">
                                 <p className="">Liked Songs</p>
-                                <p className="text-gray-300 text-sm mt-1">
-                                    {liked.length} Songs
-                                </p>
                             </div>
                         </div>
                     </Link>
@@ -90,7 +87,6 @@ function Library() {
                                         <div className="py-3">
                                             <p className="">{playlist.name}</p>
                                             <p className="text-gray-300 text-sm mt-1">
-                                                {playlist.total_song} Songs
                                             </p>
                                         </div>
                                     </div>

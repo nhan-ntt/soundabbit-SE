@@ -9,9 +9,25 @@ import LikeButton from "./AudioPlayer/LikeButton";
 import CustomImage from "./CustomImage";
 import { removeSongFromPlaylist } from "../stores/player/currentAudioPlayer";
 import { toast } from "react-toastify";
+import { SongProps } from "@/interfaces/Song";
+import { PlaylistProps } from "@/interfaces/playlist";
 
-function ListItem({ song, showNumber, onTap, isScrolling, playlist }: any) {
-    const { activeSong, songs } = useSelector((state: any) => state.player);
+function ListItem({
+    song,
+    showNumber,
+    onTap,
+    isScrolling,
+    playlist,
+    queueAction = true,
+}: {
+    song: SongProps;
+    showNumber: number;
+    onTap: any;
+    isScrolling: boolean;
+    playlist: PlaylistProps;
+    queueAction: boolean;
+}) {
+    const { activeSong, queue } = useSelector((state: any) => state.player);
     const { user } = useSelector((state: any) => state.auth);
     const dropdown = useRef(null);
     const [showDropdown, setShowDropdown] = useState(false);
@@ -82,9 +98,10 @@ function ListItem({ song, showNumber, onTap, isScrolling, playlist }: any) {
 
                     <div className="">
                         <p
-                            className={`mobile:text-sm line-clamp-1 ${activeSong.id == song.id &&
+                            className={`mobile:text-sm line-clamp-1 ${
+                                activeSong.id == song.id &&
                                 "text-[#2bb540] font-ProximaBold"
-                                }`}
+                            }`}
                             dangerouslySetInnerHTML={{ __html: songDemo.name }}
                         ></p>
                         <p className="text-sm mobile:text-xs text-gray-300">
@@ -115,23 +132,25 @@ function ListItem({ song, showNumber, onTap, isScrolling, playlist }: any) {
                         className="w-fit bg-[#212121] absolute  rounded shadow 
              right-2 top-10 z-30"
                     >
-                        <div
-                            onClick={() => {
-                                setShowDropdown(false);
-                                if (!songs.includes(songDemo)) {
-                                    dispatch(addToQueue(songDemo));
-                                } else {
-                                    dispatch(
-                                        removeFromQueue(songs.indexOf(song))
-                                    );
-                                }
-                            }}
-                            className="cursor-pointer px-4 rounded py-1.5 hover:bg-[#323232] border-b border-b-[#3e3e3e]"
-                        >
-                            {!songs.includes(song)
-                                ? "Add to Queue"
-                                : "Remove from Queue"}
-                        </div>
+                        {queueAction && (
+                            <div
+                                onClick={() => {
+                                    setShowDropdown(false);
+                                    if (!queue.includes(song)) {
+                                        dispatch(addToQueue(song));
+                                    } else {
+                                        dispatch(
+                                            removeFromQueue(queue.indexOf(song))
+                                        );
+                                    }
+                                }}
+                                className="cursor-pointer px-4 rounded py-1.5 hover:bg-[#323232] border-b border-b-[#3e3e3e]"
+                            >
+                                {queue.includes(song)
+                                    ? "Remove from Queue"
+                                    : "Add to Queue"}
+                            </div>
+                        )}
                         <div
                             onClick={() => {
                                 setShowDropdown(false);

@@ -166,11 +166,10 @@ export async function getServerSideProps(context: any) {
             `${API_URL}/users/${user.id}/favorite/songs`,
             {
                 headers: {
-                    authorization: "Bearer " + user.token,
+                    authorization: `Bearer ${user.token}`,
                 },
             }
         );
-        console.log({ response });
 
         return {
             props: {

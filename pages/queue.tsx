@@ -12,7 +12,7 @@ import NoSSRWrapper from "../components/noSSRWrapper";
 import NavBar from "../components/backButton";
 import { useState } from "react";
 function Queue() {
-    const { songs, currentIndex } = useSelector((state: any) => state.player);
+    const { queue, currentIndex } = useSelector((state: any) => state.player);
     const [srcollPosition, setScrollPosition] = useState(0);
     const dispatch = useDispatch<any>();
 
@@ -22,12 +22,12 @@ function Queue() {
         }
         const newlist = reorder(result.source.index, result.destination.index);
         dispatch(
-            reorderQueue([...songs.slice(0, currentIndex + 1), ...newlist])
+            reorderQueue([...queue.slice(0, currentIndex + 1), ...newlist])
         );
     };
 
     const reorder = (startIndex: number, endIndex: number) => {
-        const result = Array.from(songs.slice(currentIndex + 1));
+        const result = Array.from(queue.slice(currentIndex + 1));
         const [removed] = result.splice(startIndex, 1);
         result.splice(endIndex, 0, removed);
         return result;
@@ -45,6 +45,7 @@ function Queue() {
                     color={"#333333"}
                     title={"Queue"}
                 />
+
                 <div className="px-6 pt-20 mobile:px-4">
                     <h1 className="text-3xl font-ProximaBold mb-6">Queue</h1>
                     <h1 className="text-base text-gray-400 font-ProximaBold mb-2">
@@ -52,12 +53,14 @@ function Queue() {
                     </h1>
                     <ListItem
                         onTap={() => {}}
-                        song={songs[currentIndex]}
+                        song={queue[currentIndex]}
                         showNumber={1}
+                        queueAction={false}
                     />
                     <h1 className="text-base font-ProximaBold my-5 text-gray-400">
                         Next in Queue:
                     </h1>
+
                     <DragDropContext onDragEnd={onDragHandle}>
                         <Droppable droppableId="droppable">
                             {(provided, _) => (
@@ -65,7 +68,7 @@ function Queue() {
                                     {...provided.droppableProps}
                                     ref={provided.innerRef}
                                 >
-                                    {songs
+                                    {queue
                                         .slice(currentIndex + 1)
                                         .map((song: SongProps, i: any) => (
                                             <Draggable
@@ -84,8 +87,8 @@ function Queue() {
                                                                 dispatch(
                                                                     setActiveSong(
                                                                         {
-                                                                            songs: songs,
-                                                                            index: songs.indexOf(
+                                                                            songs: queue,
+                                                                            index: queue.indexOf(
                                                                                 song
                                                                             ),
                                                                         }

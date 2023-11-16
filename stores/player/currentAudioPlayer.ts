@@ -1,3 +1,4 @@
+import { PlaylistProps } from "@/interfaces/playlist";
 import { SongProps } from "@/interfaces/Song";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
@@ -6,7 +7,7 @@ import ApiService from "./ApiServices";
 const songs: SongProps[] = [
     {
         id: 1,
-        name: "Welcome here",
+        name: "Rhyme",
         audio_link:
             "https://drive.google.com/uc?id=17ZlrPeRBZoPv0OFA8g0RvR__XIWVPW-4&export=download",
     },
@@ -29,7 +30,7 @@ export enum CreatePlaylistStatus {
     error,
 }
 export interface IStateProps {
-    songs: SongProps[];
+    queue: SongProps[];
     liked: number[];
     currentIndex: number;
     showBanner: boolean;
@@ -38,7 +39,7 @@ export interface IStateProps {
     songProgress: number;
     isShuffle: boolean;
     isRepeat: boolean;
-    playlists: [];
+    playlists: PlaylistProps[];
     createPlaylistStatus: CreatePlaylistStatus;
     isModelOpen: boolean;
     playingPlaylist: string;
@@ -48,7 +49,7 @@ export interface IStateProps {
 }
 
 const initialState: IStateProps = {
-    songs: songs,
+    queue: songs,
     currentIndex: 0,
     isModelOpen: false,
     playingPlaylist: "",
@@ -73,7 +74,7 @@ const playerSlice = createSlice({
     reducers: {
         setActiveSong: (state, action) => {
             state.showBanner = true;
-            state.songs = action.payload.songs;
+            state.queue = action.payload.songs;
             state.currentIndex = action.payload.index;
             state.activeSong = action.payload.songs[action.payload.index];
             if (action.payload.playlist) {
@@ -85,7 +86,7 @@ const playerSlice = createSlice({
 
         nextSong: (state, action) => {
             state.currentIndex = action.payload;
-            state.activeSong = state.songs[action.payload];
+            state.activeSong = state.queue[action.payload];
         },
         onShuffle: (state, action) => {
             state.isShuffle = action.payload;
@@ -111,17 +112,17 @@ const playerSlice = createSlice({
             state.liked = liked;
         },
         reorderQueue: (state, action) => {
-            state.songs = action.payload;
+            state.queue = action.payload;
         },
         addToQueue: (state, action) => {
-            state.songs.splice(state.currentIndex + 1, 0, action.payload);
-            state.songs = state.songs;
+            state.queue.splice(state.currentIndex + 1, 0, action.payload);
+            state.queue = state.queue;
         },
         removeFromQueue: (state, action) => {
             if (action.payload > -1) {
-                state.songs.splice(action.payload, 1);
+                state.queue.splice(action.payload, 1);
             }
-            state.songs = state.songs;
+            state.queue = state.queue;
         },
 
         toggleModel: (state, action) => {
@@ -131,12 +132,6 @@ const playerSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(addSongToPlaylist.fulfilled, (state, action) => {
-            const playlist = state.playlists.find(
-                (e: any) => e.id == action.payload.playlist_id
-            );
-            //@ts-ignore
-            if (playlist) playlist.total_songs = playlist.total_songs + 1;
-            state.playlists = state.playlists;
         });
 
         builder.addCase(getLikedSongs.fulfilled, (state, action) => {
@@ -151,8 +146,6 @@ const playerSlice = createSlice({
         builder.addCase(getPlaylists.fulfilled, (state, action) => {
             state.playlistStatus = PlaylistsStatus.success;
             if (action.payload) {
-                console.log("getPlaylsit");
-                console.log(action.payload.list);
                 state.playlists = action.payload.list;
             }
         });
@@ -167,11 +160,11 @@ const playerSlice = createSlice({
 
         builder.addCase(renamePlaylist.fulfilled, (state, action) => {
             const playlist = state.playlists.find(
-                (e: any) => e.id == action.payload!.playlist_id
+                (e: any) => e.id == action.payload.id
             );
             if (playlist)
                 // @ts-ignore
-                playlist.name = action.payload!.playlist_name;
+                playlist.name = action.payload.name;
 
             state.playlists = state.playlists;
         });
@@ -186,16 +179,9 @@ const playerSlice = createSlice({
 
         builder.addCase(createNewPlaylist.fulfilled, (state, action) => {
             let playlists = state.playlists;
-            // @ts-ignore
-            playlists.push(action.payload.data[0]);
-
-            const playlist = playlists.find(
-                (e: any) => e.id == action.payload.data[0].id
-            );
-
-            //@ts-ignore
-            if (playlist) playlist.total_songs = playlist.total_songs + 1;
+            playlists.push(action.payload);
             state.playlists = playlists;
+
             state.createPlaylistStatus = CreatePlaylistStatus.done;
         });
 
@@ -222,9 +208,9 @@ export const getLikedSongs = createAsyncThunk(
 
 export const getPlaylists = createAsyncThunk(
     "ApiServices/getPlaylists",
-    async (user: any, thunkAPI) => {
+    async (token: string, thunkAPI) => {
         try {
-            return await ApiService.getPlaylists(user);
+            return await ApiService.getPlaylists(token);
         } catch (error) {
             // console.log(error);
         }
@@ -263,7 +249,8 @@ export const addSongToPlaylist = createAsyncThunk(
     "ApiServices/addSongToPlaylist",
     async ({ playlist_id, song_id, token }: any, thunkAPI) => {
         try {
-            return await ApiService.addSongToPlaylist(token, {
+            return await ApiService.addSongToPlaylist({
+                token,
                 playlist_id,
                 song_id,
             });
@@ -277,23 +264,9 @@ export const removeSongFromPlaylist = createAsyncThunk(
     "ApiServices/removeSongFromPlaylist",
     async ({ playlist_id, song_id, token }: any, thunkAPI) => {
         try {
-            return await ApiService.removeSongFromPlaylist(
+            return await ApiService.removeSongFromPlaylist({
                 token,
                 playlist_id,
-                song_id
-            );
-        } catch (error) {
-            // console.log(error);
-        }
-    }
-);
-
-export const createNewPlaylist = createAsyncThunk(
-    "ApiServices/createNewPlaylist",
-    async ({ name, song_id, token }: any, thunkAPI) => {
-        try {
-            return await ApiService.createNewPlaylist(token, {
-                name,
                 song_id,
             });
         } catch (error) {
@@ -302,14 +275,22 @@ export const createNewPlaylist = createAsyncThunk(
     }
 );
 
+export const createNewPlaylist = createAsyncThunk(
+    "ApiServices/createNewPlaylist",
+    async ({ name, token }: any, thunkAPI) => {
+        try {
+            return await ApiService.createNewPlaylist({ token, name });
+        } catch (error) {
+            // console.log(error);
+        }
+    }
+);
+
 export const renamePlaylist = createAsyncThunk(
     "ApiServices/renamePlaylist",
-    async ({ playlist_id, playlist_name, token }: any, thunkAPI) => {
+    async ({ id, name, token }: any, thunkAPI) => {
         try {
-            return await ApiService.renamePlaylist(token, {
-                playlist_id,
-                playlist_name,
-            });
+            return await ApiService.renamePlaylist({ token, id, name });
         } catch (error) {
             // console.log(error);
         }
@@ -320,7 +301,7 @@ export const deletePlaylist = createAsyncThunk(
     "ApiServices/deletePlaylist",
     async ({ playlist_id, token }: any, thunkAPI) => {
         try {
-            return await ApiService.deletePlaylist(token, playlist_id);
+            return await ApiService.deletePlaylist({ token, playlist_id });
         } catch (error) {
             // console.log(error);
         }

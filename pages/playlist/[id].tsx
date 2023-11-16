@@ -73,7 +73,9 @@ function Playlist({
     const [playlistName, setPlaylistName] = useState(data.name);
 
     useEffect(() => {
-        const renamedPlaylistName = playlists.find((e: any) => e.id == data.id);
+        const renamedPlaylistName = playlists.find(
+            (playlist: any) => playlist.id == data.id
+        );
 
         if (renamedPlaylistName) {
             setPlaylistName(renamedPlaylistName.name);
@@ -271,7 +273,7 @@ export async function getServerSideProps(context: any) {
             `${API_URL}/playlists/${context.params.id}`,
             {
                 headers: {
-                    authorization: "Bearer " + user.token,
+                    authorization: `Bearer ${user.token}`,
                 },
             }
         );
@@ -280,12 +282,10 @@ export async function getServerSideProps(context: any) {
             `${API_URL}/playlists/${context.params.id}/songs`,
             {
                 headers: {
-                    authorization: "Bearer " + user.token,
+                    authorization: `Bearer ${user.token}`,
                 },
             }
         );
-        console.log(`${API_URL}/playlists/${context.params.id}/songs`);
-        console.log(songs);
 
         return {
             props: {
@@ -294,7 +294,6 @@ export async function getServerSideProps(context: any) {
                 songs: songs.data.list,
             },
         };
-
     } catch (e) {
         return {
             props: {

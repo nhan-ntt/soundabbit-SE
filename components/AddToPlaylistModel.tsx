@@ -123,9 +123,8 @@ function AddToPlaylistModel() {
                                             dispatch(
                                                 renamePlaylist({
                                                     token: user.token,
-                                                    playlist_name: name,
-                                                    playlist_id:
-                                                        passedDataToModel.playlist_id,
+                                                    name: name,
+                                                    id: passedDataToModel.playlist_id,
                                                 })
                                             );
                                             dispatch(
@@ -157,10 +156,11 @@ function AddToPlaylistModel() {
                                         onChange={(e) => {
                                             if (e.target.value.length !== 0) {
                                                 setShowResults(true);
+                                                setname(e.target.value);
                                                 setResults(
                                                     playlists.filter(
-                                                        (col: any) =>
-                                                            col.name
+                                                        (playlist: any) =>
+                                                            playlist.name
                                                                 .toLowerCase()
                                                                 .match(
                                                                     e.target
@@ -183,11 +183,7 @@ function AddToPlaylistModel() {
                                             dispatch(
                                                 createNewPlaylist({
                                                     token: user.token,
-                                                    name:
-                                                        "Playlist #" +
-                                                        passedDataToModel.song_id,
-                                                    song_id:
-                                                        passedDataToModel.song_id,
+                                                    name: name,
                                                 })
                                             );
                                             dispatch(
@@ -209,36 +205,41 @@ function AddToPlaylistModel() {
                                     <div className="h-[400px] overflow-y-scroll scroll scrollbar">
                                         {!showResults ? (
                                             <div>
-                                                {playlists.map((e: any) => (
-                                                    <div
-                                                        className="font-ProximaRegular tracking-wide text-[15px] hover:bg-[#4a4a4a] px-2 py-2 text-slate-200 rounded cursor-pointer"
-                                                        key={e.id}
-                                                        onClick={() => {
-                                                            dispatch(
-                                                                addSongToPlaylist(
-                                                                    {
-                                                                        token: user.token,
-                                                                        playlist_id:
-                                                                            e.id,
-                                                                        song_id:
-                                                                            passedDataToModel.song_id,
-                                                                    }
-                                                                )
-                                                            );
-                                                            dispatch(
-                                                                toggleModel({
-                                                                    data: false,
-                                                                    song_id: "",
-                                                                })
-                                                            );
-                                                            toast.success(
-                                                                "Added to playlist!"
-                                                            );
-                                                        }}
-                                                    >
-                                                        {e.name}
-                                                    </div>
-                                                ))}
+                                                {playlists.map(
+                                                    (playlist: any) => (
+                                                        <div
+                                                            className="font-ProximaRegular tracking-wide text-[15px] hover:bg-[#4a4a4a] px-2 py-2 text-slate-200 rounded cursor-pointer"
+                                                            key={playlist.id}
+                                                            onClick={() => {
+                                                                dispatch(
+                                                                    addSongToPlaylist(
+                                                                        {
+                                                                            token: user.token,
+                                                                            playlist_id:
+                                                                                playlist.id,
+                                                                            song_id:
+                                                                                passedDataToModel.song_id,
+                                                                        }
+                                                                    )
+                                                                );
+                                                                dispatch(
+                                                                    toggleModel(
+                                                                        {
+                                                                            data: false,
+                                                                            song_id:
+                                                                                "",
+                                                                        }
+                                                                    )
+                                                                );
+                                                                toast.success(
+                                                                    "Added to playlist!"
+                                                                );
+                                                            }}
+                                                        >
+                                                            {playlist.name}
+                                                        </div>
+                                                    )
+                                                )}
                                             </div>
                                         ) : (
                                             <div>

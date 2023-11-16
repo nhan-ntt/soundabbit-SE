@@ -9,7 +9,6 @@ const getRandomArtists = async () => {
             axios.get(`${API_URL}/songs`),
         ]);
 
-        console.log(response[0].data.list);
         return {
             randomArtists: response[0].data.list.slice(0, 6),
             trendingArtists: response[0].data.list.slice(6, 16),

@@ -24,7 +24,6 @@ const Home: NextPage = () => {
         topHits,
         popularHits,
         trendingArtists,
-        topArtists,
     }: HomePageState = useSelector((state: any) => state.homePage);
     const { user } = useSelector((state: any) => state.auth);
 
@@ -114,12 +113,6 @@ const Home: NextPage = () => {
                             Top Hits this Week
                         </h1>
                         <HorizontalSongsList songs={topHits} />
-                    </div>
-                    <div className="mt-12">
-                        <h1 className="px-8 tablet:px-6 mobile:px-4 text-xl font-ProximaBold mb-6 mobile:text-base">
-                            Top Artists
-                        </h1>
-                        <HorizontalArtistsList artists={topArtists} />
                     </div>
                     <div className="mt-6">
                         <h1 className="px-8 tablet:px-6 mobile:px-4 text-xl font-ProximaBold mb-6 mobile:text-base">
