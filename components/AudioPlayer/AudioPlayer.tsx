@@ -39,7 +39,6 @@ function AudioPlayer({ className }: { className: string }) {
     let activeSongDemo = JSON.parse(JSON.stringify(activeSong));
     activeSongDemo.artist_name = "png";
     activeSongDemo.artist_id = 1;
-    activeSongDemo.duration = 1000;
     activeSongDemo.cover_image = {
         color: "black",
         url: "https://images3.alphacoders.com/690/690494.jpg",
@@ -153,13 +152,18 @@ function AudioPlayer({ className }: { className: string }) {
         setVolume(e);
         audioRef.current!.volume = e;
     };
+    const getDuration = () => {
+        return audioRef.current?.duration || 0;
+    };
 
-    const currentPercentage = activeSong!.duration
-        ? `${(songProgress / activeSong!.duration) * 100}%`
-        : "0%";
+    const currentPercentage = () => {
+        return getDuration()
+            ? `${(songProgress / getDuration()) * 100}%`
+            : "0%";
+    };
 
     const songStyling = `
-    -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, ${seekBarColor}), color-stop(${currentPercentage}, #777))
+    -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage()}, ${seekBarColor}), color-stop(${currentPercentage()}, #777))
   `;
 
     if (router.pathname === "/playing") {
@@ -234,16 +238,9 @@ function AudioPlayer({ className }: { className: string }) {
             hover:underline cursor-pointer"
                             onClick={(e) => {
                                 e.stopPropagation();
-                                if (activeSongDemo?.artist_id == 120) {
-                                    window.open(
-                                        `https://anshrathod.com`,
-                                        "_blank"
-                                    );
-                                } else {
-                                    router.push(
-                                        `/artist/${activeSongDemo?.artist_id}`
-                                    );
-                                }
+                                router.push(
+                                    `/artist/${activeSongDemo?.artist_id}`
+                                );
                             }}
                         >
                             {activeSongDemo!.artist_name}
@@ -268,7 +265,6 @@ function AudioPlayer({ className }: { className: string }) {
                         songBarStyling={songStyling}
                         audioRef={audioRef}
                         isFullScreen={false}
-                        activeSong={activeSongDemo!}
                         onScrubEnd={onScrubEnd}
                         onScrub={onScrub}
                     />

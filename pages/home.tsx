@@ -123,7 +123,7 @@ const Home: NextPage = () => {
                     </div>
                     <div className="mt-6">
                         <h1 className="px-8 tablet:px-6 mobile:px-4 text-xl font-ProximaBold mb-6 mobile:text-base">
-                            Popluar releases
+                            Popular releases
                         </h1>
                         <HorizontalSongsList songs={popularHits} />
                     </div>

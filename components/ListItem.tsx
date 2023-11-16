@@ -16,13 +16,10 @@ function ListItem({ song, showNumber, onTap, isScrolling, playlist }: any) {
     const dropdown = useRef(null);
     const [showDropdown, setShowDropdown] = useState(false);
     const dispatch = useDispatch<any>();
-    const getTime = (time: any) =>
-        `${Math.floor(time / 60)}:${`0${Math.floor(time % 60)}`.slice(-2)}`;
 
     let songDemo = JSON.parse(JSON.stringify(song));
     songDemo.artist_name = "png";
     songDemo.artist_id = 1;
-    songDemo.duration = 1000;
     songDemo.cover_image = {
         color: "black",
         url: "https://images3.alphacoders.com/690/690494.jpg",
@@ -85,10 +82,9 @@ function ListItem({ song, showNumber, onTap, isScrolling, playlist }: any) {
 
                     <div className="">
                         <p
-                            className={`mobile:text-sm line-clamp-1 ${
-                                activeSong.id == song.id &&
+                            className={`mobile:text-sm line-clamp-1 ${activeSong.id == song.id &&
                                 "text-[#2bb540] font-ProximaBold"
-                            }`}
+                                }`}
                             dangerouslySetInnerHTML={{ __html: songDemo.name }}
                         ></p>
                         <p className="text-sm mobile:text-xs text-gray-300">
@@ -101,9 +97,6 @@ function ListItem({ song, showNumber, onTap, isScrolling, playlist }: any) {
                         <LikeButton song_id={song.id} isList={true} />
                     </div>
 
-                    <p className="text-gray-300 text-sm w-[25px] text-right ml-3 mobile:hidden">
-                        {getTime(songDemo.duration)}
-                    </p>
                     <div
                         onClick={(e) => {
                             e.stopPropagation();

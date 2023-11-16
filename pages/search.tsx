@@ -185,7 +185,6 @@ function TopResult({ object, onTap }: any) {
         let songDemo = JSON.parse(JSON.stringify(object));
         songDemo.artist_name = "png";
         songDemo.artist_id = 1;
-        songDemo.duration = 1000;
         songDemo.cover_image = {
             color: "black",
             url: "https://images3.alphacoders.com/690/690494.jpg",

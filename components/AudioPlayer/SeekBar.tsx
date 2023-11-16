@@ -1,10 +1,8 @@
 import React from "react";
-import { SongProps } from "@/interfaces/Song";
 
 interface IProps {
     songProgress: number;
     audioRef: React.MutableRefObject<HTMLAudioElement | null>;
-    activeSong: SongProps;
     onScrubEnd: () => void;
     onScrub: (e: any) => void;
     songBarStyling: any;
@@ -14,15 +12,21 @@ interface IProps {
 function SeekBar({
     songProgress: songProgress,
     audioRef,
-    activeSong,
     onScrubEnd,
     onScrub,
     songBarStyling: songBarStyling,
     isFullScreen,
     changeSeekBarColor,
 }: IProps) {
-    const getTime = (time: any) =>
-        `${Math.floor(time / 60)}:${`0${Math.floor(time % 60)}`.slice(-2)}`;
+
+    const getTime = (time: any) => {
+        return `${Math.floor(time / 60)}:${`0${Math.floor(time % 60)}`.slice(-2)}`;
+    }
+
+    const getDuration = () => {
+        return audioRef.current?.duration || 0;
+    }
+
     if (isFullScreen) {
         return (
             <div
@@ -43,7 +47,7 @@ function SeekBar({
                     onMouseEnter={() => changeSeekBarColor("#2bb540")}
                     onMouseLeave={() => changeSeekBarColor("#fff")}
                     style={{ background: songBarStyling }}
-                    max={activeSong!.duration}
+                    max={getDuration()}
                     onMouseUp={onScrubEnd}
                     onKeyUp={onScrubEnd}
                     className="max-h-1 cursor-pointer w-[24rem] mx-2 laptop:w-[18rem]
@@ -51,10 +55,11 @@ function SeekBar({
           "
                     onChange={(e) => onScrub(e.target.value)}
                 />
-                <p className="w-6">{getTime(activeSong!.duration)}</p>
+                <p className="w-6">{getTime(getDuration())}</p>
             </div>
         );
     }
+
     return (
         <div
             onClick={(e) => {
@@ -74,7 +79,7 @@ function SeekBar({
                 step="1"
                 min="0"
                 style={{ background: songBarStyling }}
-                max={activeSong!.duration}
+                max={getDuration()}
                 onMouseUp={onScrubEnd}
                 onKeyUp={onScrubEnd}
                 onClick={(e) => {
@@ -87,7 +92,7 @@ function SeekBar({
                     onScrub(e.target.value);
                 }}
             />
-            <p className="w-6">{getTime(activeSong!.duration)}</p>
+            <p className="w-6">{getTime(getDuration())}</p>
         </div>
     );
 }
