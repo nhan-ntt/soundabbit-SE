@@ -6,7 +6,7 @@ import Head from "next/head";
 import { useLogin } from "../hooks/useLogin";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { toggleModel } from "@/stores/player/currentAudioPlayer";
+import { toggleModal } from "@/stores/player/currentAudioPlayer";
 import { shadeColor } from "@/configs/utils";
 
 function AppLayout({ children, title, color, onScroll }: any) {
@@ -53,7 +53,7 @@ function AppLayout({ children, title, color, onScroll }: any) {
               <div
                 onClick={(e) => {
                   e.stopPropagation();
-                  dispatch(toggleModel({ data: true, track_id: "NEW" }));
+                  dispatch(toggleModal({ data: true, track_id: "NEW" }));
                 }}
                 className="group select-none cursor-pointer mt-4 flex flex-row items-center 
                mini-laptop:hidden tablet:hidden mobile:hidden"

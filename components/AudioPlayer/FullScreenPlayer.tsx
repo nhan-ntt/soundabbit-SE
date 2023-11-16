@@ -9,7 +9,7 @@ import {
     onRepeat,
     onShuffle,
     playPause,
-    toggleModel,
+    toggleModal,
 } from "../../stores/player/currentAudioPlayer";
 import { SongProps } from "@/interfaces/Song";
 import Link from "next/link";
@@ -154,7 +154,7 @@ function FullScreenPlayer({
                                                     onClick={(e) => {
                                                         e.stopPropagation();
                                                         dispatch(
-                                                            toggleModel({
+                                                            toggleModal({
                                                                 data: true,
                                                                 song_id:
                                                                     activeSong.id,

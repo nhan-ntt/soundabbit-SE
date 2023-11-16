@@ -41,17 +41,17 @@ export interface IStateProps {
     isRepeat: boolean;
     playlists: PlaylistProps[];
     createPlaylistStatus: CreatePlaylistStatus;
-    isModelOpen: boolean;
+    isModalOpen: boolean;
     playingPlaylist: string;
     fetchlikedStatus: LikedStatus;
     playlistStatus: PlaylistsStatus;
-    passedDataToModel: object;
+    passedDataToModal: object;
 }
 
 const initialState: IStateProps = {
     queue: songs,
     currentIndex: 0,
-    isModelOpen: false,
+    isModalOpen: false,
     playingPlaylist: "",
     liked: [],
     playlists: [],
@@ -59,7 +59,7 @@ const initialState: IStateProps = {
     createPlaylistStatus: CreatePlaylistStatus.Initial,
 
     playlistStatus: PlaylistsStatus.Initial,
-    passedDataToModel: {},
+    passedDataToModal: {},
     isShuffle: false,
     isRepeat: false,
     showBanner: false,
@@ -125,9 +125,9 @@ const playerSlice = createSlice({
             state.queue = state.queue;
         },
 
-        toggleModel: (state, action) => {
-            state.isModelOpen = action.payload.data;
-            state.passedDataToModel = action.payload;
+        toggleModal: (state, action) => {
+            state.isModalOpen = action.payload.data;
+            state.passedDataToModal = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -319,7 +319,7 @@ export const {
     removeFromQueue,
     addLike,
     removeLike,
-    toggleModel,
+    toggleModal,
     reorderQueue,
 } = playerSlice.actions;
 

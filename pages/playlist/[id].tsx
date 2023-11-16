@@ -11,7 +11,7 @@ import {
     deletePlaylist,
     playPause,
     setActiveSong,
-    toggleModel,
+    toggleModal,
 } from "@/stores/player/currentAudioPlayer";
 import ErrorComponent from "@/components/error";
 import { shadeColor } from "@/configs/utils";
@@ -193,7 +193,7 @@ function Playlist({
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             dispatch(
-                                                toggleModel({
+                                                toggleModal({
                                                     data: true,
                                                     song_id: "RENAME",
                                                     playlist_name: data.name,

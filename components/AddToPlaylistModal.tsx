@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useRef } from "react";
-import { toggleModel } from "@/stores/player/currentAudioPlayer";
+import { toggleModal } from "@/stores/player/currentAudioPlayer";
 import { useState } from "react";
 import {
     CreatePlaylistStatus,
@@ -14,35 +14,35 @@ import {
 } from "../stores/player/currentAudioPlayer";
 import { toast } from "react-toastify";
 
-function AddToPlaylistModel() {
-    const { isModelOpen, playlists, passedDataToModel, createPlaylistStatus } =
+function AddToPlaylistModal() {
+    const { isModalOpen, playlists, passedDataToModal, createPlaylistStatus } =
         useSelector((state: any) => state.player);
 
     const { user } = useSelector((state: any) => state.auth);
     const router = useRouter();
     const dispatch = useDispatch<any>();
-    const model = useRef(null);
+    const modal = useRef(null);
     const [showResults, setShowResults] = useState(false);
     const [results, setResults] = useState([]);
     const [name, setname] = useState<string>("");
     useEffect(() => {
-        if (!isModelOpen) return;
+        if (!isModalOpen) return;
 
-        if (passedDataToModel.playlist_name) {
-            setname(passedDataToModel.playlist_name);
+        if (passedDataToModal.playlist_name) {
+            setname(passedDataToModal.playlist_name);
         }
 
         function handleClick(event: any) {
             // @ts-ignore-comment
-            if (model.current && !model.current.contains(event.target)) {
-                dispatch(toggleModel({ data: false, song_id: "" }));
+            if (modal.current && !modal.current.contains(event.target)) {
+                dispatch(toggleModal({ data: false, song_id: "" }));
             }
         }
 
         window.addEventListener("click", handleClick);
         return () => window.removeEventListener("click", handleClick);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isModelOpen]);
+    }, [isModalOpen]);
 
     useEffect(() => {
         if (
@@ -50,7 +50,7 @@ function AddToPlaylistModel() {
             name.length !== 0
         ) {
             const playlist = playlists.find((e: any) => e.name == name);
-            dispatch(toggleModel({ data: false, song_id: "" }));
+            dispatch(toggleModal({ data: false, song_id: "" }));
             router.push(`/playlist/${playlist.id}`);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,10 +58,10 @@ function AddToPlaylistModel() {
 
     return (
         <div>
-            {isModelOpen && (
+            {isModalOpen && (
                 <div className="fixed inset-0 w-full h-full bg-black z-40 bg-opacity-50 flex items-center justify-center">
-                    <div ref={model} className="w-80 rounded-md bg-[#1f1f1f]">
-                        {passedDataToModel.song_id == "NEW" ? (
+                    <div ref={modal} className="w-80 rounded-md bg-[#1f1f1f]">
+                        {passedDataToModal.song_id == "NEW" ? (
                             <div>
                                 <p className="font-ProximaBold px-3 pt-4  text-gray-400">
                                     Chosse a name:
@@ -99,7 +99,7 @@ function AddToPlaylistModel() {
                                     </button>
                                 </div>
                             </div>
-                        ) : passedDataToModel.song_id == "RENAME" ? (
+                        ) : passedDataToModal.song_id == "RENAME" ? (
                             <div>
                                 <p className="font-ProximaBold px-3 pt-4  text-gray-400">
                                     Rename Playlist:
@@ -124,11 +124,11 @@ function AddToPlaylistModel() {
                                                 renamePlaylist({
                                                     token: user.token,
                                                     name: name,
-                                                    id: passedDataToModel.playlist_id,
+                                                    id: passedDataToModal.playlist_id,
                                                 })
                                             );
                                             dispatch(
-                                                toggleModel({
+                                                toggleModal({
                                                     data: false,
                                                     song_id: "",
                                                 })
@@ -187,7 +187,7 @@ function AddToPlaylistModel() {
                                                 })
                                             );
                                             dispatch(
-                                                toggleModel({
+                                                toggleModal({
                                                     data: false,
                                                     song_id: "",
                                                 })
@@ -218,12 +218,12 @@ function AddToPlaylistModel() {
                                                                             playlist_id:
                                                                                 playlist.id,
                                                                             song_id:
-                                                                                passedDataToModel.song_id,
+                                                                                passedDataToModal.song_id,
                                                                         }
                                                                     )
                                                                 );
                                                                 dispatch(
-                                                                    toggleModel(
+                                                                    toggleModal(
                                                                         {
                                                                             data: false,
                                                                             song_id:
@@ -255,12 +255,12 @@ function AddToPlaylistModel() {
                                                                         playlist_id:
                                                                             e.id,
                                                                         song_id:
-                                                                            passedDataToModel.song_id,
+                                                                            passedDataToModal.song_id,
                                                                     }
                                                                 )
                                                             );
                                                             dispatch(
-                                                                toggleModel({
+                                                                toggleModal({
                                                                     data: false,
                                                                     song_id: "",
                                                                 })
@@ -286,4 +286,4 @@ function AddToPlaylistModel() {
     );
 }
 
-export default AddToPlaylistModel;
+export default AddToPlaylistModal;

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
     addToQueue,
     removeFromQueue,
-    toggleModel,
+    toggleModal,
 } from "../stores/player/currentAudioPlayer";
 import LikeButton from "./AudioPlayer/LikeButton";
 import CustomImage from "./CustomImage";
@@ -25,7 +25,7 @@ function ListItem({
     onTap: any;
     isScrolling: boolean;
     playlist: PlaylistProps;
-    queueAction: boolean;
+    queueAction?: boolean;
 }) {
     const { activeSong, queue } = useSelector((state: any) => state.player);
     const { user } = useSelector((state: any) => state.auth);
@@ -181,7 +181,7 @@ function ListItem({
                                 className="cursor-pointer  rounded px-4 py-1.5 hover:bg-[#323232]"
                                 onClick={() =>
                                     dispatch(
-                                        toggleModel({
+                                        toggleModal({
                                             data: true,
                                             song_id: song.id,
                                         })
