@@ -1,8 +1,9 @@
 import React from "react";
 import LikeButton from "./LikeButton";
 import VolumeControls from "./VolumeControls";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Tooltip } from "@nextui-org/react";
 interface IProps {
     volume: number;
     updateVolume: (e: any) => void;
@@ -35,25 +36,30 @@ function Buttons({
                 }}
             >
                 <LikeButton song_id={song_id} />
-                <Link
-                    href={download_url + `?filename=${song_id}.mp3`}
-                    download={`${song_id}.mp3`}
-                    target="_blank"
-                >
+
+                <Tooltip content="Download">
+                    <Link
+                        href={download_url + `?filename=${song_id}.mp3`}
+                        download={`${song_id}.mp3`}
+                        target="_blank"
+                    >
+                        <i
+                            className="icon-download text-gray-400 text-[16px]
+           hover:text-white cursor-pointer mx-2"
+                        ></i>
+                    </Link>
+                </Tooltip>
+
+                <Tooltip content="Queue">
                     <i
-                        className="icon-download text-gray-400 text-[16px]
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            router.push("/queue");
+                        }}
+                        className="icon-queue text-gray-400 text-[14px]
            hover:text-white cursor-pointer mx-2"
                     ></i>
-                </Link>
-
-                <i
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        router.push("/queue");
-                    }}
-                    className="icon-queue text-gray-400 text-[14px]
-           hover:text-white cursor-pointer mx-2"
-                ></i>
+                </Tooltip>
                 {showVolumeSeekBar && (
                     <VolumeControls
                         isFullScreen={false}

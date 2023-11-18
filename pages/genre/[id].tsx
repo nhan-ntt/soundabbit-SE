@@ -3,7 +3,7 @@ import AppLayout from "@/layouts/appLayout";
 import axios from "axios";
 import API_URL from "@/configs/apiUrl";
 import { Artists } from "@/interfaces/artist";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setActiveSong } from "../../stores/player/currentAudioPlayer";
 import { SongProps } from "@/interfaces/Song";
@@ -12,7 +12,6 @@ import { tags } from "@/interfaces/genres";
 import HorizontalArtistsList from "@/components/HorizontalArtistsList";
 import { useState } from "react";
 import { capitalize } from "@/configs/utils";
-import NavBar from "@/components/backButton";
 import ErrorComponent from "@/components/error";
 
 function GenrePage({
@@ -28,17 +27,7 @@ function GenrePage({
 }) {
     const dispatch = useDispatch();
     const router = useRouter();
-    const [srcollPosition, setScrollPosition] = useState(0);
-    const [isScrolling, setScrolling] = useState(false);
 
-    const onScroll = (e: any) => {
-        setScrolling(true);
-        setScrollPosition(e.target.scrollTop);
-    };
-
-    setTimeout(() => {
-        setScrolling(false);
-    }, 100);
     if (!success) {
         return (
             <AppLayout>
@@ -50,15 +39,7 @@ function GenrePage({
         <AppLayout
             title={capitalize(tag.tag)}
             color={"#" + tag.color.toString(16)}
-            onScroll={onScroll}
         >
-            <div>
-                <NavBar
-                    condition={srcollPosition >= 300}
-                    color={"#" + tag.color.toString(16)}
-                    title={tag.tag}
-                />
-            </div>
             <div className="px-10 pt-32 mobile:pt-20 mini-laptop:px-6 tablet:px-6 mobile:px-4">
                 <h1
                     className="pb-6 text-[70px] laptop:text-[60px] 
@@ -78,7 +59,6 @@ function GenrePage({
                 {songs.map((song: SongProps, i: number) => {
                     return (
                         <ListItem
-                            isScrolling={isScrolling}
                             onTap={() => {
                                 dispatch(
                                     setActiveSong({ songs: songs, index: i })

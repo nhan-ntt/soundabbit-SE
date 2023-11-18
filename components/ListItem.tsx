@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
     addToQueue,
@@ -6,31 +5,33 @@ import {
     toggleModal,
 } from "../stores/player/currentAudioPlayer";
 import LikeButton from "./AudioPlayer/LikeButton";
-import CustomImage from "./CustomImage";
 import { removeSongFromPlaylist } from "../stores/player/currentAudioPlayer";
 import { toast } from "react-toastify";
 import { SongProps } from "@/interfaces/Song";
 import { PlaylistProps } from "@/interfaces/playlist";
+import {
+    Dropdown,
+    DropdownTrigger,
+    DropdownMenu,
+    DropdownItem,
+} from "@nextui-org/react";
+import { Image } from "@nextui-org/react";
 
 function ListItem({
     song,
     showNumber,
     onTap,
-    isScrolling,
     playlist,
     queueAction = true,
 }: {
     song: SongProps;
-    showNumber: number;
+    showNumber?: number;
     onTap: any;
-    isScrolling: boolean;
     playlist: PlaylistProps;
     queueAction?: boolean;
 }) {
     const { activeSong, queue } = useSelector((state: any) => state.player);
     const { user } = useSelector((state: any) => state.auth);
-    const dropdown = useRef(null);
-    const [showDropdown, setShowDropdown] = useState(false);
     const dispatch = useDispatch<any>();
 
     let songDemo = JSON.parse(JSON.stringify(song));
@@ -41,37 +42,11 @@ function ListItem({
         url: "https://images3.alphacoders.com/690/690494.jpg",
     };
 
-    useEffect(() => {
-        if (!showDropdown) return;
-        function handleClick(event: any) {
-            // @ts-ignore-comment
-            if (dropdown.current && !dropdown.current.contains(event.target)) {
-                setShowDropdown(false);
-            }
-        }
-        window.addEventListener("click", handleClick);
-        return () => window.removeEventListener("click", handleClick);
-    }, [showDropdown]);
-
-    useEffect(() => {
-        if (isScrolling) setShowDropdown(false);
-    }, [isScrolling]);
-
     return (
-        <div
-            onClick={(e) => {
-                e.stopPropagation();
-                if (!showDropdown) {
-                    onTap();
-                }
-                setShowDropdown(false);
-            }}
-            className="relative"
-        >
+        <div className="relative" onClick={onTap}>
             <div
                 className={`cursor-default hover:bg-[#5f5d5d60] flex flex-row justify-between 
-              items-center py-2 w-full rounded-md group mobile:hover:bg-transparent tablet:hover:bg-transparent 
-              ${showDropdown && "bg-[#5f5d5d60]"}`}
+              items-center py-2 w-full rounded group mobile:hover:bg-transparent tablet:hover:bg-transparent`}
             >
                 <div className="flex-grow flex flex-row items-center">
                     {showNumber && (
@@ -86,13 +61,7 @@ function ListItem({
                                 backgroundColor: songDemo.cover_image.color,
                             }}
                         >
-                            <CustomImage
-                                src={
-                                    songDemo.cover_image.url +
-                                    "&auto=format&fit=crop&w=400&q=50&h=400"
-                                }
-                                className="w-12 min-w-12"
-                            />
+                            <Image src={songDemo.cover_image.url} />
                         </div>
                     </div>
 
@@ -109,33 +78,20 @@ function ListItem({
                         </p>
                     </div>
                 </div>
-                <div className="ml-2 flex flex-row items-center">
-                    <div className="group-hover:visible invisible mobile:visible tablet:visible ">
-                        <LikeButton song_id={song.id} isList={true} />
-                    </div>
 
-                    <div
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            setShowDropdown(!showDropdown);
-                        }}
-                    >
+                <LikeButton song_id={song.id} isList={true} />
+
+                <Dropdown placement="bottom-end">
+                    <DropdownTrigger>
                         <i
                             className="cursor-pointer group-hover:visible invisible mobile:visible relative
          tablet:visible icon-more-horizontal text-[20px] ml-3 text-gray-200 mr-2.5"
                         ></i>
-                    </div>
-                </div>
-                {showDropdown && (
-                    <div
-                        ref={dropdown}
-                        className="w-fit bg-[#212121] absolute  rounded shadow 
-             right-2 top-10 z-30"
-                    >
+                    </DropdownTrigger>
+                    <DropdownMenu aria-label="Static Actions">
                         {queueAction && (
-                            <div
+                            <DropdownItem
                                 onClick={() => {
-                                    setShowDropdown(false);
                                     if (!queue.includes(song)) {
                                         dispatch(addToQueue(song));
                                     } else {
@@ -144,25 +100,22 @@ function ListItem({
                                         );
                                     }
                                 }}
-                                className="cursor-pointer px-4 rounded py-1.5 hover:bg-[#323232] border-b border-b-[#3e3e3e]"
                             >
                                 {queue.includes(song)
                                     ? "Remove from Queue"
                                     : "Add to Queue"}
-                            </div>
+                            </DropdownItem>
                         )}
-                        <div
+
+                        <DropdownItem
                             onClick={() => {
-                                setShowDropdown(false);
                                 dispatch(addToQueue(songDemo));
                             }}
-                            className="cursor-pointer  px-4 rounded py-1.5 hover:bg-[#323232] border-b border-b-[#3e3e3e]"
                         >
                             Play Next
-                        </div>
+                        </DropdownItem>
                         {playlist ? (
-                            <div
-                                className="cursor-pointer  rounded px-4 py-1.5 hover:bg-[#323232]"
+                            <DropdownItem
                                 onClick={() => {
                                     dispatch(
                                         removeSongFromPlaylist({
@@ -175,10 +128,9 @@ function ListItem({
                                 }}
                             >
                                 Remove from Playlist
-                            </div>
+                            </DropdownItem>
                         ) : (
-                            <div
-                                className="cursor-pointer  rounded px-4 py-1.5 hover:bg-[#323232]"
+                            <DropdownItem
                                 onClick={() =>
                                     dispatch(
                                         toggleModal({
@@ -189,10 +141,10 @@ function ListItem({
                                 }
                             >
                                 Add to Playlist
-                            </div>
+                            </DropdownItem>
                         )}
-                    </div>
-                )}
+                    </DropdownMenu>
+                </Dropdown>
             </div>
         </div>
     );

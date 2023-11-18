@@ -9,11 +9,10 @@ import {
     setActiveSong,
 } from "../stores/player/currentAudioPlayer";
 import NoSSRWrapper from "../components/noSSRWrapper";
-import NavBar from "../components/backButton";
 import { useState } from "react";
+
 function Queue() {
     const { queue, currentIndex } = useSelector((state: any) => state.player);
-    const [srcollPosition, setScrollPosition] = useState(0);
     const dispatch = useDispatch<any>();
 
     const onDragHandle = (result: any) => {
@@ -33,19 +32,9 @@ function Queue() {
         return result;
     };
 
-    const onScroll = (e: any) => {
-        setScrollPosition(e.target.scrollTop);
-    };
-
     return (
         <NoSSRWrapper>
-            <AppLayout color="#121212" title="Queue" onScroll={onScroll}>
-                <NavBar
-                    condition={srcollPosition >= 100}
-                    color={"#333333"}
-                    title={"Queue"}
-                />
-
+            <AppLayout color="#121212" title="Queue">
                 <div className="px-6 pt-20 mobile:px-4">
                     <h1 className="text-3xl font-ProximaBold mb-6">Queue</h1>
                     <h1 className="text-base text-gray-400 font-ProximaBold mb-2">

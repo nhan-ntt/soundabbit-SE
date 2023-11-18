@@ -11,42 +11,48 @@ import "react-toastify/dist/ReactToastify.css";
 import useDetectKeyboardOpen from "use-detect-keyboard-open";
 import AddToPlaylistModal from "@/components/AddToPlaylistModal";
 import { ToastContainer } from "react-toastify";
+import { NextUIProvider } from "@nextui-org/react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
         <Provider store={store}>
-            <Head>
-                <link
-                    rel="preload"
-                    href="/rhyme-icons.ttf"
-                    as="font"
-                    crossOrigin=""
-                    type="font/ttf"
-                />
-                <link
-                    rel="preload"
-                    href="/ProximaNova/Proxima Nova Reg.otf"
-                    as="font"
-                    crossOrigin=""
-                    type="font/otf"
-                />
-                <link
-                    rel="preload"
-                    href="/ProximaNova/Proxima Nova Bold.otf"
-                    as="font"
-                    crossOrigin=""
-                    type="font/otf"
-                />
-            </Head>
-            <NextNProgress
-                color="#2bb540"
-                stopDelayMs={10}
-                height={3}
-                options={{ showSpinner: false }}
-            />
+            <NextUIProvider>
+                <NextThemesProvider attribute="class" defaultTheme="dark">
+                    <Head>
+                        <link
+                            rel="preload"
+                            href="/rhyme-icons.ttf"
+                            as="font"
+                            crossOrigin=""
+                            type="font/ttf"
+                        />
+                        <link
+                            rel="preload"
+                            href="/ProximaNova/Proxima Nova Reg.otf"
+                            as="font"
+                            crossOrigin=""
+                            type="font/otf"
+                        />
+                        <link
+                            rel="preload"
+                            href="/ProximaNova/Proxima Nova Bold.otf"
+                            as="font"
+                            crossOrigin=""
+                            type="font/otf"
+                        />
+                    </Head>
+                    <NextNProgress
+                        color="#2bb540"
+                        stopDelayMs={10}
+                        height={3}
+                        options={{ showSpinner: false }}
+                    />
 
-            <Component {...pageProps} />
-            <AudioPlayerComponent />
+                    <Component {...pageProps} />
+                    <AudioPlayerComponent />
+                </NextThemesProvider>
+            </NextUIProvider>
         </Provider>
     );
 }
@@ -72,6 +78,7 @@ function AudioPlayerComponent() {
             {router.pathname !== "/login" &&
             router.pathname !== "/register" &&
             router.pathname !== "/_error" &&
+            router.pathname !== "/playing" &&
             router.pathname !== "/" ? (
                 <AudioPlayer
                     className={isKeyboardOpen ? "invisible" : "visible"}

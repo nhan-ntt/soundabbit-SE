@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import ScrollContainer from "react-indiana-drag-scroll";
 import { Artists } from "../interfaces/artist";
 import HorizontalArtistCard from "./HorizontalArtistsCard";

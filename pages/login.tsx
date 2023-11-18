@@ -5,9 +5,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
 import Head from "next/head";
-import Image from "next/image";
+import {Image} from "@nextui-org/react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthStatus, login, reset } from "../stores/auth/authSlice";
@@ -77,7 +77,6 @@ const Login: NextPage = () => {
                     >
                         <div className="flex flex-row items-center">
                             <Image
-                                priority
                                 src="/logo.jpeg"
                                 width={40}
                                 height={40}

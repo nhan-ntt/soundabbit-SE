@@ -7,6 +7,7 @@ import {
     removeLike,
     Like,
 } from "../../stores/player/currentAudioPlayer";
+import { Tooltip } from "@nextui-org/react";
 
 function LikeButton({ song_id, size, isList }: any) {
     const [like, setLike] = useState(false);
@@ -28,28 +29,32 @@ function LikeButton({ song_id, size, isList }: any) {
             }
         >
             {!like ? (
-                <i
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        dispatch(addLike({ user, song_id }));
-                        setLike(true);
-                        dispatch(Like({ user, song_id }));
-                    }}
-                    className={`cursor-pointer icon-Like text-gray-400 
+                <Tooltip content="Like">
+                    <i
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            dispatch(addLike({ user, song_id }));
+                            setLike(true);
+                            dispatch(Like({ user, song_id }));
+                        }}
+                        className={`cursor-pointer icon-Like text-gray-400 
           ${size ? size : "text-[14px]"} mx-2 hover:text-white`}
-                ></i>
+                    ></i>
+                </Tooltip>
             ) : (
-                <i
-                    onClick={(e) => {
-                        e.stopPropagation();
+                <Tooltip content="Unlike">
+                    <i
+                        onClick={(e) => {
+                            e.stopPropagation();
 
-                        dispatch(removeLike({ song_id }));
-                        setLike(false);
-                        dispatch(unLike({ user, song_id }));
-                    }}
-                    className={`cursor-pointer icon-heart 
+                            dispatch(removeLike({ song_id }));
+                            setLike(false);
+                            dispatch(unLike({ user, song_id }));
+                        }}
+                        className={`cursor-pointer icon-heart 
           text-[#2bb540] ${size ? size : "text-[15px]"} mx-2`}
-                ></i>
+                    ></i>
+                </Tooltip>
             )}
         </div>
     );

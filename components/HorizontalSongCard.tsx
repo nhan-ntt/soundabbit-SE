@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { playPause } from "../stores/player/currentAudioPlayer";
-import CustomImage from "./CustomImage";
 import { SongProps } from "../interfaces/Song";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { shadeColor } from "../configs/utils";
+import { Image } from "@nextui-org/react";
 import axios from "axios";
 
 function HorizontalSongCard({
@@ -36,17 +36,13 @@ function HorizontalSongCard({
             <div
                 className="p-4 bg-gradient-to-t from-[#2c2a2a4a] to-[#2c2a2ac7] hover:bg-[#4340409d]
            tablet:hover:bg-transparent mobile:hover:bg-transparent
-           rounded-md h-full mini-laptop:p-3 tablet:p-0 tablet:from-transparent tablet:to-transparent
+           rounded h-full mini-laptop:p-3 tablet:p-0 tablet:from-transparent tablet:to-transparent
            mobile:from-transparent mobile:to-transparent mobile:p-0
            "
             >
                 <div
-                    style={{
-                        background: shadeColor(songDemo.cover_image.color, -40),
-                        boxShadow:
-                            "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
-                    }}
-                    className="w-[160px] h-[160px] relative rounded-md 
+                    className="
+                    w-[200px] h-[200px] relative 
           mini-laptop:w-[140px] mini-laptop:h-[140px] 
           tablet:w-[130px] tablet:h-[130px] mobile:w-[100px] mobile:h-[100px]"
                 >
@@ -62,14 +58,18 @@ function HorizontalSongCard({
                             isPlaying={isPlaying}
                         />
                     ) : null}
-                    <CustomImage
-                        src={
-                            songDemo.cover_image.url +
-                            "&auto=format&fit=crop&w=400&q=50&h=400"
-                        }
-                        className="rounded-md"
+
+                    <Image
+                        src={songDemo.cover_image.url}
+                        isZoomed
+                        className="
+                        z-6
+                    w-[200px] h-[200px] relative 
+          mini-laptop:w-[140px] mini-laptop:h-[140px] 
+          tablet:w-[130px] tablet:h-[130px] rounded mobile:w-[100px] mobile:h-[100px] object-cover"
                     />
                 </div>
+
                 <p className="line-clamp-2 mt-3 text-base mobile:text-sm tablet:text-sm">
                     {songDemo.name}
                 </p>
@@ -98,7 +98,7 @@ export function PlayPauseButton({
     return (
         <div>
             {condition && (
-                <div className="absolute w-full h-full bg-black bg-opacity-10 z-10 flex justify-end items-end rounded-md">
+                <div className="absolute w-full h-full bg-black bg-opacity-10 z-10 flex justify-end items-end rounded">
                     <div
                         onClick={() => dispatch(playPause(!isPlaying))}
                         className="mx-2 my-3 bg-[#2bb540] rounded-full cursor-pointer hover:scale-110

@@ -1,26 +1,15 @@
 import React, { useState } from "react";
 import AppLayout from "@/layouts/appLayout";
-import NavBar from "@/components/backButton";
 import { useSelector } from "react-redux";
-import CustomImage from "@/components/CustomImage";
-import Image from "next/image";
+import { Image } from "@nextui-org/react";
 import Link from "next/link";
 
 function Library() {
-    const [srcollPosition, setScrollPosition] = useState(0);
     const { liked, playlists } = useSelector((state: any) => state.player);
-    const onScroll = (e: any) => {
-        setScrollPosition(e.target.scrollTop);
-    };
 
     return (
-        <AppLayout title="Your Library" color="#2bb540" onScroll={onScroll}>
-            <NavBar
-                condition={srcollPosition >= 200}
-                color="#333333"
-                title="Library"
-            />
-            <div className="w-full min-h-[1000px] px-6 pt-24 mobile:px-4 ">
+        <AppLayout title="Your Library" color="#2bb540">
+            <div className="w-full min-h-[1000px] px-6 pt-5 mobile:px-4 ">
                 <h1 className="text-[70px] font-ProximaBold text-white mb-5 px-2 mobile:px-0 mobile:text-[40px]">
                     Library
                 </h1>
@@ -35,7 +24,7 @@ function Library() {
                         <div
                             className="flex flex-col p-3.5cursor-pointer p-3.5 bg-gradient-to-t from-[#2c2a2a4a] to-[#2c2a2ac7] hover:bg-[#4340409d]
            tablet:hover:bg-transparent mobile:hover:bg-transparent 
-           rounded-md h-full mini-laptop:p-3 tablet:p-0 tablet:from-transparent tablet:to-transparent
+           rounded h-full mini-laptop:p-3 tablet:p-0 tablet:from-transparent tablet:to-transparent
            mobile:from-transparent mobile:to-transparent mobile:p-0 mobile:mr-0
            "
                         >
@@ -62,7 +51,7 @@ function Library() {
                                     <div
                                         className="cursor-pointer p-3.5 bg-gradient-to-t from-[#2c2a2a4a] to-[#2c2a2ac7] hover:bg-[#4340409d]
            tablet:hover:bg-transparent mobile:hover:bg-transparent 
-           rounded-md h-full mini-laptop:p-3 tablet:p-0 tablet:from-transparent tablet:to-transparent
+           rounded h-full mini-laptop:p-3 tablet:p-0 tablet:from-transparent tablet:to-transparent
            mobile:from-transparent mobile:to-transparent mobile:p-0 mobile:mr-0
            "
                                     >
@@ -70,24 +59,18 @@ function Library() {
                                             style={{
                                                 backgroundColor: playlist.color,
                                             }}
-                                            className="p-0 m-0 rounded-md"
+                                            className="p-0 m-0 rounded"
                                         >
                                             <Image
-                                                // src={`${playlist.cover_image}&auto=format&fit=crop&w=400&q=50&h=400`}
                                                 src=""
                                                 width="300"
                                                 height="300"
-                                                objectFit="cover"
-                                                layout="responsive"
-                                                className="rounded-md noDrag m-0 p-0"
-                                                alt="image"
                                             />
                                         </div>
 
                                         <div className="py-3">
                                             <p className="">{playlist.name}</p>
-                                            <p className="text-gray-300 text-sm mt-1">
-                                            </p>
+                                            <p className="text-gray-300 text-sm mt-1"></p>
                                         </div>
                                     </div>
                                 </Link>

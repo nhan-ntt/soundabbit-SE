@@ -4,9 +4,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
 import Head from "next/head";
-import Image from "next/image";
+import {Image} from "@nextui-org/react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { register, AuthStatus, reset } from "../stores/auth/authSlice";
 import { useEffect } from "react";
@@ -23,7 +23,7 @@ const Register: NextPage = () => {
             .max(24, "Password is too long, maximum 24 characters")
             .required("Password is required"),
         confirmPassword: Yup.string()
-            .oneOf([Yup.ref("password"), null], "Passwords must match")
+            .oneOf([Yup.ref("password")], "Passwords must match")
             .required("Confirm Password is required"),
     });
     const formOptions = { resolver: yupResolver(validationSchema) };

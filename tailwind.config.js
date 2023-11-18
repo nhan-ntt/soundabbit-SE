@@ -1,48 +1,52 @@
+const { nextui } = require("@nextui-org/react");
+
 // /** @type {import('tailwindcss').Config} */
 module.exports = {
-  // darkMode: 'class',
+    // darkMode: 'class',
 
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
-    "./layouts/**/*.{js,ts,jsx,tsx}",
-  ],
-  theme: {
-    container: {
-      center: true,
+    content: [
+        "./pages/**/*.{js,ts,jsx,tsx}",
+        "./components/**/*.{js,ts,jsx,tsx}",
+        "./layouts/**/*.{js,ts,jsx,tsx}",
+        "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+    ],
+    theme: {
+        container: {
+            center: true,
+        },
+        fontFamily: {
+            ProximaRegular: ["ProximaNova Regular"],
+            ProximaBold: ["ProximaNova Bold"],
+        },
+        screens: {
+            mobile: {
+                min: "100px",
+                max: "550px",
+            },
+            tablet: {
+                min: "550px",
+                max: "750px",
+            },
+            "mini-laptop": {
+                min: "750px",
+                max: "874px",
+            },
+            laptop: {
+                min: "874px",
+                max: "1280px",
+            },
+            desktop: {
+                min: "1280px",
+            },
+        },
+        borderWidth: {
+            DEFAULT: "0.5px",
+        },
+        extend: {},
+        future: {
+            hoverOnlyWhenSupported: true,
+        },
     },
-    fontFamily: {
-      ProximaRegular: ["ProximaNova Regular"],
-      ProximaBold: ["ProximaNova Bold"],
-    },
-    screens: {
-      mobile: {
-        min: "100px",
-        max: "550px",
-      },
-      tablet: {
-        min: "550px",
-        max: "750px",
-      },
-      "mini-laptop": {
-        min: "750px",
-        max: "874px",
-      },
-      laptop: {
-        min: "874px",
-        max: "1280px",
-      },
-      desktop: {
-        min: "1280px",
-      },
-    },
-    borderWidth: {
-      DEFAULT: "0.5px",
-    },
-    extend: {},
-    future: {
-      hoverOnlyWhenSupported: true,
-    },
-  },
-  plugins: [require("@tailwindcss/line-clamp")],
+    darkMode: "class",
+    plugins: [nextui()],
 };

@@ -4,14 +4,12 @@ import axios from "axios";
 import AppLayout from "@/layouts/appLayout";
 import { SongProps } from "@/interfaces/Song";
 import ListItem from "@/components/ListItem";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { playPause, setActiveSong } from "@/stores/player/currentAudioPlayer";
 import ErrorComponent from "@/components/error";
 import { shadeColor } from "@/configs/utils";
-import CustomImage from "@/components/CustomImage";
-import NavBar from "@/components/backButton";
 
 function Liked({
     data,
@@ -27,17 +25,6 @@ function Liked({
     const { isPlaying, playingPlaylist } = useSelector(
         (state: any) => state.player
     );
-    const [srcollPosition, setScrollPosition] = useState(0);
-    const [isScrolling, setScrolling] = useState(false);
-
-    const onScroll = (e: any) => {
-        setScrolling(true);
-        setScrollPosition(e.target.scrollTop);
-    };
-
-    setTimeout(() => {
-        setScrolling(false);
-    }, 100);
 
     if (!success) {
         return (
@@ -48,15 +35,9 @@ function Liked({
     }
 
     return (
-        <AppLayout title="Liked Songs" color="#48338c" onScroll={onScroll}>
-            <NavBar
-                condition={srcollPosition >= 300}
-                color={"#48338c"}
-                title="Liked Songs"
-            />
-
+        <AppLayout title="Liked Songs" color="#48338c">
             <div
-                className="bg-[#48338c] h-[350px] pt-20 px-8
+                className="bg-[#48338c] h-[350px] pt-5 px-8
        flex items-center mobile:flex-col mobile:h-full 
        tablet:flex-col tablet:h-full mobile:pt-12 tablet:pt-14
        tablet:text-center tablet:pb-3 mobile:pb-3 mobile:text-center"
@@ -126,7 +107,6 @@ function Liked({
                 <div className="pt-4">
                     {songs.map((song: SongProps, i: number) => (
                         <ListItem
-                            isScrolling={isScrolling}
                             key={song.id}
                             song={song}
                             showNumber={i + 1}

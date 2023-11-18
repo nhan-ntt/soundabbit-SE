@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import type { NextPage } from "next";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
-import Image from "next/image";
+import {Image} from "@nextui-org/react";
 import Head from "next/head";
 
 export async function getServerSideProps(ctx: any) {
@@ -83,7 +83,6 @@ const Home: NextPage = () => {
                 <div className="flex flex-row max-w-[1280px] justify-between items-center mx-auto p-2">
                     <div className="flex flex-row items-center">
                         <Image
-                            priority
                             src="/logo.png"
                             width={40}
                             height={40}
@@ -155,13 +154,10 @@ const Home: NextPage = () => {
                     <div className="max-w-[1000px] mx-auto">
                         <Image
                             src={"/landing_page.png"}
-                            objectFit="contain"
                             width="1000"
                             height="500"
-                            layout="responsive"
-                            className="rounded-md noDrag m-0 p-0"
+                            className="rounded noDrag m-0 p-0"
                             alt="image"
-                            unoptimized={true}
                         />
                     </div>
                 </div>
@@ -169,11 +165,8 @@ const Home: NextPage = () => {
                     <div className="hidden mobile:block relative h-[400px] w-[600px]">
                         <Image
                             src={"/landing_page.png"}
-                            objectFit="contain"
-                            layout="fill"
-                            className="rounded-md noDrag m-0 p-0"
+                            className="rounded noDrag m-0 p-0"
                             alt="image"
-                            unoptimized={true}
                         />
                     </div>
                 </div>
@@ -191,7 +184,7 @@ const Home: NextPage = () => {
                 >
                     <div
                         className="bg-gradient-to-tr to-[#a15c1c] 
-          from-[#6a2009] py-4 px-6 rounded-md flex text-center 
+          from-[#6a2009] py-4 px-6 rounded flex text-center 
           flex-col  items-center"
                     >
                         <div className="mb-4 mt-3 bg-[#2ed146] w-fit p-3 rounded-full text-center flex items-center">
@@ -210,7 +203,7 @@ const Home: NextPage = () => {
                     </div>
                     <div
                         className="bg-gradient-to-b from-[#8b0847] 
-          to-[#580b64] py-4 px-6 rounded-md flex text-center 
+          to-[#580b64] py-4 px-6 rounded flex text-center 
           flex-col  items-center"
                     >
                         <div className="mb-4 mt-3 bg-[#2ed146] w-fit p-3 rounded-full text-center flex items-center">
@@ -229,7 +222,7 @@ const Home: NextPage = () => {
                     </div>
                     <div
                         className="bg-gradient-to-tr to-[#0d2477] 
-          from-[#522bbf] py-4 px-6 rounded-md flex text-center
+          from-[#522bbf] py-4 px-6 rounded flex text-center
            flex-col items-center"
                     >
                         <div className="mb-4 mt-3 bg-[#2ed146] w-fit p-3 rounded-full text-center flex items-center">

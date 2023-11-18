@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 export const useLogin = () => {
     const { status, user } = useSelector((state: any) => state.auth);

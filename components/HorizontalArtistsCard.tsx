@@ -1,8 +1,8 @@
 import React from "react";
-import CustomImage from "./CustomImage";
 import { SongProps } from "../interfaces/Song";
 import { Artists } from "../interfaces/artist";
 import { shadeColor } from "../configs/utils";
+import {Image} from "@nextui-org/react";
 
 function HorizontalArtistCard({
     artist,
@@ -16,7 +16,7 @@ function HorizontalArtistCard({
             <div
                 className="p-4 bg-gradient-to-t from-[#2c2a2a4a] to-[#2c2a2ac7] hover:bg-[#4340409d]
            tablet:hover:bg-transparent mobile:hover:bg-transparent
-           rounded-md h-full mini-laptop:p-3 tablet:p-0 tablet:from-transparent tablet:to-transparent
+           rounded h-full mini-laptop:p-3 tablet:p-0 tablet:from-transparent tablet:to-transparent
            mobile:from-transparent mobile:to-transparent mobile:p-0
            "
             >
@@ -30,7 +30,7 @@ function HorizontalArtistCard({
           mini-laptop:w-[140px] mini-laptop:h-[140px] 
           tablet:w-[130px] tablet:h-[130px] mobile:w-[100px] mobile:h-[100px]"
                 >
-                    <CustomImage
+                    <Image
                         src={
                             "https://images3.alphacoders.com/690/690494.jpg&auto=format&fit=crop&w=400&q=50&h=400"
                         }

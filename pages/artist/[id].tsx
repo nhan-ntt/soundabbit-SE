@@ -2,9 +2,8 @@ import React from "react";
 import AppLayout from "@/layouts/appLayout";
 import axios from "axios";
 import API_URL from "@/configs/apiUrl";
-import CustomImage from "@/components/CustomImage";
 import { Artists } from "@/interfaces/artist";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import {
     playPause,
@@ -15,7 +14,6 @@ import ListItem from "@/components/ListItem";
 import HorizontalSongsList from "@/components/HorizontalSongsList";
 import { shadeColor } from "@/configs/utils";
 import { useState } from "react";
-import NavBar from "@/components/backButton";
 import ErrorComponent from "@/components/error";
 
 function ArtistProfile({
@@ -35,16 +33,6 @@ function ArtistProfile({
     const { isPlaying, activeSong, playingPlaylist } = useSelector(
         (state: any) => state.player
     );
-    const [srcollPosition, setScrollPosition] = useState(0);
-    const [isScrolling, setScrolling] = useState(false);
-
-    const onScroll = (e: any) => {
-        setScrolling(true);
-        setScrollPosition(e.target.scrollTop);
-    };
-    setTimeout(() => {
-        setScrolling(false);
-    }, 100);
 
     if (!success) {
         return (
@@ -54,19 +42,7 @@ function ArtistProfile({
         );
     }
     return (
-        <AppLayout
-            title={data.display_name}
-            color={artist.avatar.color}
-            onScroll={onScroll}
-        >
-            <div>
-                <NavBar
-                    condition={srcollPosition >= 300}
-                    color={artist.avatar.color}
-                    title={artist.display_name}
-                />
-            </div>
-
+        <AppLayout title={data.display_name} color={artist.avatar.color}>
             <div
                 className="relative w-full h-[400px]  mobile:h-[350px]"
                 style={{
@@ -97,11 +73,7 @@ function ArtistProfile({
                     </div>
                 </div>
 
-                <CustomImage
-                    src={
-                        artist.avatar.url + "&auto=format&fit=crop&w=1280&q=80"
-                    }
-                />
+                <Image src={artist.avatar.url} />
             </div>
             <div
                 style={{
@@ -153,7 +125,6 @@ function ArtistProfile({
                                 .slice(0, 5)
                                 .map((song: SongProps, i: number) => (
                                     <ListItem
-                                        isScrolling={isScrolling}
                                         key={song.id}
                                         song={song}
                                         showNumber={i + 1}
@@ -182,7 +153,6 @@ function ArtistProfile({
                     <div className="pt-4">
                         {songs.map((song: SongProps, i: number) => (
                             <ListItem
-                                isScrolling={isScrolling}
                                 key={song.id}
                                 song={song}
                                 showNumber={i + 1}

@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/image";
+import { Button, Image } from "@nextui-org/react";
 import classNames from "classnames";
 import Buttons from "./Buttons";
 
@@ -57,49 +57,25 @@ function Controls({
           tablet:text-[20px] mobile:text-[20px] laptop:text-[22px]"
                     ></i>
                     <div className="mx-6 scale-100 hover:scale-110">
-                        {!isPlaying ? (
-                            <div
-                                onClick={playPause}
-                                className="bg-white text-black 
-                rounded-full p-1 text-center h-14 w-14 flex 
+                        <Button
+                            radius="full"
+                            isIconOnly
+                            onClick={playPause}
+                            className="bg-white text-black 
+                rounded-full p-1 text-center flex 
                 items-center justify-center
                 cursor-pointer
                 mini-laptop:h-10 mini-laptop:w-10
                 tablet:h-10 tablet:w-10
                 mobile:h-10 mobile:w-10
                 laptop:w-12 laptop:h-12"
-                            >
+                        >
+                            {!isPlaying ? (
                                 <i className="icon-play text-[20px] ml-1" />
-
-                                {/* <Image
-                  priority
-                  src="/svgs/play.svg"
-                  width={40}
-                  height={40}
-                  alt="play"
-                /> */}
-                            </div>
-                        ) : (
-                            <div
-                                onClick={playPause}
-                                className="bg-white rounded-full p-1
-                text-center h-14 w-14 flex
-                items-center justify-center
-                cursor-pointer mini-laptop:h-10
-                tablet:h-10 tablet:w-10
-                mobile:h-10 mobile:w-10
-                mini-laptop:w-10 laptop:w-12 laptop:h-12"
-                            >
+                            ) : (
                                 <i className="icon-pause text-[20px]" />
-                                {/* <Image
-                  priority
-                  src="/svgs/pause.svg"
-                  width={40}
-                  height={40}
-                  alt="play"
-                /> */}
-                            </div>
-                        )}
+                            )}
+                        </Button>
                     </div>
 
                     <i
@@ -168,33 +144,24 @@ function Controls({
          hover:text-white mobile:hidden"
             ></i>
             <div className="mx-6 scale-100 hover:scale-110 mobile:mx-0">
-                {!isPlaying ? (
-                    <div
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            playPause();
-                        }}
-                        className="bg-white text-black 
-            rounded-full p-1 text-center h-8 w-8 flex 
+                <Button
+                    isIconOnly
+                    radius="full"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        playPause();
+                    }}
+                    className="bg-white text-black 
+            rounded-full p-1 text-center flex 
             items-center justify-center
             cursor-pointer"
-                    >
+                >
+                    {!isPlaying ? (
                         <i className="icon-play text-[14px] ml-0.5" />
-                    </div>
-                ) : (
-                    <div
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            playPause();
-                        }}
-                        className="bg-white rounded-full p-1
-             text-center h-8 w-8 flex
-            items-center justify-center
-             cursor-pointer"
-                    >
+                    ) : (
                         <i className="icon-pause text-[12px]" />
-                    </div>
-                )}
+                    )}
+                </Button>
             </div>
 
             <i

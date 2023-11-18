@@ -16,10 +16,10 @@ import { useEffect } from "react";
 import Controls from "./Controls";
 import SeekBar from "./SeekBar";
 import Buttons from "./Buttons";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import FullScreenPlayer from "./FullScreenPlayer";
-import CustomImage from "../CustomImage";
 import { getPlaylists } from "../../stores/player/currentAudioPlayer";
+import { Image } from "@nextui-org/react";
 
 function AudioPlayer({ className }: { className: string }) {
     const router = useRouter();
@@ -214,14 +214,14 @@ function AudioPlayer({ className }: { className: string }) {
                         className="w-[50px] h-[50px] min-w-[50px]
          relative mini-laptop:w-[40px] mini-laptop:h-[40px]
           mini-laptop:min-w-[40px] mobile:min-w-[35px] mobile:w-[35px]
-           mobile:h-[35px] cursor-pointer rounded-sm"
+           mobile:h-[35px] cursor-pointer rounded"
                     >
-                        <CustomImage
-                            src={
-                                activeSongDemo!.cover_image.url +
-                                "&auto=format&fit=crop&w=400&q=50&h=400"
-                            }
-                            className="rounded-sm w-[50px] h-[50px]"
+                        <Image
+                            className="object-cover w-[50px] h-[50px] min-w-[50px]
+         relative mini-laptop:w-[40px] mini-laptop:h-[40px]
+          mini-laptop:min-w-[40px] mobile:min-w-[35px] mobile:w-[35px]
+           mobile:h-[35px] cursor-pointer rounded"
+                            src={activeSongDemo!.cover_image.url}
                         />
                     </div>
 

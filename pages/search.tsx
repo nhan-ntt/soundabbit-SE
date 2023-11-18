@@ -3,7 +3,6 @@ import AppLayout from "@/layouts/appLayout";
 import algoliaClient from "../configs/algolia";
 import { toSongProps, SongProps } from "../interfaces/Song";
 import { useState } from "react";
-import CustomImage from "../components/CustomImage";
 import { Artists } from "../interfaces/artist";
 import { tags } from "../interfaces/genres";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,13 +10,13 @@ import { setActiveSong } from "../stores/player/currentAudioPlayer";
 import { PlayPauseButton } from "../components/HorizontalSongCard";
 import ListItem from "../components/ListItem";
 import Link from "next/link";
+import {Image} from "@nextui-org/react";
 
 function Search() {
     const [searchResult, setSearchResult] = useState<SongProps[]>([]);
     const [artists, setArtists] = useState<Artists[]>([]);
     const [topResult, setTopResult] = useState<any>();
     const [isFocus, setFocus] = useState(false);
-    const [isScrolling, setScrolling] = useState(false);
     const dispatch = useDispatch();
 
     // get response from algolia
@@ -40,29 +39,20 @@ function Search() {
         setSearchResult(toSongProps(data.hits));
     };
 
-    const onScroll = () => {
-        setScrolling(true);
-    };
-
-    setTimeout(() => {
-        setScrolling(false);
-    }, 100);
-
     return (
-        <AppLayout title="Search" color="#121212" onScroll={onScroll}>
+        <AppLayout title="Search" color="#121212">
             <div className="w-full">
                 <div
                     className="py-4 px-6 mobile:py-2 mobile:px-4 tablet:px-4 fixed z-40 bg-[#121212] flex flex-row 
         w-[calc(100vw_-_14rem_-_16px)] mini-laptop:w-[calc(100vw_-_55px)] 
-        tablet:w-screen mobile:w-screen items-center
-        "
+        tablet:w-screen mobile:w-screen items-center"
                 >
-                    <div className="items-center flex bg-white rounded-3xl px-4 mobile:rounded-md tablet:w-full mobile:w-full">
+                    <div className="items-center flex bg-white rounded-3xl px-4 mobile:rounded tablet:w-full mobile:w-full">
                         <i className="icon-search text-gray-500"></i>
                         <input
                             onChange={(e: any) => searchAlgolia(e.target.value)}
                             type="text"
-                            className="tablet:w-full mobile:w-full w-[300px] pr-6 mobile:pr-8 pl-2 py-2 text-black border-none outline-none rounded-3xl"
+                            className="light tablet:w-full mobile:w-full w-[300px] pr-6 mobile:pr-8 pl-2 py-2 text-black border-none outline-none rounded-3xl"
                             placeholder="Search Music.."
                         />
                     </div>
@@ -110,7 +100,6 @@ function Search() {
                                         .map((song: SongProps, i: number) => {
                                             return (
                                                 <ListItem
-                                                    isScrolling={isScrolling}
                                                     onTap={() =>
                                                         dispatch(
                                                             setActiveSong({
@@ -145,7 +134,7 @@ function Search() {
                             return (
                                 <Link href={`/genre/${tag.tag}`} key={tag.tag}>
                                     <div
-                                        className="hover:scale-105 transition-all cursor-pointer relative h-44 tablet:h-40 mobile:h-28 overflow-hidden rounded-md "
+                                        className="hover:scale-105 transition-all cursor-pointer relative h-44 tablet:h-40 mobile:h-28 overflow-hidden rounded "
                                         style={{
                                             backgroundColor:
                                                 "#" + tag.color.toString(16),
@@ -157,10 +146,9 @@ function Search() {
                                             </p>
                                             <div className="absolute -right-4 -bottom-2">
                                                 <div className="shadow-xl relative mobile:w-[70px] rounded mobile:h-[70px] w-24 h-24 rotate-[30deg]">
-                                                    <CustomImage
+                                                    <Image
                                                         src={tag.coverImage}
-                                                        className="rounded-md"
-                                                    />
+                                                        className="object-cover rounded mobile:w-[70px] mobile:h-[70px] w-24 h-24" />
                                                 </div>
                                             </div>
                                         </div>
@@ -196,7 +184,7 @@ function TopResult({ object, onTap }: any) {
                 onMouseEnter={() => setPlayButton(true)}
                 onMouseLeave={() => setPlayButton(false)}
                 className="mobile:hidden tablet:hidden h-[250px] flex flex-col bg-[#5f5d5d2f] relative
-              hover:bg-[#5f5d5d72] rounded-md tablet:h-full mobile:h-full"
+              hover:bg-[#5f5d5d72] rounded tablet:h-full mobile:h-full"
             >
                 <div>
                     {activeSong.id === songDemo.id ? (
@@ -214,16 +202,16 @@ function TopResult({ object, onTap }: any) {
 
                     <div className="p-6 tablet:flex mobile:flex ">
                         <div
-                            className="rounded-md relative w-24 h-24 "
+                            className="rounded relative w-24 h-24 "
                             style={{
                                 backgroundColor: songDemo.cover_image.color,
                                 boxShadow:
                                     "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
                             }}
                         >
-                            <CustomImage
-                                src={`${songDemo.cover_image.url}&auto=format&fit=crop&w=400&q=50&h=400`}
-                                className="rounded-md"
+                            <Image
+                                src={songDemo.cover_image.url}
+                                className="rounded"
                             />
                         </div>
                         <div className="tablet:mx-4 mobile:mx-4">
@@ -242,7 +230,7 @@ function TopResult({ object, onTap }: any) {
         <Link href={`/artist/${object.artist_id}`}>
             <div
                 className=" mobile:hidden tablet:hidden h-[250px] flex flex-col p-6 bg-[#5f5d5d2f] 
-              hover:bg-[#5f5d5d72] rounded-md tablet:h-full mobile:h-full"
+              hover:bg-[#5f5d5d72] rounded tablet:h-full mobile:h-full"
             >
                 <div
                     className="rounded-full relative w-24 h-24"
@@ -252,8 +240,8 @@ function TopResult({ object, onTap }: any) {
                             "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
                     }}
                 >
-                    <CustomImage
-                        src={`${object.avatar.url}&auto=format&fit=crop&w=400&q=50&h=400`}
+                    <Image
+                        src={object.avatar.url}
                         className="rounded-full"
                     />
                 </div>

@@ -1,3 +1,4 @@
+import { Tooltip } from "@nextui-org/react";
 import React from "react";
 
 interface IProps {
@@ -18,36 +19,42 @@ function VolumeControls({ volume, updateVolume, isFullScreen }: IProps) {
       items-center group transition-all"
             >
                 {volume <= 1 && volume > 0.5 && (
-                    <i
-                        className="cursor-pointer icon-volume-2
+                    <Tooltip content="Mute">
+                        <i
+                            className="cursor-pointer icon-volume-2
             text-gray-400 hover:text-white text-[22px] mobile:text-[18px]"
-                        onClick={(e) => {
-                            e.stopPropagation();
+                            onClick={(e) => {
+                                e.stopPropagation();
 
-                            updateVolume(0);
-                        }}
-                    ></i>
+                                updateVolume(0);
+                            }}
+                        ></i>
+                    </Tooltip>
                 )}
                 {volume <= 0.5 && volume > 0 && (
-                    <i
-                        className=" cursor-pointer icon-volume-1
+                    <Tooltip content="Mute">
+                        <i
+                            className=" cursor-pointer icon-volume-1
             text-gray-400 hover:text-white text-[22px] mobile:text-[18px]"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            updateVolume(0);
-                        }}
-                    ></i>
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                updateVolume(0);
+                            }}
+                        ></i>
+                    </Tooltip>
                 )}
                 {volume === 0 && (
-                    <i
-                        style={{ fontSize: "20px" }}
-                        className="cursor-pointer icon-volume-x
+                    <Tooltip content="Unmute">
+                        <i
+                            style={{ fontSize: "20px" }}
+                            className="cursor-pointer icon-volume-x
             text-gray-400 hover:text-white text-[22px] mobile:text-[18px]"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            updateVolume(1);
-                        }}
-                    ></i>
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                updateVolume(1);
+                            }}
+                        ></i>
+                    </Tooltip>
                 )}
                 <input
                     type="range"
@@ -69,33 +76,42 @@ function VolumeControls({ volume, updateVolume, isFullScreen }: IProps) {
     return (
         <div className="flex flex-row justify-center items-center ml-1">
             {volume <= 1 && volume > 0.5 && (
-                <i
-                    className="cursor-pointer icon-volume-2 text-gray-400 hover:text-white"
-                    onClick={(e) => {
-                        e.stopPropagation();
+                <Tooltip content="Mute">
+                    <i
+                        className="cursor-pointer icon-volume-2 text-gray-400 hover:text-white"
+                        onClick={(e) => {
+                            e.stopPropagation();
 
-                        updateVolume(0);
-                    }}
-                ></i>
+                            updateVolume(0);
+                        }}
+                    ></i>
+                </Tooltip>
             )}
+
             {volume <= 0.5 && volume > 0 && (
-                <i
-                    className="cursor-pointer icon-volume-1 text-gray-400 hover:text-white"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        updateVolume(0);
-                    }}
-                ></i>
+                <Tooltip content="Mute">
+                    <i
+                        className="cursor-pointer icon-volume-1 text-gray-400 hover:text-white"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            updateVolume(0);
+                        }}
+                    ></i>
+                </Tooltip>
             )}
+
             {volume === 0 && (
-                <i
-                    className="cursor-pointer icon-volume-x text-gray-400 hover:text-white"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        updateVolume(1);
-                    }}
-                ></i>
+                <Tooltip content="Unmute">
+                    <i
+                        className="cursor-pointer icon-volume-x text-gray-400 hover:text-white"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            updateVolume(1);
+                        }}
+                    ></i>
+                </Tooltip>
             )}
+
             <input
                 type="range"
                 value={volume}

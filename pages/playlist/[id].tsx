@@ -4,7 +4,7 @@ import axios from "axios";
 import AppLayout from "@/layouts/appLayout";
 import { SongProps } from "@/interfaces/Song";
 import ListItem from "@/components/ListItem";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useRef, useEffect } from "react";
 import {
@@ -15,8 +15,14 @@ import {
 } from "@/stores/player/currentAudioPlayer";
 import ErrorComponent from "@/components/error";
 import { shadeColor } from "@/configs/utils";
-import CustomImage from "@/components/CustomImage";
-import NavBar from "@/components/backButton";
+import {
+    Dropdown,
+    DropdownTrigger,
+    DropdownMenu,
+    DropdownItem,
+    Button,
+} from "@nextui-org/react";
+import {Image} from "@nextui-org/react";
 
 function Playlist({
     data,
@@ -33,42 +39,6 @@ function Playlist({
         (state: any) => state.player
     );
     const { user } = useSelector((state: any) => state.auth);
-    const [srcollPosition, setScrollPosition] = useState(0);
-
-    const [isScrolling, setScrolling] = useState(false);
-    const dropdown = useRef(null);
-    const [showDropdown, setShowDropdown] = useState(false);
-
-    useEffect(() => {
-        if (!showDropdown) {
-            return;
-        }
-
-        function handleClick(event: any) {
-            // @ts-ignore-comment
-            if (dropdown.current && !dropdown.current.contains(event.target)) {
-                setShowDropdown(false);
-            }
-        }
-
-        window.addEventListener("click", handleClick);
-        return () => window.removeEventListener("click", handleClick);
-    }, [showDropdown]);
-
-    const onScroll = (e: any) => {
-        setScrolling(true);
-        setScrollPosition(e.target.scrollTop);
-    };
-
-    useEffect(() => {
-        if (isScrolling) {
-            setShowDropdown(false);
-        }
-    }, [isScrolling]);
-
-    setTimeout(() => {
-        setScrolling(false);
-    }, 100);
 
     const [playlistName, setPlaylistName] = useState(data.name);
 
@@ -92,16 +62,10 @@ function Playlist({
     }
 
     return (
-        <AppLayout title={data.name} color={data.color} onScroll={onScroll}>
-            <NavBar
-                condition={srcollPosition >= 300}
-                color={data.color}
-                title={data.name}
-            />
-
+        <AppLayout title={data.name} color={data.color}>
             <div
                 style={{ backgroundColor: shadeColor(data.color, -30) }}
-                className=" h-[360px] pt-16 px-8 bg-gradient-to-t from-[#12121250]
+                className=" h-[360px] pt-5 px-8 bg-gradient-to-t from-[#12121250]
        flex items-center mobile:flex-col mobile:h-full 
        tablet:flex-col tablet:h-full mobile:pt-12 tablet:pt-14
        tablet:text-center tablet:pb-3 mobile:pb-3 mobile:text-center"
@@ -117,12 +81,7 @@ function Playlist({
                     }}
                     className="rounded mr-6 tablet:mr-0 w-[230px] min-w-[230px] h-[230px] mobile:mr-0 relative"
                 >
-                    <CustomImage
-                        src={
-                            data.cover_image +
-                            "&auto=format&fit=crop&w=400&q=50&h=400"
-                        }
-                    />
+                    <Image src={data.cover_image} />
                 </div>
                 <div>
                     <p className="uppercase font-ProximaBold text-sm tablet:hidden mobile:hidden">
@@ -149,7 +108,9 @@ function Playlist({
             >
                 <div className="px-6 mobile:px-1">
                     <div className="w-full flex items-center mb-2">
-                        <div
+                        <Button
+                            radius="full"
+                            isIconOnly
                             onClick={() => {
                                 if (playingPlaylist !== data.id) {
                                     dispatch(
@@ -163,8 +124,7 @@ function Playlist({
                                     dispatch(playPause(!isPlaying));
                                 }
                             }}
-                            className="bg-[#2bb540] rounded-full cursor-pointer hover:scale-110
-                     w-[45px] h-[45px] flex justify-center items-center"
+                            className="bg-[#2bb540] hover:scale-110 flex justify-center items-center"
                         >
                             {playingPlaylist !== data.id ? (
                                 <i className="icon-play text-[20px] ml-1 text-black " />
@@ -173,23 +133,18 @@ function Playlist({
                             ) : (
                                 <i className="icon-pause text-[20px] text-black" />
                             )}
-                        </div>
+                        </Button>
+
                         <div className="relative">
-                            <i
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setShowDropdown(!showDropdown);
-                                }}
-                                className="cursor-pointer mx-4 icon-more-horizontal text-[30px]
+                            <Dropdown placement="bottom-start">
+                                <DropdownTrigger>
+                                    <i
+                                        className="cursor-pointer mx-4 icon-more-horizontal text-[30px]
                text-slate-400 hover:text-white "
-                            ></i>
-                            {showDropdown && (
-                                <div
-                                    ref={dropdown}
-                                    className="w-52 bg-[#212121] absolute  rounded shadow 
-             left-2 top-10 z-40"
-                                >
-                                    <div
+                                    ></i>
+                                </DropdownTrigger>
+                                <DropdownMenu>
+                                    <DropdownItem
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             dispatch(
@@ -200,13 +155,13 @@ function Playlist({
                                                     playlist_id: data.id,
                                                 })
                                             );
-                                            setShowDropdown(false);
                                         }}
-                                        className="px-4 rounded py-1.5 hover:bg-[#323232] border-b border-b-[#3e3e3e]"
                                     >
-                                        Rename Playlist
-                                    </div>
-                                    <div
+                                        Rename playlist
+                                    </DropdownItem>
+                                    <DropdownItem
+                                        className="text-danger"
+                                        color="danger"
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             dispatch(
@@ -215,22 +170,20 @@ function Playlist({
                                                     playlist_id: data.id,
                                                 })
                                             );
-                                            setShowDropdown(false);
                                             router.replace("/library");
                                         }}
-                                        className="px-4 rounded py-1.5 hover:bg-[#323232] border-b border-b-[#3e3e3e]"
                                     >
-                                        Delete Playlist
-                                    </div>
-                                </div>
-                            )}
+                                        Delete playlist
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
                         </div>
                     </div>
                 </div>
+
                 <div className="pt-4">
                     {songs.map((song: SongProps, i: number) => (
                         <ListItem
-                            isScrolling={isScrolling}
                             key={song.id}
                             song={song}
                             showNumber={i + 1}

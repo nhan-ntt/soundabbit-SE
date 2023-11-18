@@ -10,12 +10,12 @@ import {
     HomePageState,
     RequestStatus,
 } from "../stores/homePage/homePageSlice";
-import CustomImage from "../components/CustomImage";
 import HorizontalSongsList from "../components/HorizontalSongsList";
 import HorizontalArtistsList from "../components/HorizontalArtistsList";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import ErrorComponent from "@/components/error";
 import { getGreetings } from "@/configs/utils";
+import {Image} from "@nextui-org/react";
 
 const Home: NextPage = () => {
     const {
@@ -77,7 +77,7 @@ const Home: NextPage = () => {
                                 onMouseLeave={() => setColor("black")}
                                 className="flex flex-row items-center
                       font-ProximaBold w-full bg-[#5f5d5d60]
-                      rounded-md cursor-pointer hover:bg-[#5f5d5da1]"
+                      rounded cursor-pointer hover:bg-[#5f5d5da1]"
                             >
                                 <div
                                     style={{
@@ -88,7 +88,7 @@ const Home: NextPage = () => {
                                     className="relative w-20 h-20 mini-laptop:w-16 mini-laptop:h-16
                         rounded-tl-md rounded-bl tablet:w-16 tablet:h-16 mobile:w-14 mobile:h-14"
                                 >
-                                    <CustomImage
+                                    <Image
                                         src={
                                             "https://images3.alphacoders.com/690/690494.jpg&auto=format&fit=crop&w=200&q=50&h=200"
                                         }
