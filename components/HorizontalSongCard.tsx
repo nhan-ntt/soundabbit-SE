@@ -61,10 +61,8 @@ function HorizontalSongCard({
 
                     <Image
                         src={songDemo.cover_image.url}
-                        isZoomed
-                        className="
-                        z-6
-                    w-[200px] h-[200px] relative 
+                        alt="song cover image"
+                        className="z-6 w-[200px] h-[200px] relative 
           mini-laptop:w-[140px] mini-laptop:h-[140px] 
           tablet:w-[130px] tablet:h-[130px] rounded mobile:w-[100px] mobile:h-[100px] object-cover"
                     />

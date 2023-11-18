@@ -2,7 +2,7 @@ import React from "react";
 import { SongProps } from "../interfaces/Song";
 import { Artists } from "../interfaces/artist";
 import { shadeColor } from "../configs/utils";
-import {Image} from "@nextui-org/react";
+import { Image } from "@nextui-org/react";
 
 function HorizontalArtistCard({
     artist,
@@ -31,6 +31,7 @@ function HorizontalArtistCard({
           tablet:w-[130px] tablet:h-[130px] mobile:w-[100px] mobile:h-[100px]"
                 >
                     <Image
+                        alt=""
                         src={
                             "https://images3.alphacoders.com/690/690494.jpg&auto=format&fit=crop&w=400&q=50&h=400"
                         }

@@ -29,6 +29,6 @@ const getRandomArtists = async () => {
     }
 };
 
-const homePageApi = {getRandomArtists};
+const homePageApi = { getRandomArtists };
 
 export default homePageApi;

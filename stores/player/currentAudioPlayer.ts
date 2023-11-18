@@ -8,8 +8,8 @@ const songs: SongProps[] = [
     {
         id: 1,
         name: "Rhyme",
-        audio_link:
-            "https://drive.google.com/uc?id=17ZlrPeRBZoPv0OFA8g0RvR__XIWVPW-4&export=download",
+        audio_link: "https://drive.google.com/uc?id=17ZlrPeRBZoPv0OFA8g0RvR__XIWVPW-4&export=download",
+        streams: 0
     },
 ];
 

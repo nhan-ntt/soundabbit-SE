@@ -166,28 +166,6 @@ function AudioPlayer({ className }: { className: string }) {
     -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage()}, ${seekBarColor}), color-stop(${currentPercentage()}, #777))
   `;
 
-    if (router.pathname === "/playing") {
-        return (
-            <FullScreenPlayer
-                changeSeekBarColor={changeSeekBarColor}
-                isShuffle={isShuffle}
-                isRepeat={isRepeat}
-                isPlaying={isPlaying}
-                toNextSong={toNextSong}
-                toPrevSong={toPrevSong}
-                songProgress={songProgress}
-                songBarStyling={songStyling}
-                audioRef={audioRef}
-                activeSong={activeSongDemo!}
-                onScrubEnd={onScrubEnd}
-                onScrub={onScrub}
-                updateVolume={updateVolume}
-                volume={volume}
-                songStyling={songStyling}
-            />
-        );
-    }
-
     return (
         <div
             onClick={() => router.push("/playing")}
@@ -221,6 +199,7 @@ function AudioPlayer({ className }: { className: string }) {
          relative mini-laptop:w-[40px] mini-laptop:h-[40px]
           mini-laptop:min-w-[40px] mobile:min-w-[35px] mobile:w-[35px]
            mobile:h-[35px] cursor-pointer rounded"
+                            alt=""
                             src={activeSongDemo!.cover_image.url}
                         />
                     </div>

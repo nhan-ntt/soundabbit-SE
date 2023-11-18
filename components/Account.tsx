@@ -10,9 +10,11 @@ import {
 } from "@nextui-org/react";
 import { reset } from "../stores/auth/authSlice";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 
 export default function Account() {
     const dispatch = useDispatch<any>();
+    const router = useRouter();
 
     const logout = () => {
         dispatch(reset());
@@ -31,7 +33,7 @@ export default function Account() {
 
             <DropdownMenu>
                 <DropdownSection content="test" showDivider>
-                    <DropdownItem>Account</DropdownItem>
+                    <DropdownItem onClick={()=> router.push("/account")}>Account</DropdownItem>
                     <DropdownItem>Settings</DropdownItem>
                 </DropdownSection>
                 <DropdownItem onClick={logout}>Log out</DropdownItem>

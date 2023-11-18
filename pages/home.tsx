@@ -15,7 +15,7 @@ import HorizontalArtistsList from "../components/HorizontalArtistsList";
 import { useRouter } from "next/navigation";
 import ErrorComponent from "@/components/error";
 import { getGreetings } from "@/configs/utils";
-import {Image} from "@nextui-org/react";
+import { Image } from "@nextui-org/react";
 
 const Home: NextPage = () => {
     const {
@@ -89,6 +89,7 @@ const Home: NextPage = () => {
                         rounded-tl-md rounded-bl tablet:w-16 tablet:h-16 mobile:w-14 mobile:h-14"
                                 >
                                     <Image
+                                        alt=""
                                         src={
                                             "https://images3.alphacoders.com/690/690494.jpg&auto=format&fit=crop&w=200&q=50&h=200"
                                         }

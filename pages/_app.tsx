@@ -15,6 +15,9 @@ import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 function MyApp({ Component, pageProps }: AppProps) {
+    const router = useRouter();
+    const isKeyboardOpen = useDetectKeyboardOpen();
+
     return (
         <Provider store={store}>
             <NextUIProvider>
@@ -48,63 +51,60 @@ function MyApp({ Component, pageProps }: AppProps) {
                         height={3}
                         options={{ showSpinner: false }}
                     />
+                    {router.pathname !== "/login" &&
+                        router.pathname !== "/register" &&
+                        router.pathname !== "/_error" &&
+                        router.pathname !== "/playing" &&
+                        router.pathname !== "/" && (
+                            <div
+                                className={`bg-[#121212] hidden mobile:block tablet:block 
+      fixed bottom-0 left-0 right-0 w-full pt-2 pb-1 z-20 ${isKeyboardOpen ? "invisible" : "visible"
+                                    }`}
+                            >
+                                <div className="flex flex-row justify-center ">
+                                    <SidebarItem name="home" label="Home" />
+                                    <SidebarItem name="search" label="Search" />
+                                    <SidebarItem
+                                        name="library"
+                                        label="Library"
+                                    />
+                                </div>
+                            </div>
+                        )}
 
                     <Component {...pageProps} />
-                    <AudioPlayerComponent />
+                    <ToastContainer
+                        position="top-center"
+                        autoClose={1000}
+                        hideProgressBar
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="dark"
+                    />
+                    <AddToPlaylistModal />
+                    <div>
+                        {router.pathname !== "/login" &&
+                            router.pathname !== "/register" &&
+                            router.pathname !== "/_error" &&
+                            router.pathname !== "/playing" &&
+                            router.pathname !== "/" ? (
+                            <AudioPlayer
+                                className={
+                                    isKeyboardOpen ? "invisible" : "visible"
+                                }
+                            />
+                        ) : (
+                            <div></div>
+                        )}
+                    </div>
                 </NextThemesProvider>
             </NextUIProvider>
         </Provider>
     );
 }
 
-function AudioPlayerComponent() {
-    const router = useRouter();
-    const isKeyboardOpen = useDetectKeyboardOpen();
-    return (
-        <div>
-            <ToastContainer
-                position="top-center"
-                autoClose={1000}
-                hideProgressBar
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"
-            />
-            <AddToPlaylistModal />
-            {router.pathname !== "/login" &&
-            router.pathname !== "/register" &&
-            router.pathname !== "/_error" &&
-            router.pathname !== "/playing" &&
-            router.pathname !== "/" ? (
-                <AudioPlayer
-                    className={isKeyboardOpen ? "invisible" : "visible"}
-                />
-            ) : (
-                <div></div>
-            )}
-            {router.pathname !== "/login" &&
-                router.pathname !== "/register" &&
-                router.pathname !== "/_error" &&
-                router.pathname !== "/playing" &&
-                router.pathname !== "/" && (
-                    <div
-                        className={`bg-[#121212] hidden mobile:block tablet:block 
-      fixed bottom-0 left-0 right-0 w-full pt-2 pb-1 z-20 ${
-          isKeyboardOpen ? "invisible" : "visible"
-      }`}
-                    >
-                        <div className="flex flex-row justify-center ">
-                            <SidebarItem name="home" label="Home" />
-                            <SidebarItem name="search" label="Search" />
-                            <SidebarItem name="library" label="Library" />
-                        </div>
-                    </div>
-                )}
-        </div>
-    );
-}
 export default MyApp;

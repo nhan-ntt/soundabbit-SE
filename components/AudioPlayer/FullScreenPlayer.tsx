@@ -14,8 +14,6 @@ import {
 import { SongProps } from "@/interfaces/Song";
 import Link from "next/link";
 import LikeButton from "./LikeButton";
-import { shadeColor } from "@/configs/utils";
-import { useRef, useEffect, useState } from "react";
 import {
     Button,
     Dropdown,
@@ -24,24 +22,6 @@ import {
     DropdownTrigger,
     Tooltip,
 } from "@nextui-org/react";
-
-interface IProps {
-    songProgress: number;
-    audioRef: React.MutableRefObject<HTMLAudioElement | null>;
-    activeSong: SongProps;
-    onScrubEnd: () => void;
-    onScrub: (e: any) => void;
-    songBarStyling: any;
-    isShuffle: boolean;
-    isRepeat: boolean;
-    isPlaying: boolean;
-    toPrevSong: () => void;
-    toNextSong: () => void;
-    updateVolume: (e: any) => void;
-    volume: number;
-    songStyling: any;
-    changeSeekBarColor: (e: any) => void;
-}
 
 function FullScreenPlayer({
     activeSong,
@@ -58,13 +38,28 @@ function FullScreenPlayer({
     changeSeekBarColor,
     updateVolume,
     volume,
-}: IProps) {
+}: {
+    songProgress: number;
+    audioRef: React.MutableRefObject<HTMLAudioElement | null>;
+    activeSong: SongProps;
+    onScrubEnd: () => void;
+    onScrub: (e: any) => void;
+    songBarStyling: any;
+    isShuffle: boolean;
+    isRepeat: boolean;
+    isPlaying: boolean;
+    toPrevSong: () => void;
+    toNextSong: () => void;
+    updateVolume: (e: any) => void;
+    volume: number;
+    songStyling: any;
+    changeSeekBarColor: (e: any) => void;
+}) {
     const dispatch = useDispatch();
     const router = useRouter();
 
     return (
         <div
-            style={{ backgroundColor: activeSong!.cover_image.color }}
             className="font-ProximaRegular
         fixed bottom-0 left-0 right-0 top-0 
         select-none overflow-hidden h-screen w-screen max-w-full"
@@ -133,16 +128,6 @@ function FullScreenPlayer({
                                                 <DropdownItem
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        router.push(
-                                                            `/artist/${activeSong.artist_id}`
-                                                        );
-                                                    }}
-                                                >
-                                                    Go to Artist
-                                                </DropdownItem>
-                                                <DropdownItem
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
                                                         dispatch(
                                                             toggleModal({
                                                                 data: true,
@@ -180,23 +165,11 @@ function FullScreenPlayer({
                                         <p
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                if (
-                                                    activeSong?.artist_id == 120
-                                                ) {
-                                                    window.open(
-                                                        `https://anshrathod.com`,
-                                                        "_blank"
-                                                    );
-                                                } else {
-                                                    router.push(
-                                                        `/artist/${activeSong?.artist_id}`
-                                                    );
-                                                }
                                             }}
                                             className="text-gray-400 text-sm mini-laptop:text-sm
                        tablet:text-sm mobile:text-xs hover:underline cursor-pointer"
                                         >
-                                            {activeSong.artist_name}
+                                            png
                                         </p>
                                     </div>
                                     <div className="w-10 h-10 flex items-center justify-center">
@@ -212,7 +185,6 @@ function FullScreenPlayer({
                                         isFullScreen={true}
                                         songProgress={songProgress}
                                         audioRef={audioRef}
-                                        activeSong={activeSong!}
                                         onScrubEnd={onScrubEnd}
                                         onScrub={onScrub}
                                         songBarStyling={songStyling}
@@ -285,7 +257,8 @@ function FullScreenPlayer({
 
 function FullScreenCoverImage({ activeSong, className }: any) {
     return (
-        <div className={
+        <div
+            className={
                 `w-[450px] h-[450px] min-w-[450px]
         relative mx-10 mini-laptop:mx-4
         laptop:w-[400px] laptop:h-[400px] laptop:min-w-[400px]
@@ -297,6 +270,7 @@ function FullScreenCoverImage({ activeSong, className }: any) {
         >
             <Image
                 src={activeSong!.cover_image.url}
+                alt=""
                 className="
 w-[450px] h-[450px] min-w-[450px]
         mini-laptop:mx-4

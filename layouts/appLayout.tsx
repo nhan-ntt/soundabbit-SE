@@ -4,7 +4,7 @@ import SidebarItem from "../components/sidebarItem";
 import { Image } from "@nextui-org/react";
 import Head from "next/head";
 import { useLogin } from "../hooks/useLogin";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { toggleModal } from "@/stores/player/currentAudioPlayer";
 import { shadeColor } from "@/configs/utils";

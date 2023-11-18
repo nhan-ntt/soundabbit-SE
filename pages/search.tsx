@@ -148,6 +148,7 @@ function Search() {
                                                 <div className="shadow-xl relative mobile:w-[70px] rounded mobile:h-[70px] w-24 h-24 rotate-[30deg]">
                                                     <Image
                                                         src={tag.coverImage}
+                                                        alt=""
                                                         className="object-cover rounded mobile:w-[70px] mobile:h-[70px] w-24 h-24" />
                                                 </div>
                                             </div>
@@ -211,6 +212,7 @@ function TopResult({ object, onTap }: any) {
                         >
                             <Image
                                 src={songDemo.cover_image.url}
+                                alt=""
                                 className="rounded"
                             />
                         </div>
@@ -242,6 +244,7 @@ function TopResult({ object, onTap }: any) {
                 >
                     <Image
                         src={object.avatar.url}
+                        alt=""
                         className="rounded-full"
                     />
                 </div>

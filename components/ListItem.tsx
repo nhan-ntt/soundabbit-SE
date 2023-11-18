@@ -27,7 +27,7 @@ function ListItem({
     song: SongProps;
     showNumber?: number;
     onTap: any;
-    playlist: PlaylistProps;
+    playlist?: PlaylistProps;
     queueAction?: boolean;
 }) {
     const { activeSong, queue } = useSelector((state: any) => state.player);
@@ -55,13 +55,12 @@ function ListItem({
                         </p>
                     )}
                     <div>
-                        <div
-                            className="relative w-12 h-12 min-w-12 mx-2 mobile:w-10 mobile:h-10"
-                            style={{
-                                backgroundColor: songDemo.cover_image.color,
-                            }}
-                        >
-                            <Image src={songDemo.cover_image.url} />
+                        <div className="relative w-12 h-12 min-w-12 mx-2 mobile:w-10 mobile:h-10">
+                            <Image
+                                src={songDemo.cover_image.url}
+                                alt=""
+                                className="w-12 h-12 min-w-12 mobile:w-10 mobile:h-10 rounded object-cover"
+                            />
                         </div>
                     </div>
 
@@ -89,23 +88,22 @@ function ListItem({
                         ></i>
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Static Actions">
-                        {queueAction && (
-                            <DropdownItem
-                                onClick={() => {
-                                    if (!queue.includes(song)) {
-                                        dispatch(addToQueue(song));
-                                    } else {
-                                        dispatch(
-                                            removeFromQueue(queue.indexOf(song))
-                                        );
-                                    }
-                                }}
-                            >
-                                {queue.includes(song)
-                                    ? "Remove from Queue"
-                                    : "Add to Queue"}
-                            </DropdownItem>
-                        )}
+                        <DropdownItem
+                            hidden={!queueAction}
+                            onClick={() => {
+                                if (!queue.includes(song)) {
+                                    dispatch(addToQueue(song));
+                                } else {
+                                    dispatch(
+                                        removeFromQueue(queue.indexOf(song))
+                                    );
+                                }
+                            }}
+                        >
+                            {queue.includes(song)
+                                ? "Remove from Queue"
+                                : "Add to Queue"}
+                        </DropdownItem>
 
                         <DropdownItem
                             onClick={() => {

@@ -158,12 +158,13 @@ const Home: NextPage = () => {
                             src={"/landing_page.png"}
                             width="1000"
                             height="500"
+                            alt=""
                         />
                     </div>
                 </div>
                 <div className="overflow-hidden pl-10">
                     <div className="hidden mobile:block relative h-[400px] w-[600px]">
-                        <Image src={"/landing_page.png"} className="rounded" />
+                        <Image src={"/landing_page.png"} className="rounded" alt=""/>
                     </div>
                 </div>
             </div>

@@ -81,7 +81,7 @@ function Playlist({
                     }}
                     className="rounded mr-6 tablet:mr-0 w-[230px] min-w-[230px] h-[230px] mobile:mr-0 relative"
                 >
-                    <Image src={data.cover_image} />
+                    <Image src={data.cover_image} alt=""/>
                 </div>
                 <div>
                     <p className="uppercase font-ProximaBold text-sm tablet:hidden mobile:hidden">

@@ -65,6 +65,7 @@ function Library() {
                                                 src=""
                                                 width="300"
                                                 height="300"
+                                                alt="playlist cover image"
                                             />
                                         </div>
 

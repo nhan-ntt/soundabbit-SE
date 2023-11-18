@@ -1,14 +1,5 @@
 import React from "react";
 
-interface IProps {
-    songProgress: number;
-    audioRef: React.MutableRefObject<HTMLAudioElement | null>;
-    onScrubEnd: () => void;
-    onScrub: (e: any) => void;
-    songBarStyling: any;
-    isFullScreen: boolean;
-    changeSeekBarColor: (e: string) => void;
-}
 function SeekBar({
     songProgress: songProgress,
     audioRef,
@@ -17,15 +8,24 @@ function SeekBar({
     songBarStyling: songBarStyling,
     isFullScreen,
     changeSeekBarColor,
-}: IProps) {
-
+}: {
+    songProgress: number;
+    audioRef: React.MutableRefObject<HTMLAudioElement | null>;
+    onScrubEnd: () => void;
+    onScrub: (e: any) => void;
+    songBarStyling: any;
+    isFullScreen: boolean;
+    changeSeekBarColor: (e: string) => void;
+}) {
     const getTime = (time: any) => {
-        return `${Math.floor(time / 60)}:${`0${Math.floor(time % 60)}`.slice(-2)}`;
-    }
+        return `${Math.floor(time / 60)}:${`0${Math.floor(time % 60)}`.slice(
+            -2
+        )}`;
+    };
 
     const getDuration = () => {
         return audioRef.current?.duration || 0;
-    }
+    };
 
     if (isFullScreen) {
         return (

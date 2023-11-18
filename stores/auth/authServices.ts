@@ -24,18 +24,13 @@ const login = async (userData: any) => {
     try {
         const response = await axios.post(`${API_URL}/auth/login`, userData);
 
-        const user = {
-            id: response.data.id,
-            token: response.data.token,
-        };
-
         if (response.data) {
-            setCookie("user", JSON.stringify(user), {
+            setCookie("user", JSON.stringify(response.data), {
                 maxAge: 60 * 60 * 24 * 30,
             });
         }
 
-        return user;
+        return response.data;
     } catch (error: any) {
         if (error.response) {
             throw {
