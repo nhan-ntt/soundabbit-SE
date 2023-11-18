@@ -1,7 +1,7 @@
 import { AxiosError } from "./../../node_modules/axios/index.d";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import authService from "./authServices";
-import { CookieValueTypes, getCookie } from "cookies-next";
+import { CookieValueTypes, deleteCookie, getCookie } from "cookies-next";
 
 export enum AuthStatus {
     Loading,
@@ -37,6 +37,7 @@ const authSlice = createSlice({
     initialState: initalState,
     reducers: {
         reset: (state) => {
+            deleteCookie("user");
             state.status = AuthStatus.Initial;
             state.user = null;
             state.message = "";
