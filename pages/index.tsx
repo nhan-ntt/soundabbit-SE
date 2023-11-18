@@ -1,11 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import type { NextPage } from "next";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
-import {Image} from "@nextui-org/react";
+import { Link, Button, Image } from "@nextui-org/react";
 import Head from "next/head";
 
 export async function getServerSideProps(ctx: any) {
@@ -76,7 +75,7 @@ const Home: NextPage = () => {
                     itemProp="image"
                     content="https://Rhyme.vercel.app/Rhyme_intro_card.png"
                 />
-                <title>Rhyme - Download & use free music anywhere.</title>
+                <title>Rhyme - Free music anywhere.</title>
             </Head>
 
             <div className="fixed top-0 left-0 right-0 z-40 bg-[#0d0d0d]">
@@ -95,17 +94,21 @@ const Home: NextPage = () => {
                             Rhyme
                         </h1>
                     </div>
-                    <div className="flex uppercase text-sm">
-                        <Link href={"/login"}>
-                            <div className="cursor-pointer mx-2 hover:underline text-slate-100 hover:text-white">
-                                <p>Login</p>
-                            </div>
-                        </Link>
-                        <Link href={"/register"}>
-                            <div className="cursor-pointer mx-2 hover:underline text-slate-100 hover:text-white">
-                                <p>Sign up</p>
-                            </div>
-                        </Link>
+                    <div className="flex gap-3 ">
+                        <Button
+                            variant="bordered"
+                            className="text-bold text-sm"
+                            onClick={() => router.push("/login")}
+                        >
+                            Login
+                        </Button>
+                        <Button
+                            variant="bordered"
+                            className="text-bold text-sm"
+                            onClick={() => router.push("/register")}
+                        >
+                            Register
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -132,18 +135,17 @@ const Home: NextPage = () => {
            leading-[5rem] mini-laptop:text-[60px] tablet:text-[50px] mini-laptop:leading-[4rem]
             tablet:leading-[4rem] mobile:text-[35px] mobile:leading-[2.5rem]"
                     >
-                        Download & use Free
-                        <br /> Music anywhere!
+                        Free Music anywhere!
                     </h1>
                     <p className="text-center mt-4 max-w-[600px] mx-auto text-[18px] px-8">
-                        Explore & download free stock music and use it anywhere
-                        you like with spotify web player experience.
+                        Explore & download free stock music
                     </p>
-                    <Link href={"/register"}>
-                        <div className="cursor-pointer shadow-md px-5 py-2 rounded-3xl mt-6 bg-[#2bb540] w-fit">
-                            Get started
-                        </div>
-                    </Link>
+                    <Button
+                        className="cursor-pointer shadow-md px-5 py-2 rounded-3xl font-bold text-lg mt-6 bg-[#2bb540] w-fit"
+                        onClick={() => router.push("/register")}
+                    >
+                        Get started
+                    </Button>
                 </div>
             </div>
             <div>
@@ -156,18 +158,12 @@ const Home: NextPage = () => {
                             src={"/landing_page.png"}
                             width="1000"
                             height="500"
-                            className="rounded noDrag m-0 p-0"
-                            alt="image"
                         />
                     </div>
                 </div>
                 <div className="overflow-hidden pl-10">
                     <div className="hidden mobile:block relative h-[400px] w-[600px]">
-                        <Image
-                            src={"/landing_page.png"}
-                            className="rounded noDrag m-0 p-0"
-                            alt="image"
-                        />
+                        <Image src={"/landing_page.png"} className="rounded" />
                     </div>
                 </div>
             </div>

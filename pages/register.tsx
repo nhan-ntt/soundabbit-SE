@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
 import Head from "next/head";
-import {Image} from "@nextui-org/react";
+import { Button, Image } from "@nextui-org/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
@@ -190,7 +190,7 @@ const Register: NextPage = () => {
                                 </p>
                             </div>
 
-                            <button
+                            <Button
                                 disabled={status == AuthStatus.Loading}
                                 className="w-full mt-10  p-2 rounded-3xl bg-[#2bb540] font-ProximaBold
                 uppercase hover:bg-[#289e39] disabled:hover:bg-opacity-20 disabled:bg-opacity-20 disabled:text-gray-300"
@@ -201,7 +201,7 @@ const Register: NextPage = () => {
                                 ) : (
                                     <div>register</div>
                                 )}
-                            </button>
+                            </Button>
                             <p
                                 className="text-center mt-6 font-thin font-ProximaRegular
                text-gray-100 text-xs uppercase tracking-wider"
