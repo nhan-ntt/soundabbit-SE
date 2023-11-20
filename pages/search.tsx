@@ -1,23 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AppLayout from "@/layouts/appLayout";
 import algoliaClient from "../configs/algolia";
 import { toSongProps, SongProps } from "../interfaces/Song";
 import { useState } from "react";
 import { Artists } from "../interfaces/artist";
-import { tags } from "../interfaces/genres";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveSong } from "../stores/player/currentAudioPlayer";
 import { PlayPauseButton } from "../components/HorizontalSongCard";
 import ListItem from "../components/ListItem";
 import Link from "next/link";
-import {Image} from "@nextui-org/react";
+import { Image } from "@nextui-org/react";
+import { RequestStatus } from "@/stores/homePage/homePageSlice";
+import { GenresState, getGenres } from "@/stores/genres/genresSlice";
 
 function Search() {
     const [searchResult, setSearchResult] = useState<SongProps[]>([]);
     const [artists, setArtists] = useState<Artists[]>([]);
+    const { status, genres }: GenresState = useSelector((state: any) => state.genres);
     const [topResult, setTopResult] = useState<any>();
     const [isFocus, setFocus] = useState(false);
-    const dispatch = useDispatch();
+
+    const dispatch = useDispatch<any>();
+
+    useEffect(() => {
+        if (status !== RequestStatus.Success) {
+            console.log("loading genres");
+            dispatch(getGenres());
+        }
+    }, []);
 
     // get response from algolia
     const searchAlgolia = async (query: string) => {
@@ -123,31 +133,30 @@ function Search() {
                     <div className="pt-28 mobile:pt-20 tablet:pt-20"></div>
 
                     <h1 className="mobile:text-xl text-2xl font-ProximaBold px-8 mini-laptop:px-4 mobile:px-4 ">
-                        Browse all
+                        Genres
                     </h1>
                     <div
                         className="grid grid-cols-5 laptop:grid-cols-4 mini-laptop:grid-cols-3 mini-laptop:gap-4
            laptop:gap-4 gap-6 px-8 laptop:px-6 mini-laptop:px-4
             pt-4 select-none tablet:grid-cols-2 mobile:grid-cols-2 mobile:px-4 mobile:gap-4"
                     >
-                        {tags.map((tag: any) => {
+                        {genres.map((genre: any) => {
                             return (
-                                <Link href={`/genre/${tag.tag}`} key={tag.tag}>
+                                <Link href={`/genre/${genre.id}`} key={genre.id}>
                                     <div
                                         className="hover:scale-105 transition-all cursor-pointer relative h-44 tablet:h-40 mobile:h-28 overflow-hidden rounded "
                                         style={{
-                                            backgroundColor:
-                                                "#" + tag.color.toString(16),
+                                            backgroundColor: "black"
                                         }}
                                     >
                                         <div className="p-4 capitalize">
                                             <p className="font-ProximaBold text-xl">
-                                                {tag.tag}
+                                                {genre.name}
                                             </p>
                                             <div className="absolute -right-4 -bottom-2">
                                                 <div className="shadow-xl relative mobile:w-[70px] rounded mobile:h-[70px] w-24 h-24 rotate-[30deg]">
                                                     <Image
-                                                        src={tag.coverImage}
+                                                        src={genre.coverImage}
                                                         alt=""
                                                         className="object-cover rounded mobile:w-[70px] mobile:h-[70px] w-24 h-24" />
                                                 </div>

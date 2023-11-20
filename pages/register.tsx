@@ -105,7 +105,7 @@ const Register: NextPage = () => {
                                     className="font-ProximaRegular uppercase
                    text-gray-300 px-2 my-1 text-xs"
                                 >
-                                    Username
+                                    Your Name
                                 </label>
                                 <input
                                     type="text"

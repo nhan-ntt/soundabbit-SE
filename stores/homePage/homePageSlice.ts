@@ -27,7 +27,7 @@ const homePageSlice = createSlice({
     name: "homePage",
     initialState: initialState,
     reducers: {
-        reset: () => {},
+        reset: () => { },
     },
     extraReducers: (builder) => {
         builder.addCase(getRecentUsers.pending, (state, action) => {
@@ -47,8 +47,7 @@ const homePageSlice = createSlice({
 });
 
 export const getRecentUsers = createAsyncThunk("homePage/random", async () => {
-    const data = await homePageApi.getRandomArtists();
-    return data;
+    return await homePageApi.getRandomArtists();
 });
 
 export const { reset } = homePageSlice.actions;

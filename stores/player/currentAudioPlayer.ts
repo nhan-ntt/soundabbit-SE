@@ -89,7 +89,6 @@ const playerSlice = createSlice({
                 state.playingPlaylist = "";
             }
         },
-
         nextSong: (state, action) => {
             state.currentIndex = action.payload;
             state.activeSong = state.queue[action.payload];
@@ -130,12 +129,10 @@ const playerSlice = createSlice({
             }
             state.queue = state.queue;
         },
-
         toggleModal: (state, action) => {
             state.isModalOpen = action.payload.data;
             state.passedDataToModal = action.payload;
         },
-
         setVolume: (state, action) => {
             state.volume = action.payload;
         },
