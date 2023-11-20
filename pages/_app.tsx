@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
-import store from "../stores/store";
+import { store, persistor } from "@/stores/store";
 import PagesProgressBar from "nextjs-progressbar";
 import { useRouter } from "next/router";
 import AudioPlayer from "@/components/AudioPlayer/AudioPlayer";
@@ -14,6 +14,7 @@ import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider } from "next-themes";
 import AudioHandler from "@/components/AudioHandler";
 import MobileMenu from "@/components/MobileMenu";
+import { PersistGate } from "redux-persist/integration/react";
 
 function App({ Component, pageProps }: AppProps) {
     const router = useRouter();
@@ -22,55 +23,57 @@ function App({ Component, pageProps }: AppProps) {
     return (
         <Provider store={store}>
             <NextUIProvider navigate={router.push}>
-                <ThemeProvider attribute="class" defaultTheme="dark">
-                    <Head>
-                        <link
-                            rel="preload"
-                            href="/rhyme-icons.ttf"
-                            as="font"
-                            crossOrigin=""
-                            type="font/ttf"
+                <PersistGate loading={null} persistor={persistor}>
+                    <ThemeProvider attribute="class" defaultTheme="dark">
+                        <Head>
+                            <link
+                                rel="preload"
+                                href="/rhyme-icons.ttf"
+                                as="font"
+                                crossOrigin=""
+                                type="font/ttf"
+                            />
+                        </Head>
+
+                        <PagesProgressBar
+                            color="#2bb540"
+                            height={3}
+                            options={{ showSpinner: false }}
                         />
-                    </Head>
 
-                    <PagesProgressBar
-                        color="#2bb540"
-                        height={3}
-                        options={{ showSpinner: false }}
-                    />
+                        {![
+                            "/login",
+                            "/register",
+                            "/_error",
+                            "/playing",
+                            "/",
+                        ].includes(router.pathname) && (
+                                <>
+                                    <MobileMenu isHidden={isKeyboardOpen} />
+                                    <AudioPlayer isHidden={isKeyboardOpen} />
+                                </>
+                            )}
 
-                    {![
-                        "/login",
-                        "/register",
-                        "/_error",
-                        "/playing",
-                        "/",
-                    ].includes(router.pathname) && (
-                        <>
-                            <MobileMenu isHidden={isKeyboardOpen} />
-                            <AudioPlayer isHidden={isKeyboardOpen} />
-                        </>
-                    )}
+                        <Component {...pageProps} />
 
-                    <Component {...pageProps} />
+                        <ToastContainer
+                            position="top-center"
+                            autoClose={1000}
+                            hideProgressBar
+                            newestOnTop={false}
+                            closeOnClick
+                            rtl={false}
+                            pauseOnFocusLoss
+                            draggable
+                            pauseOnHover
+                            theme="dark"
+                        />
 
-                    <ToastContainer
-                        position="top-center"
-                        autoClose={1000}
-                        hideProgressBar
-                        newestOnTop={false}
-                        closeOnClick
-                        rtl={false}
-                        pauseOnFocusLoss
-                        draggable
-                        pauseOnHover
-                        theme="dark"
-                    />
+                        <AddToPlaylistModal />
 
-                    <AddToPlaylistModal />
-
-                    <AudioHandler />
-                </ThemeProvider>
+                        <AudioHandler />
+                    </ThemeProvider>
+                </PersistGate>
             </NextUIProvider>
         </Provider>
     );
