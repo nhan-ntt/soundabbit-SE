@@ -1,15 +1,18 @@
+import React from "react";
 import type { NextPage } from "next";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
 import Head from "next/head";
-import { Button, Image } from "@nextui-org/react";
-import Link from "next/link";
+import { Button, Image, Link, Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { register, AuthStatus, reset } from "../stores/auth/authSlice";
 import { useEffect } from "react";
+import { EyeSlashFilledIcon } from "@/components/icons/EyeSlashFilledIcon";
+import { EyeFilledIcon } from "@/components/icons/EyeFilledIcon";
+import InputPassword from "@/components/InputPassword";
 
 const Register: NextPage = () => {
     const { status, user, message } = useSelector((state: any) => state.auth);
@@ -27,6 +30,8 @@ const Register: NextPage = () => {
             .required("Confirm Password is required"),
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
+    const [isVisible, setIsVisible] = React.useState(false);
+    const toggleVisibility = () => setIsVisible(!isVisible);
 
     const {
         register: registerForm,
@@ -87,7 +92,7 @@ const Register: NextPage = () => {
                             </h1>
                         </div>
 
-                        <h1 className="mobile:text-xl text-3xl w-80 mobile:w-64 mobile:text-center mt-10 mb-8 font-extrabold font-ProximaBold">
+                        <h1 className="mobile:text-xl text-3xl w-80 mobile:w-64 mobile:text-center mt-10 mb-10 font-extrabold font-ProximaBold">
                             Download & listen free music lifetime.
                         </h1>
                         {status == AuthStatus.Error && (
@@ -98,119 +103,52 @@ const Register: NextPage = () => {
                                 {message}
                             </p>
                         )}
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <div className="flex flex-col">
-                                <label
-                                    htmlFor="username"
-                                    className="font-ProximaRegular uppercase
-                   text-gray-300 px-2 my-1 text-xs"
-                                >
-                                    Your Name
-                                </label>
-                                <input
-                                    type="text"
-                                    {...registerForm("username")}
-                                    className="bg-[#3B3B3B] p-2 rounded-3xl 
-                  border-none text-white outline-none 
-                  px-4 py-2 mt-1  w-80 mobile:w-64"
-                                />
-                                <p
-                                    className="text-sm font-ProximaRegular
-                   font-thin text-red-600"
-                                >
-                                    {errors.username?.message}
-                                </p>
-                            </div>
-
-                            <div className="flex flex-col">
-                                <label
-                                    htmlFor="email"
-                                    className="font-ProximaRegular uppercase
-                   text-gray-300 px-2 my-1 text-xs"
-                                >
-                                    Email
-                                </label>
-                                <input
-                                    type="text"
-                                    {...registerForm("email")}
-                                    className="bg-[#3B3B3B] p-2 rounded-3xl 
-                  border-none text-white outline-none 
-                  px-4 py-2 mt-1  w-80 mobile:w-64"
-                                />
-                                <p
-                                    className="text-sm font-ProximaRegular
-                   font-thin text-red-600"
-                                >
-                                    {errors.email?.message}
-                                </p>
-                            </div>
-                            <div className="flex-col flex">
-                                <label
-                                    htmlFor="password"
-                                    className="font-ProximaRegular uppercase text-gray-300
-                   px-2 my-1 text-xs"
-                                >
-                                    Password
-                                </label>
-
-                                <input
-                                    type="password"
-                                    {...registerForm("password")}
-                                    className="bg-[#3B3B3B]  rounded-3xl border-none
-                   text-white outline-none py-2 px-4 w-80 mt-1 mobile:w-64"
-                                />
-                                <p
-                                    className="text-sm font-ProximaRegular
-                   font-thin text-red-600 mt-2"
-                                >
-                                    {errors.password?.message}
-                                </p>
-                            </div>
-
-                            <div className="flex-col flex">
-                                <label
-                                    htmlFor="password"
-                                    className="font-ProximaRegular uppercase text-gray-300
-                   px-2 my-1 text-xs"
-                                >
-                                    Confirm Password
-                                </label>
-
-                                <input
-                                    type="password"
-                                    {...registerForm("confirmPassword")}
-                                    className="bg-[#3B3B3B]  rounded-3xl border-none
-                   text-white outline-none py-2 px-4 w-80 mt-1 mobile:w-64"
-                                />
-                                <p
-                                    className="text-sm font-ProximaRegular
-                   font-thin text-red-600 mt-2"
-                                >
-                                    {errors.confirmPassword?.message}
-                                </p>
-                            </div>
+                        <form
+                            onSubmit={handleSubmit(onSubmit)}
+                            className="flex flex-col gap-5"
+                        >
+                            <Input
+                                label="Your name"
+                                type="text"
+                                variant="bordered"
+                                errorMessage={errors.username?.message}
+                                {...registerForm("username")}
+                                className="w-80 mobile:w-64"
+                            />
+                            <Input
+                                label="Email"
+                                type="text"
+                                variant="bordered"
+                                errorMessage={errors.email?.message}
+                                {...registerForm("email")}
+                                className="w-80 mobile:w-64"
+                            />
+                            <InputPassword
+                                label="Password"
+                                register={registerForm("password")}
+                                errorMessage={errors.password?.message}
+                            />
+                            <InputPassword
+                                label="Confirm Password"
+                                register={registerForm("confirmPassword")}
+                                errorMessage={errors.confirmPassword?.message}
+                            />
 
                             <Button
                                 disabled={status == AuthStatus.Loading}
-                                className="w-full mt-10  p-2 rounded-3xl bg-[#2bb540] font-ProximaBold
-                uppercase hover:bg-[#289e39] disabled:hover:bg-opacity-20 disabled:bg-opacity-20 disabled:text-gray-300"
+                                className="tracking-wider bg-[#2bb540] uppercase font-bold"
                                 type="submit"
                             >
                                 {status == AuthStatus.Loading ? (
                                     <span className="inline-loader"></span>
                                 ) : (
-                                    <div>register</div>
+                                    <div>Register</div>
                                 )}
                             </Button>
-                            <p
-                                className="text-center mt-6 font-thin font-ProximaRegular
-               text-gray-100 text-xs uppercase tracking-wider"
-                            >
+                            <p>
                                 Already have an account?{" "}
-                                <Link href="/login">
-                                    <span className="cursor-pointer text-[#2bb540] font-ProximaBold tracking-widest">
-                                        Login
-                                    </span>
+                                <Link href="/login" className="text-[#2bb540]">
+                                    Login
                                 </Link>
                             </p>
                         </form>
