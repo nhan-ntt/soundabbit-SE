@@ -4,8 +4,6 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { EyeSlashFilledIcon } from "@/components/icons/EyeSlashFilledIcon";
-import { EyeFilledIcon } from "@/components/icons/EyeFilledIcon";
 
 import Head from "next/head";
 import { Button, Image, Link, Input } from "@nextui-org/react";
@@ -19,8 +17,6 @@ const Login: NextPage = () => {
     const { status, user, message } = useSelector((state: any) => state.auth);
     const dispatch = useDispatch<any>();
     const router = useRouter();
-    const [isVisible, setIsVisible] = React.useState(false);
-    const toggleVisibility = () => setIsVisible(!isVisible);
 
     useEffect(() => {
         if (user || status == AuthStatus.Success) {

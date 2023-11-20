@@ -2,20 +2,13 @@ import React, { useEffect } from "react";
 import AppLayout from "@/layouts/appLayout";
 import axios from "axios";
 import API_URL from "@/configs/apiUrl";
-import { Artists } from "@/interfaces/artist";
-import { useParams, useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setActiveSong } from "../../stores/player/currentAudioPlayer";
 import { SongProps } from "@/interfaces/Song";
 import ListItem from "@/components/ListItem";
-import { GenreProp, tags } from "@/interfaces/genres";
-import HorizontalArtistsList from "@/components/HorizontalArtistsList";
-import { useState } from "react";
+import { GenreProp } from "@/interfaces/genres";
 import { capitalize } from "@/configs/utils";
 import ErrorComponent from "@/components/error";
-import { RequestStatus } from "@/stores/homePage/homePageSlice";
-import { GenresState, getGenres } from "@/stores/genres/genresSlice";
-import { useSelector } from "react-redux";
 
 function GenrePage({
     genre,
