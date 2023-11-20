@@ -1,7 +1,7 @@
 import React from "react";
 import AppLayout from "@/layouts/appLayout";
 import axios from "axios";
-import API_URL from "@/configs/apiUrl";
+import API_URL from "@/config/apiUrl";
 import { Artists } from "@/interfaces/artist";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +12,7 @@ import {
 import { SongProps } from "@/interfaces/Song";
 import ListItem from "@/components/ListItem";
 import HorizontalSongsList from "@/components/HorizontalSongsList";
-import { shadeColor } from "@/configs/utils";
+import { shadeColor } from "@/config/utils";
 import { useState } from "react";
 import ErrorComponent from "@/components/error";
 import { Image } from "@nextui-org/react";
@@ -51,7 +51,7 @@ function ArtistProfile({
                             </p>
                         </div>
                         <h1
-                            className="text-[70px] font-ProximaBold laptop:text-[60px]
+                            className="text-[70px] laptop:text-[60px]
             mini-laptop:text-[60px] tablet:text-[45px] mobile:text-[40px]"
                         >
                             {artist.name}
@@ -64,7 +64,7 @@ function ArtistProfile({
 
             <div>
                 <div className="pt-6 px-8 tablet:px-6 mobile:px-5">
-                    <h1 className="text-2xl font-ProximaBold">Songs</h1>
+                    <h1 className="text-2xl ">Songs</h1>
                     <div className="pt-4">
                         {songs?.map((song: SongProps, i: number) => (
                             <ListItem

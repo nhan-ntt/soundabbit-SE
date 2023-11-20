@@ -1,9 +1,6 @@
-const { nextui } = require("@nextui-org/react");
+import { nextui } from "@nextui-org/theme";
 
-// /** @type {import('tailwindcss').Config} */
 module.exports = {
-    // darkMode: 'class',
-
     content: [
         "./pages/**/*.{js,ts,jsx,tsx}",
         "./components/**/*.{js,ts,jsx,tsx}",
@@ -13,10 +10,6 @@ module.exports = {
     theme: {
         container: {
             center: true,
-        },
-        fontFamily: {
-            ProximaRegular: ["ProximaNova Regular"],
-            ProximaBold: ["ProximaNova Bold"],
         },
         screens: {
             mobile: {

@@ -1,16 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppLayout from "@/layouts/appLayout";
 import { useSelector } from "react-redux";
 import { Image } from "@nextui-org/react";
 import Link from "next/link";
+import {
+    PlaylistsStatus,
+    getPlaylists,
+} from "@/stores/player/currentAudioPlayer";
+import { useDispatch } from "react-redux";
 
 function Library() {
-    const { liked, playlists } = useSelector((state: any) => state.player);
+    const { playlists, playlistStatus } = useSelector(
+        (state: any) => state.player
+    );
+
+    const { user } = useSelector((state: any) => state.auth);
+
+    const dispatch = useDispatch<any>();
+
+    useEffect(() => {
+        if (playlistStatus != PlaylistsStatus.success) {
+            dispatch(getPlaylists(user.token));
+        }
+    }, []);
 
     return (
-        <AppLayout title="Your Library" color="#2bb540">
+        <AppLayout>
             <div className="w-full min-h-[1000px] px-6 pt-5 mobile:px-4 ">
-                <h1 className="text-[70px] font-ProximaBold text-white mb-5 px-2 mobile:px-0 mobile:text-[40px]">
+                <h1 className="text-[70px] text-white mb-5 px-2 mobile:px-0 mobile:text-[40px]">
                     Library
                 </h1>
                 <div
@@ -62,7 +79,7 @@ function Library() {
                                             className="p-0 m-0 rounded"
                                         >
                                             <Image
-                                                src=""
+                                                src="https://images3.alphacoders.com/690/690494.jpg"
                                                 width="300"
                                                 height="300"
                                                 alt="playlist cover image"

@@ -33,8 +33,9 @@ export default function Account() {
 
             <DropdownMenu>
                 <DropdownSection content="test" showDivider>
-                    <DropdownItem onClick={()=> router.push("/account")}>Account</DropdownItem>
-                    <DropdownItem>Settings</DropdownItem>
+                    <DropdownItem onClick={() => router.push("/account")}>
+                        Account
+                    </DropdownItem>
                 </DropdownSection>
                 <DropdownItem onClick={logout}>Log out</DropdownItem>
             </DropdownMenu>

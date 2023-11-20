@@ -2,18 +2,13 @@ import { AxiosError } from "./../../node_modules/axios/index.d";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import authService from "./authServices";
 import { CookieValueTypes, deleteCookie, getCookie } from "cookies-next";
+import { UserProps } from "@/interfaces/user";
 
 export enum AuthStatus {
     Loading,
     Error,
     Success,
     Initial,
-}
-
-export interface UserProps {
-    username: string;
-    id: string;
-    token: string;
 }
 
 export interface StateProps {
@@ -74,8 +69,7 @@ export const register = createAsyncThunk(
     "auth/register",
     async (user: any, thunkAPI) => {
         try {
-            const data = await authService.register(user);
-            return data;
+            return await authService.register(user);
         } catch (error: any) {
             if (error.message) {
                 const message: string = error.message;

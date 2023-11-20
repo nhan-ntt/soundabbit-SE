@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
 import AppLayout from "@/layouts/appLayout";
 import axios from "axios";
-import API_URL from "@/configs/apiUrl";
+import API_URL from "@/config/apiUrl";
 import { useDispatch } from "react-redux";
 import { setActiveSong } from "../../stores/player/currentAudioPlayer";
 import { SongProps } from "@/interfaces/Song";
 import ListItem from "@/components/ListItem";
 import { GenreProp } from "@/interfaces/genres";
-import { capitalize } from "@/configs/utils";
 import ErrorComponent from "@/components/error";
 
 function GenrePage({
@@ -30,23 +29,23 @@ function GenrePage({
     }
 
     return (
-        <AppLayout title={capitalize(genre!.name)}>
+        <AppLayout>
             <div className="px-10 pt-32 mobile:pt-20 mini-laptop:px-6 tablet:px-6 mobile:px-4">
                 <h1
                     className="pb-6 text-[70px] laptop:text-[60px] 
-            mini-laptop:text-[60px] tablet:text-[45px] mobile:text-[40px] capitalize font-ProximaBold"
+            mini-laptop:text-[60px] tablet:text-[45px] mobile:text-[40px] capitalize "
                 >
                     {genre!.name}
                 </h1>
             </div>
             <div className="px-8 mini-laptop:px-6 tablet:px-6 mobile:px-4">
                 {songs ? (
-                    <h4 className="pt-8 font-ProximaBold pb-6 text-gray-400">
+                    <h4 className="pt-8 pb-6 text-gray-400">
                         Songs:
                     </h4>
 
                 ) : (
-                    <h4 className="pt-8 font-ProximaBold pb-6 text-gray-400">
+                    <h4 className="pt-8 pb-6 text-gray-400">
                         Genre do not have any song
                     </h4>
 

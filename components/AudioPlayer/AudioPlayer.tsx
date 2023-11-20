@@ -17,7 +17,7 @@ import Buttons from "./Buttons";
 import { useRouter } from "next/navigation";
 import { Image } from "@nextui-org/react";
 
-function AudioPlayer({ className }: { className: string }) {
+function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
     const router = useRouter();
     const {
         isPlaying,
@@ -43,7 +43,6 @@ function AudioPlayer({ className }: { className: string }) {
     const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>();
     const [seekBarColor, setSeekBarColor] = useState("#fff");
     const changeSeekBarColor = (color: string) => setSeekBarColor(color);
-
 
     const toNextSong = () => {
         if (isShuffle) {
@@ -81,9 +80,7 @@ function AudioPlayer({ className }: { className: string }) {
     };
 
     const currentPercentage = () => {
-        return duration
-            ? `${(songProgress / duration) * 100}%`
-            : "0%";
+        return duration ? `${(songProgress / duration) * 100}%` : "0%";
     };
 
     const songStyling = `
@@ -99,7 +96,7 @@ function AudioPlayer({ className }: { className: string }) {
      mobile:py-1 mobile:px-2 z-20
      mobile:bottom-12 tablet:bottom-12
       bg-[#121212] 
-      select-none ${className}`}
+      select-none ${isHidden ? "invisible" : "visible"}`}
         >
             <div
                 className="flex flex-row 

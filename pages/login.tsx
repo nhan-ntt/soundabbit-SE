@@ -85,13 +85,13 @@ const Login: NextPage = () => {
                             />
                             <h1
                                 className="text-center uppercase mx-2 
-              tracking-wider font-ProximaBold"
+              tracking-wider "
                             >
                                 Rhyme
                             </h1>
                         </div>
 
-                        <h1 className="mobile:text-xl text-3xl w-80 mb-10 mobile:w-64 mobile:text-center mt-10 font-extrabold font-ProximaBold">
+                        <h1 className="mobile:text-xl text-3xl w-80 mb-10 mobile:w-64 mobile:text-center mt-10 font-extrabold ">
                             Download & listen free music lifetime.
                         </h1>
                         {status == AuthStatus.Error && (

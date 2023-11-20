@@ -1,20 +1,22 @@
 import React from "react";
-import API_URL from "@/configs/apiUrl";
+import API_URL from "@/config/apiUrl";
 import axios from "axios";
 import AppLayout from "@/layouts/appLayout";
 import { SongProps } from "@/interfaces/Song";
 import ListItem from "@/components/ListItem";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useRef, useEffect } from "react";
 import {
+    PlaylistsStatus,
     deletePlaylist,
+    getPlaylists,
     playPause,
     setActiveSong,
     toggleModal,
 } from "@/stores/player/currentAudioPlayer";
 import ErrorComponent from "@/components/error";
-import { shadeColor } from "@/configs/utils";
+import { shadeColor } from "@/config/utils";
 import {
     Dropdown,
     DropdownTrigger,
@@ -22,36 +24,36 @@ import {
     DropdownItem,
     Button,
 } from "@nextui-org/react";
-import {Image} from "@nextui-org/react";
+import { Image } from "@nextui-org/react";
+import { PlaylistProps } from "@/interfaces/playlist";
 
 function Playlist({
-    data,
     songs,
     success,
 }: {
     success: boolean;
-    data: any;
     songs: SongProps[];
 }) {
     const router = useRouter();
     const dispatch = useDispatch<any>();
-    const { isPlaying, playingPlaylist, playlists } = useSelector(
-        (state: any) => state.player
-    );
-    const { user } = useSelector((state: any) => state.auth);
+    const params = useParams();
 
-    const [playlistName, setPlaylistName] = useState(data.name);
+    const { isPlaying, playingPlaylist, playlists, playlistStatus } =
+        useSelector((state: any) => state.player);
+    const { user } = useSelector((state: any) => state.auth);
+    const [playlist, setPlaylist] = useState<PlaylistProps>();
 
     useEffect(() => {
-        const renamedPlaylistName = playlists.find(
-            (playlist: any) => playlist.id == data.id
-        );
-
-        if (renamedPlaylistName) {
-            setPlaylistName(renamedPlaylistName.name);
+        if (playlistStatus != PlaylistsStatus.success) {
+            dispatch(getPlaylists(user.token));
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [playlists]);
+    }, []);
+
+    useEffect(() => {
+        setPlaylist(
+            playlists.find((playlist: any) => playlist.id == params.id)
+        );
+    }, [playlists, params]);
 
     if (!success) {
         return (
@@ -62,62 +64,47 @@ function Playlist({
     }
 
     return (
-        <AppLayout title={data.name} color={data.color}>
+        <AppLayout>
             <div
-                style={{ backgroundColor: shadeColor(data.color, -30) }}
                 className=" h-[360px] pt-5 px-8 bg-gradient-to-t from-[#12121250]
        flex items-center mobile:flex-col mobile:h-full 
        tablet:flex-col tablet:h-full mobile:pt-12 tablet:pt-14
        tablet:text-center tablet:pb-3 mobile:pb-3 mobile:text-center"
             >
-                <h1 className="text-[30px] font-ProximaBold  leading-[5rem] mobile:block tablet:block hidden">
-                    {playlistName}
+                <h1 className="text-[30px]  leading-[5rem] mobile:block tablet:block hidden">
+                    {playlist?.name}
                 </h1>
-                <div
-                    style={{
-                        backgroundColor: data.color
-                            ? shadeColor(data.color, -30)
-                            : "#121212",
-                    }}
-                    className="rounded mr-6 tablet:mr-0 w-[230px] min-w-[230px] h-[230px] mobile:mr-0 relative"
-                >
-                    <Image src={data.cover_image} alt=""/>
+                <div className="rounded mr-6 tablet:mr-0 w-[230px] min-w-[230px] h-[230px] mobile:mr-0 relative">
+                    <Image src={playlist?.cover_image} alt="" />
                 </div>
                 <div>
-                    <p className="uppercase font-ProximaBold text-sm tablet:hidden mobile:hidden">
+                    <p className="uppercase text-sm tablet:hidden mobile:hidden">
                         Playlist
                     </p>
                     <h1
-                        className="text-[70px] font-ProximaBold  leading-[5rem] 
+                        className="text-[70px]  leading-[5rem] 
           mini-laptop:text-[65px] tablet:hidden mobile:hidden line-clamp-2"
                     >
-                        {playlistName}
+                        {playlist?.name}
                     </h1>
-                    <p className="font-ProximaBold text-sm mt-6 tablet:mt-4 opacity-70">
+                    <p className="text-sm mt-6 tablet:mt-4 opacity-70">
                         {songs.length} Songs
                     </p>
                 </div>
             </div>
-            <div
-                className="pt-6 px-6 tablet:px-6 mobile:px-5 min-h-[1000px]"
-                style={{
-                    background: `linear-gradient(180deg, ${
-                        data.color ? shadeColor(data.color, -60) : "#121212"
-                    } 0%, rgba(18,18,18,1) 15%)`,
-                }}
-            >
+            <div className="pt-6 px-6 tablet:px-6 mobile:px-5 min-h-[1000px]">
                 <div className="px-6 mobile:px-1">
                     <div className="w-full flex items-center mb-2">
                         <Button
                             radius="full"
                             isIconOnly
                             onClick={() => {
-                                if (playingPlaylist !== data.id) {
+                                if (playingPlaylist !== params.id) {
                                     dispatch(
                                         setActiveSong({
                                             songs: songs,
                                             index: 0,
-                                            playlist: data.id,
+                                            playlist: params.id,
                                         })
                                     );
                                 } else {
@@ -126,7 +113,7 @@ function Playlist({
                             }}
                             className="bg-[#2bb540] hover:scale-110 flex justify-center items-center"
                         >
-                            {playingPlaylist !== data.id ? (
+                            {playingPlaylist !== params.id ? (
                                 <i className="icon-play text-[20px] ml-1 text-black " />
                             ) : !isPlaying ? (
                                 <i className="icon-play text-[20px] ml-1 text-black" />
@@ -151,8 +138,9 @@ function Playlist({
                                                 toggleModal({
                                                     data: true,
                                                     song_id: "RENAME",
-                                                    playlist_name: data.name,
-                                                    playlist_id: data.id,
+                                                    playlist_name:
+                                                        playlist?.name,
+                                                    playlist_id: playlist?.id,
                                                 })
                                             );
                                         }}
@@ -167,7 +155,7 @@ function Playlist({
                                             dispatch(
                                                 deletePlaylist({
                                                     token: user.token,
-                                                    playlist_id: data.id,
+                                                    playlist_id: params.id,
                                                 })
                                             );
                                             router.replace("/library");
@@ -187,13 +175,13 @@ function Playlist({
                             key={song.id}
                             song={song}
                             showNumber={i + 1}
-                            playlist={data.id}
+                            playlist={playlist}
                             onTap={() => {
                                 dispatch(
                                     setActiveSong({
                                         songs: songs,
                                         index: songs.indexOf(song),
-                                        playlist: data.id,
+                                        playlist: params.id,
                                     })
                                 );
                             }}
@@ -222,15 +210,6 @@ export async function getServerSideProps(context: any) {
     try {
         const user = JSON.parse(userCookie);
 
-        const playlist = await axios.get(
-            `${API_URL}/playlists/${context.params.id}`,
-            {
-                headers: {
-                    authorization: `Bearer ${user.token}`,
-                },
-            }
-        );
-
         const songs = await axios.get(
             `${API_URL}/playlists/${context.params.id}/songs`,
             {
@@ -243,7 +222,6 @@ export async function getServerSideProps(context: any) {
         return {
             props: {
                 success: true,
-                data: playlist.data,
                 songs: songs.data.list,
             },
         };

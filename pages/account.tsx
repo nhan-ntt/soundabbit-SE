@@ -5,8 +5,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import InputPassword from "@/components/InputPassword";
+import { useSelector } from "react-redux";
 
 export default function AccountPage() {
+    const { user } = useSelector((state: any) => state.auth);
+
     const validationSchema = Yup.object().shape({
         username: Yup.string().required("Username is required"),
         password: Yup.string()
@@ -34,9 +37,9 @@ export default function AccountPage() {
     const onSubmit = async (data: any) => { };
 
     return (
-        <AppLayout title="Account">
+        <AppLayout>
             <div className="w-full min-h-[1000px] px-6 pt-5 mobile:px-4 ">
-                <h1 className="text-[70px] font-ProximaBold text-white mb-5 px-2 mobile:px-0 mobile:text-[40px]">
+                <h1 className="text-[70px] text-white mb-5 px-2 mobile:px-0 mobile:text-[40px]">
                     Account
                 </h1>
                 <form

@@ -1,22 +1,24 @@
 import React, { useEffect } from "react";
 import AppLayout from "@/layouts/appLayout";
-import algoliaClient from "../configs/algolia";
-import { toSongProps, SongProps } from "../interfaces/Song";
+import algoliaClient from "../config/algolia";
+import { toSongProps, SongProps } from "@/interfaces/Song";
 import { useState } from "react";
-import { Artists } from "../interfaces/artist";
+import { Artists } from "@/interfaces/artist";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveSong } from "../stores/player/currentAudioPlayer";
-import { PlayPauseButton } from "../components/HorizontalSongCard";
-import ListItem from "../components/ListItem";
+import { PlayPauseButton } from "@/components/HorizontalSongCard";
+import ListItem from "@/components/ListItem";
 import Link from "next/link";
-import { Image } from "@nextui-org/react";
+import { Image, Input } from "@nextui-org/react";
 import { RequestStatus } from "@/stores/homePage/homePageSlice";
 import { GenresState, getGenres } from "@/stores/genres/genresSlice";
 
 function Search() {
     const [searchResult, setSearchResult] = useState<SongProps[]>([]);
     const [artists, setArtists] = useState<Artists[]>([]);
-    const { status, genres }: GenresState = useSelector((state: any) => state.genres);
+    const { status, genres }: GenresState = useSelector(
+        (state: any) => state.genres
+    );
     const [topResult, setTopResult] = useState<any>();
     const [isFocus, setFocus] = useState(false);
 
@@ -50,22 +52,23 @@ function Search() {
     };
 
     return (
-        <AppLayout title="Search" color="#121212">
+        <AppLayout>
             <div className="w-full">
                 <div
                     className="py-4 px-6 mobile:py-2 mobile:px-4 tablet:px-4 fixed z-40 bg-[#121212] flex flex-row 
         w-[calc(100vw_-_14rem_-_16px)] mini-laptop:w-[calc(100vw_-_55px)] 
         tablet:w-screen mobile:w-screen items-center"
                 >
-                    <div className="items-center flex bg-white rounded-3xl px-4 mobile:rounded tablet:w-full mobile:w-full">
-                        <i className="icon-search text-gray-500"></i>
-                        <input
-                            onChange={(e: any) => searchAlgolia(e.target.value)}
-                            type="text"
-                            className="light tablet:w-full mobile:w-full w-[300px] pr-6 mobile:pr-8 pl-2 py-2 text-black border-none outline-none rounded-3xl"
-                            placeholder="Search Music.."
-                        />
-                    </div>
+                    <Input
+                        radius="full"
+                        startContent={
+                            <i className="icon-search text-gray-500"></i>
+                        }
+                        onChange={(e: any) => searchAlgolia(e.target.value)}
+                        type="text"
+                        className="tablet:w-full mobile:w-full w-[300px]"
+                        placeholder="Search Music.."
+                    />
                 </div>
             </div>
 
@@ -82,7 +85,7 @@ function Search() {
           justify-items-stretch items-stretch tablet:flex-col mobile:flex-col mobile:px-4 tablet:px-6"
                             >
                                 <div className="laptop:w-[26rem] w-[32rem] tablet:w-full mobile:w-full">
-                                    <h1 className="mobile:hidden tablet:hidden my-4 text-xl font-ProximaBold">
+                                    <h1 className="mobile:hidden tablet:hidden my-4 text-xl ">
                                         Top Result
                                     </h1>
 
@@ -101,9 +104,7 @@ function Search() {
                                     )}
                                 </div>
                                 <div className="w-full ml-6 tablet:m-0 tablet:mt-2 mobile:mt-2 mobile:ml-0">
-                                    <h1 className="my-4 text-xl font-ProximaBold">
-                                        Top Songs
-                                    </h1>
+                                    <h1 className="my-4 text-xl ">Top Songs</h1>
 
                                     {searchResult
                                         .slice(0, 4)
@@ -132,7 +133,7 @@ function Search() {
                 <div>
                     <div className="pt-28 mobile:pt-20 tablet:pt-20"></div>
 
-                    <h1 className="mobile:text-xl text-2xl font-ProximaBold px-8 mini-laptop:px-4 mobile:px-4 ">
+                    <h1 className="mobile:text-xl text-2xl px-8 mini-laptop:px-4 mobile:px-4 ">
                         Genres
                     </h1>
                     <div
@@ -142,23 +143,30 @@ function Search() {
                     >
                         {genres.map((genre: any) => {
                             return (
-                                <Link href={`/genre/${genre.id}`} key={genre.id}>
+                                <Link
+                                    href={`/genre/${genre.id}`}
+                                    key={genre.id}
+                                >
                                     <div
                                         className="hover:scale-105 transition-all cursor-pointer relative h-44 tablet:h-40 mobile:h-28 overflow-hidden rounded "
                                         style={{
-                                            backgroundColor: "black"
+                                            backgroundColor: "black",
                                         }}
                                     >
                                         <div className="p-4 capitalize">
-                                            <p className="font-ProximaBold text-xl">
+                                            <p className="text-xl">
                                                 {genre.name}
                                             </p>
                                             <div className="absolute -right-4 -bottom-2">
                                                 <div className="shadow-xl relative mobile:w-[70px] rounded mobile:h-[70px] w-24 h-24 rotate-[30deg]">
                                                     <Image
-                                                        src={genre.coverImage}
+                                                        src={
+                                                            genre.coverImage ||
+                                                            "https://images3.alphacoders.com/690/690494.jpg"
+                                                        }
                                                         alt=""
-                                                        className="object-cover rounded mobile:w-[70px] mobile:h-[70px] w-24 h-24" />
+                                                        className="object-cover rounded mobile:w-[70px] mobile:h-[70px] w-24 h-24"
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
@@ -220,13 +228,13 @@ function TopResult({ object, onTap }: any) {
                             }}
                         >
                             <Image
-                                src={songDemo.cover_image.url}
                                 alt=""
-                                className="rounded"
+                                src={songDemo.cover_image.url}
+                                className="object-cover rounded w-24 h-24"
                             />
                         </div>
                         <div className="tablet:mx-4 mobile:mx-4">
-                            <p className="mt-4 text-2xl font-ProximaBold line-clamp-1">
+                            <p className="mt-4 text-2xl line-clamp-1">
                                 {songDemo.name}
                             </p>
                             <p>{songDemo.artist_name}</p>
@@ -258,7 +266,7 @@ function TopResult({ object, onTap }: any) {
                     />
                 </div>
 
-                <p className="mt-4 text-2xl font-ProximaBold line-clamp-1">
+                <p className="mt-4 text-2xl line-clamp-1">
                     {object.artist_name}
                 </p>
                 <p>Artist</p>

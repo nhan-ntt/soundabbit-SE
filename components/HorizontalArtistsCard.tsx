@@ -1,7 +1,7 @@
 import React from "react";
-import { SongProps } from "../interfaces/Song";
-import { Artists } from "../interfaces/artist";
-import { shadeColor } from "../configs/utils";
+import { SongProps } from "@/interfaces/Song";
+import { Artists } from "@/interfaces/artist";
+import { shadeColor } from "../config/utils";
 import { Image } from "@nextui-org/react";
 
 function HorizontalArtistCard({
@@ -21,24 +21,20 @@ function HorizontalArtistCard({
            "
             >
                 <div
-                    style={{
-                        background: shadeColor("black", -40),
-                        boxShadow:
-                            "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
-                    }}
                     className="w-[160px] h-[160px] relative rounded-full 
           mini-laptop:w-[140px] mini-laptop:h-[140px] 
           tablet:w-[130px] tablet:h-[130px] mobile:w-[100px] mobile:h-[100px]"
                 >
                     <Image
                         alt=""
-                        src={
-                            "https://images3.alphacoders.com/690/690494.jpg&auto=format&fit=crop&w=400&q=50&h=400"
-                        }
-                        className="rounded-full"
+                        src={"https://images3.alphacoders.com/690/690494.jpg"}
+                        className="w-[160px] h-[160px]  
+                    object-cover
+          mini-laptop:w-[140px] mini-laptop:h-[140px] 
+          tablet:w-[130px] tablet:h-[130px] mobile:w-[100px] mobile:h-[100px] rounded-full"
                     />
                 </div>
-                <p className="line-clamp-2 mobile:text-center tablet:text-center mt-4 font-ProximaBold text-base mobile:text-sm tablet:text-sm">
+                <p className="line-clamp-2 mobile:text-center tablet:text-center mt-4 text-base mobile:text-sm tablet:text-sm">
                     {artist.name}
                 </p>
                 <p

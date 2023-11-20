@@ -1,7 +1,6 @@
 import React from "react";
-import { Button, Image } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import classNames from "classnames";
-import Buttons from "./Buttons";
 
 interface IProps {
     isPlaying: boolean;
@@ -56,27 +55,26 @@ function Controls({
          hover:text-white text-[24px] mini-laptop:text-[20px] 
           tablet:text-[20px] mobile:text-[20px] laptop:text-[22px]"
                     ></i>
-                    <div className="mx-6 scale-100 hover:scale-110">
-                        <Button
-                            radius="full"
-                            isIconOnly
-                            onClick={playPause}
-                            className="bg-white text-black 
-                rounded-full p-1 text-center flex 
-                items-center justify-center
-                cursor-pointer
-                mini-laptop:h-10 mini-laptop:w-10
-                tablet:h-10 tablet:w-10
-                mobile:h-10 mobile:w-10
-                laptop:w-12 laptop:h-12"
-                        >
-                            {!isPlaying ? (
-                                <i className="icon-play text-[20px] ml-1" />
-                            ) : (
-                                <i className="icon-pause text-[20px]" />
-                            )}
-                        </Button>
-                    </div>
+
+                    <Button
+                        radius="full"
+                        isIconOnly
+                        onClick={playPause}
+                        className="bg-white text-black 
+                            p-1 text-center flex 
+                            items-center justify-center
+                            mini-laptop:h-10 mini-laptop:w-10
+                            tablet:h-10 tablet:w-10
+                            mobile:h-10 mobile:w-10
+                            laptop:w-12 laptop:h-12
+                            mx-6 scale-100 hover:scale-110 "
+                    >
+                        {!isPlaying ? (
+                            <i className="icon-play text-[20px] ml-1" />
+                        ) : (
+                            <i className="icon-pause text-[20px]" />
+                        )}
+                    </Button>
 
                     <i
                         onClick={nextSong}
@@ -143,26 +141,24 @@ function Controls({
                 className="icon-Previous cursor-pointer text-gray-300 text-[14px]
          hover:text-white mobile:hidden"
             ></i>
-            <div className="mx-6 scale-100 hover:scale-110 mobile:mx-0">
-                <Button
-                    isIconOnly
-                    radius="full"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        playPause();
-                    }}
-                    className="bg-white text-black 
-            rounded-full p-1 text-center flex 
+            <Button
+                isIconOnly
+                radius="full"
+                onClick={(e) => {
+                    e.stopPropagation();
+                    playPause();
+                }}
+                className="bg-white text-black 
+            p-1 text-center flex 
             items-center justify-center
-            cursor-pointer"
-                >
-                    {!isPlaying ? (
-                        <i className="icon-play text-[14px] ml-0.5" />
-                    ) : (
-                        <i className="icon-pause text-[12px]" />
-                    )}
-                </Button>
-            </div>
+            mx-6 scale-100 hover:scale-110 mobile:mx-0"
+            >
+                {!isPlaying ? (
+                    <i className="icon-play text-[14px] ml-0.5" />
+                ) : (
+                    <i className="icon-pause text-[12px]" />
+                )}
+            </Button>
 
             <i
                 onClick={(e) => {

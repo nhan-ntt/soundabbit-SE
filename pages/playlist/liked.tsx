@@ -1,26 +1,15 @@
 import React from "react";
-import API_URL from "@/configs/apiUrl";
+import API_URL from "@/config/apiUrl";
 import axios from "axios";
 import AppLayout from "@/layouts/appLayout";
 import { SongProps } from "@/interfaces/Song";
 import ListItem from "@/components/ListItem";
-import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
 import { playPause, setActiveSong } from "@/stores/player/currentAudioPlayer";
 import ErrorComponent from "@/components/error";
-import { shadeColor } from "@/configs/utils";
+import { Button } from "@nextui-org/react";
 
-function Liked({
-    data,
-    songs,
-    success,
-}: {
-    success: boolean;
-    data: any;
-    songs: SongProps[];
-}) {
-    const router = useRouter();
+function Liked({ songs, success }: { success: boolean; songs: SongProps[] }) {
     const dispatch = useDispatch();
     const { isPlaying, playingPlaylist } = useSelector(
         (state: any) => state.player
@@ -28,21 +17,21 @@ function Liked({
 
     if (!success) {
         return (
-            <AppLayout title="Liked Songs">
+            <AppLayout>
                 <ErrorComponent />
             </AppLayout>
         );
     }
 
     return (
-        <AppLayout title="Liked Songs" color="#48338c">
+        <AppLayout>
             <div
-                className="bg-[#48338c] h-[350px] pt-5 px-8
+                className="h-[350px] pt-5 px-8
        flex items-center mobile:flex-col mobile:h-full 
        tablet:flex-col tablet:h-full mobile:pt-12 tablet:pt-14
        tablet:text-center tablet:pb-3 mobile:pb-3 mobile:text-center"
             >
-                <h1 className="text-[30px] font-ProximaBold  leading-[5rem] mobile:block tablet:block hidden">
+                <h1 className="text-[30px] leading-[5rem] mobile:block tablet:block hidden">
                     Liked Songs
                 </h1>
                 <div
@@ -52,32 +41,26 @@ function Liked({
                     <i className="icon-heart text-[100px]"></i>
                 </div>
                 <div>
-                    <p className="uppercase font-ProximaBold text-sm tablet:hidden mobile:hidden">
+                    <p className="uppercase text-sm tablet:hidden mobile:hidden">
                         Playlist
                     </p>
                     <h1
-                        className="text-[70px] font-ProximaBold  leading-[5rem] 
+                        className="text-[70px]  leading-[5rem] 
           mini-laptop:text-[65px] tablet:hidden mobile:hidden"
                     >
                         Liked Songs
                     </h1>
-                    <p className="font-ProximaBold text-sm mt-6 tablet:mt-4 opacity-70">
+                    <p className="text-sm mt-6 tablet:mt-4 opacity-70">
                         {songs.length} Songs
                     </p>
                 </div>
             </div>
-            <div
-                className="pt-6 px-6 tablet:px-6 mobile:px-4 min-h-[500px]"
-                style={{
-                    background: `linear-gradient(180deg, ${shadeColor(
-                        "#48338c",
-                        -30
-                    )} 0%, rgba(18,18,18,1) 15%)`,
-                }}
-            >
+            <div className="pt-6 px-6 tablet:px-6 mobile:px-4 min-h-[500px]">
                 <div className="px-6 mobile:px-1">
                     <div className="w-full flex justify-between mb-2">
-                        <div
+                        <Button
+                            isIconOnly
+                            radius="full"
                             onClick={() => {
                                 if (playingPlaylist !== "LIKED") {
                                     dispatch(
@@ -91,7 +74,7 @@ function Liked({
                                     dispatch(playPause(!isPlaying));
                                 }
                             }}
-                            className="bg-[#2bb540] rounded-full cursor-pointer hover:scale-110
+                            className="bg-[#2bb540] cursor-pointer hover:scale-110
                      w-[45px] h-[45px] flex justify-center items-center"
                         >
                             {playingPlaylist !== "LIKED" ? (
@@ -101,7 +84,7 @@ function Liked({
                             ) : (
                                 <i className="icon-pause text-[20px] text-black" />
                             )}
-                        </div>
+                        </Button>
                     </div>
                 </div>
                 <div className="pt-4">

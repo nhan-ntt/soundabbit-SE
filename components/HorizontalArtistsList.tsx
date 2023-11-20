@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 import ScrollContainer from "react-indiana-drag-scroll";
-import { Artists } from "../interfaces/artist";
+import { Artists } from "@/interfaces/artist";
 import HorizontalArtistCard from "./HorizontalArtistsCard";
 function HorizontalArtistsList({ artists }: { artists: Artists[] }) {
     const router = useRouter();

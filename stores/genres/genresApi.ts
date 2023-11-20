@@ -1,4 +1,4 @@
-import API_URL from "@/configs/apiUrl";
+import API_URL from "@/config/apiUrl";
 import axios from "axios";
 
 // Register user

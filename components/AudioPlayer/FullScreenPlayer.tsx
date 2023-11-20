@@ -85,7 +85,7 @@ function FullScreenPlayer({
                         >
                             <div
                                 className="flex flex-row justify-between items-center
-                text-white font-ProximaBold tablet:w-[400px] 
+                text-white tablet:w-[400px] 
                 mobile:w-[340px] w-full tablet:mb-8 mobile:mb-"
                             >
                                 <Tooltip content="Go back">
@@ -104,7 +104,7 @@ function FullScreenPlayer({
                                 <div className="flex flex-row items-center">
                                     <h1
                                         className="text-center uppercase mx-2 
-                      tracking-wider font-ProximaBold mini-laptop:text-base tablet:text-base mobile:text-base"
+                      tracking-wider mini-laptop:text-base tablet:text-base mobile:text-base"
                                     >
                                         Now Playing
                                     </h1>
@@ -156,7 +156,7 @@ function FullScreenPlayer({
                                 >
                                     <div>
                                         <p
-                                            className="text-gray-300 font-ProximaBold
+                                            className="text-gray-300 
                         cursor-pointer line-clamp-1 mobile:text-sm text-lg mini-laptop:text-base 
                         tablet:text-base"
                                         >

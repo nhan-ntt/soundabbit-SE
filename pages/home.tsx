@@ -4,17 +4,17 @@ import type { NextPage } from "next";
 import AppLayout from "@/layouts/appLayout";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { Artists } from "../interfaces/artist";
+import { Artists } from "@/interfaces/artist";
 import {
     getRecentUsers,
     HomePageState,
     RequestStatus,
 } from "../stores/homePage/homePageSlice";
-import HorizontalSongsList from "../components/HorizontalSongsList";
-import HorizontalArtistsList from "../components/HorizontalArtistsList";
+import HorizontalSongsList from "@/components/HorizontalSongsList";
+import HorizontalArtistsList from "@/components/HorizontalArtistsList";
 import { useRouter } from "next/navigation";
 import ErrorComponent from "@/components/error";
-import { getGreetings } from "@/configs/utils";
+import { getGreetings } from "@/config/utils";
 import { Image } from "@nextui-org/react";
 
 const Home: NextPage = () => {
@@ -44,7 +44,7 @@ const Home: NextPage = () => {
     }, []);
 
     return (
-        <AppLayout title="Home" color={color}>
+        <AppLayout>
             {status == RequestStatus.Loading ? (
                 <div
                     className=" w-[calc(100vw_-_14rem_-_16px)] mini-laptop:w-[calc(100vw_-_55px)] 
@@ -60,7 +60,7 @@ const Home: NextPage = () => {
                 <ErrorComponent />
             ) : status == RequestStatus.Success ? (
                 <div className="pt-10 mini-laptop:pt-2 mobile:pt-1 tablet:pt-2">
-                    <h1 className="select-none pt-6 tablet:px-6 px-8 mobile:px-4 pb-6 text-3xl font-ProximaBold mini-laptop:text-2xl tablet:text-2xl mobile:text-xl">
+                    <h1 className="select-none pt-6 tablet:px-6 px-8 mobile:px-4 pb-6 text-3xl mini-laptop:text-2xl tablet:text-2xl mobile:text-xl">
                         {getGreetings()}
                     </h1>
                     <div
@@ -76,12 +76,11 @@ const Home: NextPage = () => {
                                 onMouseEnter={() => setColor("black")}
                                 onMouseLeave={() => setColor("black")}
                                 className="flex flex-row items-center
-                      font-ProximaBold w-full bg-[#5f5d5d60]
+                      w-full bg-[#5f5d5d60]
                       rounded cursor-pointer hover:bg-[#5f5d5da1]"
                             >
                                 <div
                                     style={{
-                                        backgroundColor: "black",
                                         boxShadow:
                                             "10px 0 10px -7px rgba(18, 18, 18, 0.50), -0px 0 0px -4px rgba(0, 0, 0, 0)",
                                     }}
@@ -91,9 +90,13 @@ const Home: NextPage = () => {
                                     <Image
                                         alt=""
                                         src={
-                                            "https://images3.alphacoders.com/690/690494.jpg&auto=format&fit=crop&w=200&q=50&h=200"
+                                            "https://images3.alphacoders.com/690/690494.jpg"
                                         }
-                                        className="rounded-tl rounded-bl shadow-2xl shadow-black"
+                                        className="
+                                            object-cover
+                                            w-20 h-20 mini-laptop:w-16 mini-laptop:h-16
+                                            rounded-none tablet:w-16 tablet:h-16 mobile:w-14 mobile:h-14
+                                        "
                                     />
                                 </div>
                                 <p className="p-4 mini-laptop:p-2 tablet:p-2 tablet:text-[15px] mobile:p-0 mobile:px-2 mobile:text-[14px]">
@@ -103,20 +106,20 @@ const Home: NextPage = () => {
                         ))}
                     </div>
                     <div className="mt-12">
-                        <h1 className="px-8 tablet:px-6 mobile:px-4 text-xl font-ProximaBold mb-6 mobile:text-base">
+                        <h1 className="px-8 tablet:px-6 mobile:px-4 text-xl mb-6 mobile:text-base">
                             Trending Artists
                         </h1>
                         <HorizontalArtistsList artists={trendingArtists} />
                     </div>
 
                     <div className="mt-12">
-                        <h1 className="px-8 tablet:px-6 mobile:px-4 text-xl font-ProximaBold mb-6 mobile:text-base">
+                        <h1 className="px-8 tablet:px-6 mobile:px-4 text-xl mb-6 mobile:text-base">
                             Top Hits this Week
                         </h1>
                         <HorizontalSongsList songs={topHits} />
                     </div>
                     <div className="mt-6">
-                        <h1 className="px-8 tablet:px-6 mobile:px-4 text-xl font-ProximaBold mb-6 mobile:text-base">
+                        <h1 className="px-8 tablet:px-6 mobile:px-4 text-xl mb-6 mobile:text-base">
                             Popular releases
                         </h1>
                         <HorizontalSongsList songs={popularHits} />

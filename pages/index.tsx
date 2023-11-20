@@ -89,7 +89,7 @@ const Home: NextPage = () => {
                         />
                         <h1
                             className="text-center uppercase mx-2 
-              tracking-wider font-ProximaBold"
+              tracking-wider "
                         >
                             Rhyme
                         </h1>
@@ -131,7 +131,7 @@ const Home: NextPage = () => {
          flex justify-center flex-col items-center"
                 >
                     <h1
-                        className="text-[70px] font-ProximaBold text-center
+                        className="text-[70px] text-center
            leading-[5rem] mini-laptop:text-[60px] tablet:text-[50px] mini-laptop:leading-[4rem]
             tablet:leading-[4rem] mobile:text-[35px] mobile:leading-[2.5rem]"
                     >
@@ -170,7 +170,7 @@ const Home: NextPage = () => {
             </div>
 
             <div className="max-w-[1000px] mx-auto">
-                <h1 className="text-center text-3xl font-ProximaBold mt-10 mb-10">
+                <h1 className="text-center text-3xl mt-10 mb-10">
                     Features
                 </h1>
 
@@ -188,7 +188,7 @@ const Home: NextPage = () => {
                             <i className="icon-full-screen text-[20px]"></i>
                         </div>
 
-                        <h1 className="text-xl font-ProximaBold mb-2 ">
+                        <h1 className="text-xl mb-2 ">
                             Fully Responsive
                         </h1>
                         <p>
@@ -207,7 +207,7 @@ const Home: NextPage = () => {
                             <i className="icon-add-to-playlist text-[20px]"></i>
                         </div>
 
-                        <h1 className="text-xl font-ProximaBold mb-2 ">
+                        <h1 className="text-xl mb-2 ">
                             Different Themes
                         </h1>
                         <p>
@@ -226,7 +226,7 @@ const Home: NextPage = () => {
                             <i className="icon-verified text-[24px]"></i>
                         </div>
 
-                        <h1 className="text-xl font-ProximaBold mb-2 ">
+                        <h1 className="text-xl mb-2 ">
                             Safe to use
                         </h1>
                         <p>

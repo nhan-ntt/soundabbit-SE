@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { playPause } from "../stores/player/currentAudioPlayer";
-import { SongProps } from "../interfaces/Song";
+import { SongProps } from "@/interfaces/Song";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { shadeColor } from "../configs/utils";
+import { shadeColor } from "../config/utils";
 import { Image } from "@nextui-org/react";
 import axios from "axios";
 

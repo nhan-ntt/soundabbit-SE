@@ -9,9 +9,6 @@ import { Button, Image, Link, Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { register, AuthStatus, reset } from "../stores/auth/authSlice";
-import { useEffect } from "react";
-import { EyeSlashFilledIcon } from "@/components/icons/EyeSlashFilledIcon";
-import { EyeFilledIcon } from "@/components/icons/EyeFilledIcon";
 import InputPassword from "@/components/InputPassword";
 
 const Register: NextPage = () => {
@@ -30,8 +27,6 @@ const Register: NextPage = () => {
             .required("Confirm Password is required"),
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
-    const [isVisible, setIsVisible] = React.useState(false);
-    const toggleVisibility = () => setIsVisible(!isVisible);
 
     const {
         register: registerForm,
@@ -86,19 +81,20 @@ const Register: NextPage = () => {
                             />
                             <h1
                                 className="text-center uppercase mx-2 
-              tracking-wider font-ProximaBold"
+              tracking-wider "
                             >
                                 Rhyme
                             </h1>
                         </div>
 
-                        <h1 className="mobile:text-xl text-3xl w-80 mobile:w-64 mobile:text-center mt-10 mb-10 font-extrabold font-ProximaBold">
+                        <h1 className="mobile:text-xl text-3xl w-80 mobile:w-64 mobile:text-center mt-10 mb-10 font-extrabold ">
                             Download & listen free music lifetime.
                         </h1>
+
                         {status == AuthStatus.Error && (
                             <p
                                 className="bg-red-500 border border-red-800 
-              bg-opacity-40 px-3 mt-6 py-2 rounded-3xl  w-full text-center"
+              bg-opacity-40 px-3 mt-6 mb-4 py-2 rounded-3xl  w-full text-center"
                             >
                                 {message}
                             </p>

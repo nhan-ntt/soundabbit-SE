@@ -8,8 +8,9 @@ const songs: SongProps[] = [
     {
         id: 1,
         name: "Rhyme",
-        audio_link: "https://drive.google.com/uc?id=17ZlrPeRBZoPv0OFA8g0RvR__XIWVPW-4&export=download",
-        streams: 0
+        audio_link:
+            "https://drive.google.com/uc?id=17ZlrPeRBZoPv0OFA8g0RvR__XIWVPW-4&export=download",
+        streams: 0,
     },
 ];
 
@@ -83,6 +84,7 @@ const playerSlice = createSlice({
             state.queue = action.payload.songs;
             state.currentIndex = action.payload.index;
             state.activeSong = action.payload.songs[action.payload.index];
+
             if (action.payload.playlist) {
                 state.playingPlaylist = action.payload.playlist;
             } else {
@@ -144,8 +146,7 @@ const playerSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(addSongToPlaylist.fulfilled, (state, action) => {
-        });
+        builder.addCase(addSongToPlaylist.fulfilled, (state, action) => { });
 
         builder.addCase(getLikedSongs.fulfilled, (state, action) => {
             state.fetchlikedStatus = LikedStatus.success;
@@ -221,7 +222,7 @@ export const getLikedSongs = createAsyncThunk(
 
 export const getPlaylists = createAsyncThunk(
     "ApiServices/getPlaylists",
-    async (token: string, thunkAPI) => {
+    async (token:string,  thunkAPI) => {
         try {
             return await ApiService.getPlaylists(token);
         } catch (error) {

@@ -42,7 +42,7 @@ const SidebarItem = ({ name, label }: IProps) => {
                         {
                             "opacity-70 group-hover:opacity-100": !isActive(),
                         },
-                        { "font-ProximaBold": isActive() }
+                        { "": isActive() }
                     )}
                 >
                     {label}

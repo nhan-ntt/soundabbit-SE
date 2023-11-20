@@ -68,7 +68,7 @@ function ListItem({
                         <p
                             className={`mobile:text-sm line-clamp-1 ${
                                 activeSong.id == song.id &&
-                                "text-[#2bb540] font-ProximaBold"
+                                "text-[#2bb540] "
                             }`}
                             dangerouslySetInnerHTML={{ __html: songDemo.name }}
                         ></p>

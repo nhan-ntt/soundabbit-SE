@@ -1,4 +1,4 @@
-import { SongProps } from "../interfaces/Song";
+import { SongProps } from "@/interfaces/Song";
 
 import ScrollContainer from "react-indiana-drag-scroll";
 import { useDispatch } from "react-redux";
