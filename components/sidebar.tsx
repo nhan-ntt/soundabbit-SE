@@ -65,7 +65,7 @@ export default function Sidebar() {
                             <i className="icon-heart text-[12px]"></i>
                         </div>
 
-                        <p className=" text-white ">Liked Tracks</p>
+                        <p className=" text-white ">Liked Songs</p>
                     </div>
                 </Link>
             </div>
