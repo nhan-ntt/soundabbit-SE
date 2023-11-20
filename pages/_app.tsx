@@ -13,6 +13,7 @@ import AddToPlaylistModal from "@/components/AddToPlaylistModal";
 import { ToastContainer } from "react-toastify";
 import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import AudioHandler from "@/components/AudioHandler";
 
 function MyApp({ Component, pageProps }: AppProps) {
     const router = useRouter();
@@ -51,6 +52,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                         height={3}
                         options={{ showSpinner: false }}
                     />
+
                     {router.pathname !== "/login" &&
                         router.pathname !== "/register" &&
                         router.pathname !== "/_error" &&
@@ -101,6 +103,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                             <div></div>
                         )}
                     </div>
+                    <AudioHandler />
                 </NextThemesProvider>
             </NextUIProvider>
         </Provider>

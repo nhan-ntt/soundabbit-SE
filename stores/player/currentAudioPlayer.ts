@@ -36,6 +36,9 @@ export interface IStateProps {
     showBanner: boolean;
     isPlaying: boolean;
     activeSong: SongProps | null;
+    volume: number;
+    duration: number;
+    currentTime: number;
     songProgress: number;
     isShuffle: boolean;
     isRepeat: boolean;
@@ -52,6 +55,9 @@ const initialState: IStateProps = {
     queue: songs,
     currentIndex: 0,
     isModalOpen: false,
+    volume: 1,
+    duration: 0,
+    currentTime: 0,
     playingPlaylist: "",
     liked: [],
     playlists: [],
@@ -128,6 +134,16 @@ const playerSlice = createSlice({
         toggleModal: (state, action) => {
             state.isModalOpen = action.payload.data;
             state.passedDataToModal = action.payload;
+        },
+
+        setVolume: (state, action) => {
+            state.volume = action.payload;
+        },
+        setCurrentTime: (state, action) => {
+            state.currentTime = action.payload;
+        },
+        setDuration: (state, action) => {
+            state.duration = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -314,6 +330,9 @@ export const {
     playPause,
     onShuffle,
     addToQueue,
+    setVolume,
+    setDuration,
+    setCurrentTime,
     onRepeat,
     setSongProgress,
     removeFromQueue,

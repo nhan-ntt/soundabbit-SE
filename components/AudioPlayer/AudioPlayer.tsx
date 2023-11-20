@@ -2,35 +2,30 @@
 import React, { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-    PlaylistsStatus,
-    getLikedSongs,
     IStateProps,
-    LikedStatus,
     nextSong,
     onRepeat,
     onShuffle,
     playPause,
     setSongProgress,
+    setVolume,
+    setCurrentTime,
 } from "../../stores/player/currentAudioPlayer";
-import { useEffect } from "react";
 import Controls from "./Controls";
 import SeekBar from "./SeekBar";
 import Buttons from "./Buttons";
 import { useRouter } from "next/navigation";
-import FullScreenPlayer from "./FullScreenPlayer";
-import { getPlaylists } from "../../stores/player/currentAudioPlayer";
 import { Image } from "@nextui-org/react";
 
 function AudioPlayer({ className }: { className: string }) {
     const router = useRouter();
-    const { user, status } = useSelector((state: any) => state.auth);
     const {
         isPlaying,
         activeSong,
         currentIndex,
         songProgress,
-        fetchlikedStatus,
-        playlistStatus,
+        volume,
+        duration,
         queue: songs,
         isShuffle,
         isRepeat,
@@ -45,25 +40,10 @@ function AudioPlayer({ className }: { className: string }) {
     };
 
     const dispatch = useDispatch<any>();
-    const audioRef = useRef(
-        typeof Audio !== "undefined"
-            ? new Audio(activeSongDemo!.audio_link)
-            : null
-    );
-    const isReady = useRef(false);
-    const [volume, setVolume] = useState(1);
     const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>();
     const [seekBarColor, setSeekBarColor] = useState("#fff");
     const changeSeekBarColor = (color: string) => setSeekBarColor(color);
 
-    useEffect(() => {
-        if (isPlaying) {
-            if (audioRef.current) audioRef.current!.play();
-            startTimer();
-        } else {
-            audioRef.current!.pause();
-        }
-    }, [isPlaying]);
 
     const toNextSong = () => {
         if (isShuffle) {
@@ -80,44 +60,11 @@ function AudioPlayer({ className }: { className: string }) {
         }
     };
 
-    useEffect(() => {
-        audioRef.current!.loop = isRepeat;
-    }, [isRepeat]);
-
-    useEffect(() => {
-        audioRef.current!.pause();
-
-        audioRef.current = new Audio(activeSong!.audio_link);
-        dispatch(setSongProgress(audioRef.current.currentTime));
-        audioRef.current.volume = volume;
-
-        if (isReady.current) {
-            audioRef.current.play();
-            dispatch(playPause(true));
-            startTimer();
-        } else {
-            isReady.current = true;
-        }
-    }, [activeSong, currentIndex]);
-
     const onScrub = (value: any) => {
         // Clear any timers already running
         clearInterval(intervalRef.current);
-        audioRef.current!.currentTime = value;
-        dispatch(setSongProgress(audioRef.current!.currentTime));
-    };
-
-    const startTimer = () => {
-        // Clear any timers already running
-        clearInterval(intervalRef.current);
-
-        intervalRef.current = setInterval(() => {
-            if (audioRef.current!.ended) {
-                toNextSong();
-            } else {
-                dispatch(setSongProgress(audioRef.current!.currentTime));
-            }
-        }, 1000);
+        dispatch(setCurrentTime(value));
+        dispatch(setSongProgress(value));
     };
 
     const onScrubEnd = () => {
@@ -125,40 +72,17 @@ function AudioPlayer({ className }: { className: string }) {
         if (!isPlaying) {
             dispatch(playPause(true));
         }
-        startTimer();
     };
-
-    useEffect(() => {
-        if (fetchlikedStatus == LikedStatus.Initial) {
-            if (user) {
-                dispatch(getLikedSongs(user));
-            }
-        } // Pause and clean up on unmount
-        if (playlistStatus == PlaylistsStatus.Initial) {
-            if (user) {
-                dispatch(getPlaylists(user.token));
-            }
-        }
-        return () => {
-            audioRef.current!.pause();
-            clearInterval(intervalRef.current);
-        };
-    }, []);
-
     // get formated time in 0:00
 
     // update volume function
     const updateVolume = (e: any) => {
-        setVolume(e);
-        audioRef.current!.volume = e;
-    };
-    const getDuration = () => {
-        return audioRef.current?.duration || 0;
+        dispatch(setVolume(e));
     };
 
     const currentPercentage = () => {
-        return getDuration()
-            ? `${(songProgress / getDuration()) * 100}%`
+        return duration
+            ? `${(songProgress / duration) * 100}%`
             : "0%";
     };
 
@@ -242,7 +166,7 @@ function AudioPlayer({ className }: { className: string }) {
                         changeSeekBarColor={changeSeekBarColor}
                         songProgress={songProgress}
                         songBarStyling={songStyling}
-                        audioRef={audioRef}
+                        duration={duration}
                         isFullScreen={false}
                         onScrubEnd={onScrubEnd}
                         onScrub={onScrub}

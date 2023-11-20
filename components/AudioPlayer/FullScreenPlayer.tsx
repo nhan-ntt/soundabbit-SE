@@ -26,7 +26,7 @@ import {
 function FullScreenPlayer({
     activeSong,
     songProgress: songProgress,
-    audioRef,
+    duration,
     onScrubEnd,
     songStyling: songStyling,
     onScrub,
@@ -40,7 +40,7 @@ function FullScreenPlayer({
     volume,
 }: {
     songProgress: number;
-    audioRef: React.MutableRefObject<HTMLAudioElement | null>;
+    duration: number;
     activeSong: SongProps;
     onScrubEnd: () => void;
     onScrub: (e: any) => void;
@@ -184,7 +184,7 @@ function FullScreenPlayer({
                                         changeSeekBarColor={changeSeekBarColor}
                                         isFullScreen={true}
                                         songProgress={songProgress}
-                                        audioRef={audioRef}
+                                        duration={duration}
                                         onScrubEnd={onScrubEnd}
                                         onScrub={onScrub}
                                         songBarStyling={songStyling}
