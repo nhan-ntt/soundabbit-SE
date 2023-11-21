@@ -25,7 +25,7 @@ function GenrePage() {
 
     // Use SWR to fetch artist
     const { data: songs, error: errorGetSongs } = useSWR<Song[], Error>(
-        params && params.id ? `${API_URL}/artists/${params.id}/songs` : null,
+        params && params.id ? `${API_URL}/genres/${params.id}/songs` : null,
         async (url: string) => {
             const res = await axios.get(url);
             return res.data.list;
