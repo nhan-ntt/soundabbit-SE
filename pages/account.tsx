@@ -6,8 +6,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import InputPassword from "@/components/InputPassword";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import API_URL from "@/config/apiUrl";
+import { toast } from "react-toastify";
+import { updateUsername } from "@/stores/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 export default function AccountPage() {
+    const dispatch = useDispatch<any>();
     const { user } = useSelector((state: any) => state.auth);
 
     const validationSchema = Yup.object().shape({
@@ -17,13 +23,25 @@ export default function AccountPage() {
             .max(24, "Password is too long, maximum 24 characters")
             .required("Password is required"),
         newPassword: Yup.string()
+            .nullable()
+            .transform((curr, orig) => (orig === "" ? null : curr))
             .min(8, "Password must be at least 8 characters")
             .max(24, "Password is too long, maximum 24 characters"),
-        confirmNewPassword: Yup.string().oneOf(
-            [Yup.ref("password")],
-            "Passwords must match"
-        ),
+        confirmNewPassword: Yup.string()
+            .test(
+                "match",
+                "Confirm newPassword must match",
+                function(confirmNewPassword) {
+                    const { newPassword } = this.parent;
+                    if (newPassword !== null && newPassword !== undefined) {
+                        return confirmNewPassword === newPassword;
+                    }
+                    return true;
+                }
+            )
+            .nullable(),
     });
+
     const formOptions = { resolver: yupResolver(validationSchema) };
 
     const {
@@ -34,7 +52,35 @@ export default function AccountPage() {
     } = useForm(formOptions);
     const { errors } = formState;
 
-    const onSubmit = async (data: any) => { };
+    const onSubmit = async (data: any) => {
+        try {
+            const response = await axios.post(`${API_URL}/auth/login`, {
+                email: user.email,
+                password: data.password,
+            });
+
+            let update = {};
+
+            if (data.newPassword) {
+                update = { ...update, password: data.newPassword };
+            }
+
+            if (data.username != user.name) {
+                update = { ...update, name: data.username };
+                dispatch(updateUsername(data.username));
+            }
+
+            await axios.put(`${API_URL}/users/${user.id}`, update, {
+                headers: {
+                    authorization: `Bearer ${response.data.token}`,
+                },
+            });
+
+            toast.success("Account has been updated");
+        } catch (error: any) {
+            toast.error(error.response.data.message);
+        }
+    };
 
     return (
         <AppLayout>
@@ -50,6 +96,7 @@ export default function AccountPage() {
                         variant="bordered"
                         label="Your name"
                         type="text"
+                        defaultValue={user?.name}
                         {...registerForm("username")}
                         errorMessage={errors.username?.message}
                     />

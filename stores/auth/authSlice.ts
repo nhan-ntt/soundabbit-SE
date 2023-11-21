@@ -1,8 +1,9 @@
-import { AxiosError } from "./../../node_modules/axios/index.d";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import authService from "./authServices";
-import { CookieValueTypes, deleteCookie, getCookie } from "cookies-next";
 import { User } from "@/interfaces/user";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { CookieValueTypes, deleteCookie, getCookie, setCookie } from "cookies-next";
+
+import { AxiosError } from "./../../node_modules/axios/index.d";
+import authService from "./authServices";
 
 export enum AuthStatus {
     Loading,
@@ -36,6 +37,14 @@ const authSlice = createSlice({
             state.status = AuthStatus.Initial;
             state.user = null;
             state.message = "";
+        },
+        updateUsername: (state, action) => {
+            if (state.user) {
+                state.user.name = action.payload;
+                setCookie("user", JSON.stringify(state.user), {
+                    maxAge: 60 * 60 * 24 * 30,
+                });
+            }
         },
     },
 
@@ -98,5 +107,5 @@ export const login = createAsyncThunk(
     }
 );
 
-export const { logout } = authSlice.actions;
+export const { logout, updateUsername } = authSlice.actions;
 export default authSlice.reducer;
