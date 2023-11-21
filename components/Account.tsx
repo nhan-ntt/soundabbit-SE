@@ -22,6 +22,7 @@ export default function Account() {
     const onLogout = () => {
         dispatch(resetState());
         dispatch(logout());
+        router.push("/");
     };
 
     return (
@@ -31,7 +32,7 @@ export default function Account() {
                     as="button"
                     size="sm"
                     isBordered
-                    src={user.image_link}
+                    src={user?.image_link}
                 />
             </DropdownTrigger>
 
