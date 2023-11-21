@@ -33,7 +33,7 @@ function ArtistProfile({
 
     return (
         <AppLayout>
-            <div className="relative w-full h-[300px]  mobile:h-[250px]">
+            <div className="flex  flex-row relative w-full h-[300px]  mobile:h-[250px]">
                 <div className="flex flex-col justify-end absolute w-full h-full bg-black bg-opacity-40 z-10">
                     <div
                         className="px-10 pb-10 mobile:pb-6 tablet:pb-6 mobile:px-4
@@ -53,8 +53,6 @@ function ArtistProfile({
                         </h1>
                     </div>
                 </div>
-
-                <Image src={artist.image_link} alt="Avatar" />
             </div>
 
             <div>

@@ -97,7 +97,7 @@ const Login: NextPage = () => {
                         {status == AuthStatus.Error && (
                             <p
                                 className="bg-red-500 border border-red-800 
-              bg-opacity-40 px-3 mt-6 py-2 rounded-3xl  w-full text-center"
+              bg-opacity-40 px-3 mt-6 mb-4 py-2 rounded-3xl  w-full text-center"
                             >
                                 {message}
                             </p>
