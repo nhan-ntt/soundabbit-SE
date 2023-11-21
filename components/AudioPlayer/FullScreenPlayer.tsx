@@ -10,7 +10,7 @@ import {
     onShuffle,
     playPause,
     toggleModal,
-} from "@/../stores/player/currentAudioPlayer";
+} from "@/stores/player/currentAudioPlayer";
 import { Song } from "@/interfaces/Song";
 import Link from "next/link";
 import LikeButton from "./LikeButton";

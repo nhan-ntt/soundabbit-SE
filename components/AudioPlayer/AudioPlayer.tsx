@@ -10,7 +10,7 @@ import {
     setSongProgress,
     setVolume,
     setCurrentTime,
-} from "@/../stores/player/currentAudioPlayer";
+} from "@/stores/player/currentAudioPlayer";
 import Controls from "./Controls";
 import SeekBar from "./SeekBar";
 import Buttons from "./Buttons";

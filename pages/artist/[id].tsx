@@ -5,10 +5,7 @@ import API_URL from "@/config/apiUrl";
 import { Artists } from "@/interfaces/artist";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    playPause,
-    setActiveSong,
-} from "@/../stores/player/currentAudioPlayer";
+import { playPause, setActiveSong } from "@/stores/player/currentAudioPlayer";
 import { Song } from "@/interfaces/Song";
 import ListItem from "@/components/ListItem";
 import HorizontalSongsList from "@/components/HorizontalSongsList";
@@ -89,7 +86,9 @@ function ArtistProfile({
 
 export async function getServerSideProps(context: any) {
     try {
-        const artist = await axios.get(`${API_URL}/artists/${context.params.id}`);
+        const artist = await axios.get(
+            `${API_URL}/artists/${context.params.id}`
+        );
         console.log(artist.data);
         console.log(`${API_URL}/artists/${context.params.id}`);
 
