@@ -8,12 +8,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     playPause,
     setActiveSong,
-} from "../../stores/player/currentAudioPlayer";
-import { SongProps } from "@/interfaces/Song";
+} from "@/../stores/player/currentAudioPlayer";
+import { Song } from "@/interfaces/Song";
 import ListItem from "@/components/ListItem";
 import HorizontalSongsList from "@/components/HorizontalSongsList";
-import { shadeColor } from "@/config/utils";
-import { useState } from "react";
 import ErrorComponent from "@/components/error";
 import { Image } from "@nextui-org/react";
 
@@ -24,7 +22,7 @@ function ArtistProfile({
 }: {
     artist: Artists;
     success: boolean;
-    songs: SongProps[];
+    songs: Song[];
 }) {
     const dispatch = useDispatch();
 
@@ -66,7 +64,7 @@ function ArtistProfile({
                 <div className="pt-6 px-8 tablet:px-6 mobile:px-5">
                     <h1 className="text-2xl ">Songs</h1>
                     <div className="pt-4">
-                        {songs?.map((song: SongProps, i: number) => (
+                        {songs?.map((song: Song, i: number) => (
                             <ListItem
                                 key={song.id}
                                 song={song}

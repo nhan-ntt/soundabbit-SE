@@ -10,8 +10,8 @@ import {
     onShuffle,
     playPause,
     toggleModal,
-} from "../../stores/player/currentAudioPlayer";
-import { SongProps } from "@/interfaces/Song";
+} from "@/../stores/player/currentAudioPlayer";
+import { Song } from "@/interfaces/Song";
 import Link from "next/link";
 import LikeButton from "./LikeButton";
 import {
@@ -41,7 +41,7 @@ function FullScreenPlayer({
 }: {
     songProgress: number;
     duration: number;
-    activeSong: SongProps;
+    activeSong: Song;
     onScrubEnd: () => void;
     onScrub: (e: any) => void;
     songBarStyling: any;

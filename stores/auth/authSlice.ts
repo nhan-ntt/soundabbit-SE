@@ -2,7 +2,7 @@ import { AxiosError } from "./../../node_modules/axios/index.d";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import authService from "./authServices";
 import { CookieValueTypes, deleteCookie, getCookie } from "cookies-next";
-import { UserProps } from "@/interfaces/user";
+import { User } from "@/interfaces/user";
 
 export enum AuthStatus {
     Loading,
@@ -12,7 +12,7 @@ export enum AuthStatus {
 }
 
 export interface StateProps {
-    user: UserProps | null;
+    user: User | null;
     status: AuthStatus;
     message: string | unknown;
 }

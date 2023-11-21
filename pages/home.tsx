@@ -9,12 +9,11 @@ import {
     getRecentUsers,
     HomePageState,
     RequestStatus,
-} from "../stores/homePage/homePageSlice";
+} from "@/stores/homePage/homePageSlice";
 import HorizontalSongsList from "@/components/HorizontalSongsList";
 import HorizontalArtistsList from "@/components/HorizontalArtistsList";
 import { useRouter } from "next/navigation";
 import ErrorComponent from "@/components/error";
-import { getGreetings } from "@/config/utils";
 import { Image } from "@nextui-org/react";
 
 const Home: NextPage = () => {
@@ -28,17 +27,12 @@ const Home: NextPage = () => {
     const { user } = useSelector((state: any) => state.auth);
 
     const dispatch = useDispatch<any>();
-    const [color, setColor] = useState("#2bb540");
     const router = useRouter();
 
     useEffect(() => {
         if (user) {
             if (status !== RequestStatus.Success) {
                 dispatch(getRecentUsers());
-            }
-
-            if (status == RequestStatus.Success) {
-                setColor("black");
             }
         }
     }, []);
@@ -61,7 +55,7 @@ const Home: NextPage = () => {
             ) : status == RequestStatus.Success ? (
                 <div className="pt-10 mini-laptop:pt-2 mobile:pt-1 tablet:pt-2">
                     <h1 className="select-none pt-6 tablet:px-6 px-8 mobile:px-4 pb-6 text-3xl mini-laptop:text-2xl tablet:text-2xl mobile:text-xl">
-                        {getGreetings()}
+                        Artist
                     </h1>
                     <div
                         className="select-none px-8 tablet:px-6 mobile:px-4 grid grid-cols-3 gap-x-6 gap-y-5 mini-laptop:gap-x-3 
@@ -73,8 +67,6 @@ const Home: NextPage = () => {
                                 onClick={() =>
                                     router.push(`/artist/${artist.id}`)
                                 }
-                                onMouseEnter={() => setColor("black")}
-                                onMouseLeave={() => setColor("black")}
                                 className="flex flex-row items-center
                       w-full bg-[#5f5d5d60]
                       rounded cursor-pointer hover:bg-[#5f5d5da1]"

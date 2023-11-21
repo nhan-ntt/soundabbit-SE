@@ -2,7 +2,7 @@ import React from "react";
 import API_URL from "@/config/apiUrl";
 import axios from "axios";
 import AppLayout from "@/layouts/appLayout";
-import { SongProps } from "@/interfaces/Song";
+import { Song } from "@/interfaces/Song";
 import ListItem from "@/components/ListItem";
 import { useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +16,6 @@ import {
     toggleModal,
 } from "@/stores/player/currentAudioPlayer";
 import ErrorComponent from "@/components/error";
-import { shadeColor } from "@/config/utils";
 import {
     Dropdown,
     DropdownTrigger,
@@ -25,15 +24,9 @@ import {
     Button,
 } from "@nextui-org/react";
 import { Image } from "@nextui-org/react";
-import { PlaylistProps } from "@/interfaces/playlist";
+import { Playlist } from "@/interfaces/playlist";
 
-function Playlist({
-    songs,
-    success,
-}: {
-    success: boolean;
-    songs: SongProps[];
-}) {
+function Playlist({ songs, success }: { success: boolean; songs: Song[] }) {
     const router = useRouter();
     const dispatch = useDispatch<any>();
     const params = useParams();
@@ -41,7 +34,7 @@ function Playlist({
     const { isPlaying, playingPlaylist, playlists, playlistStatus } =
         useSelector((state: any) => state.player);
     const { user } = useSelector((state: any) => state.auth);
-    const [playlist, setPlaylist] = useState<PlaylistProps>();
+    const [playlist, setPlaylist] = useState<Playlist>();
 
     useEffect(() => {
         if (playlistStatus != PlaylistsStatus.success) {
@@ -54,6 +47,24 @@ function Playlist({
             playlists.find((playlist: any) => playlist.id == params.id)
         );
     }, [playlists, params]);
+
+    const playPlaylist = () => {
+        if (songs.length == 0) {
+            return;
+        }
+
+        if (playingPlaylist !== params.id) {
+            dispatch(
+                setActiveSong({
+                    songs: songs,
+                    index: 0,
+                    playlist: params.id,
+                })
+            );
+        } else {
+            dispatch(playPause(!isPlaying));
+        }
+    };
 
     if (!success) {
         return (
@@ -74,9 +85,14 @@ function Playlist({
                 <h1 className="text-[30px]  leading-[5rem] mobile:block tablet:block hidden">
                     {playlist?.name}
                 </h1>
-                <div className="rounded mr-6 tablet:mr-0 w-[230px] min-w-[230px] h-[230px] mobile:mr-0 relative">
-                    <Image src={playlist?.cover_image} alt="" />
-                </div>
+                <Image
+                    className="mr-6 tablet:mr-0 w-[230px] min-w-[230px] h-[230px] mobile:mr-0 object-cover"
+                    src={
+                        playlist?.cover_image ||
+                        "https://images3.alphacoders.com/690/690494.jpg"
+                    }
+                    alt=""
+                />
                 <div>
                     <p className="uppercase text-sm tablet:hidden mobile:hidden">
                         Playlist
@@ -97,20 +113,9 @@ function Playlist({
                     <div className="w-full flex items-center mb-2">
                         <Button
                             radius="full"
+                            isDisabled={songs.length == 0}
                             isIconOnly
-                            onClick={() => {
-                                if (playingPlaylist !== params.id) {
-                                    dispatch(
-                                        setActiveSong({
-                                            songs: songs,
-                                            index: 0,
-                                            playlist: params.id,
-                                        })
-                                    );
-                                } else {
-                                    dispatch(playPause(!isPlaying));
-                                }
-                            }}
+                            onClick={playPlaylist}
                             className="bg-[#2bb540] hover:scale-110 flex justify-center items-center"
                         >
                             {playingPlaylist !== params.id ? (
@@ -170,7 +175,7 @@ function Playlist({
                 </div>
 
                 <div className="pt-4">
-                    {songs.map((song: SongProps, i: number) => (
+                    {songs.map((song: Song, i: number) => (
                         <ListItem
                             key={song.id}
                             song={song}

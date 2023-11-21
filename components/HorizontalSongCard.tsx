@@ -1,17 +1,15 @@
 import React, { useEffect } from "react";
-import { playPause } from "../stores/player/currentAudioPlayer";
-import { SongProps } from "@/interfaces/Song";
+import { playPause } from "@/stores/player/currentAudioPlayer";
+import { Song } from "@/interfaces/Song";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { shadeColor } from "../config/utils";
 import { Image } from "@nextui-org/react";
-import axios from "axios";
 
 function HorizontalSongCard({
     song,
     onClick,
 }: {
-    song: SongProps;
+    song: Song;
     onClick: () => void;
 }) {
     const [showPlayButton, setPlayButton] = useState(false);

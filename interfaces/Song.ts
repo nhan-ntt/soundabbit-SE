@@ -1,4 +1,4 @@
-export interface SongProps {
+export interface Song {
     id: number;
     name: string;
     audio_link: string;
@@ -6,7 +6,7 @@ export interface SongProps {
     streams: number,
 }
 
-export const toSongProps = (songs: any): SongProps[] => {
+export const toSongProps = (songs: any): Song[] => {
     return songs.map((song: any) => {
         return {
             id: song.id,

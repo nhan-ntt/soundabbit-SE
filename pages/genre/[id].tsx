@@ -3,10 +3,10 @@ import AppLayout from "@/layouts/appLayout";
 import axios from "axios";
 import API_URL from "@/config/apiUrl";
 import { useDispatch } from "react-redux";
-import { setActiveSong } from "../../stores/player/currentAudioPlayer";
-import { SongProps } from "@/interfaces/Song";
+import { setActiveSong } from "@/stores/player/currentAudioPlayer";
+import { Song } from "@/interfaces/Song";
 import ListItem from "@/components/ListItem";
-import { GenreProp } from "@/interfaces/genres";
+import { Genre } from "@/interfaces/genres";
 import ErrorComponent from "@/components/error";
 
 function GenrePage({
@@ -15,8 +15,8 @@ function GenrePage({
     success,
 }: {
     success: boolean;
-    genre: GenreProp;
-    songs: SongProps[];
+    genre: Genre;
+    songs: Song[];
 }) {
     const dispatch = useDispatch<any>();
 
@@ -50,7 +50,7 @@ function GenrePage({
                     </h4>
 
                 )}
-                {songs?.map((song: SongProps, i: number) => {
+                {songs?.map((song: Song, i: number) => {
                     return (
                         <ListItem
                             onTap={() => {

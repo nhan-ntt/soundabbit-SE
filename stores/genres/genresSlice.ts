@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import genresApi from "./genresApi";
-import { GenreProp } from "@/interfaces/genres";
+import { Genre } from "@/interfaces/genres";
 
 export enum RequestStatus {
     Loading,
@@ -11,7 +11,7 @@ export enum RequestStatus {
 
 export interface GenresState {
     status: RequestStatus;
-    genres: GenreProp[]
+    genres: Genre[]
 }
 
 const initialState: GenresState = {

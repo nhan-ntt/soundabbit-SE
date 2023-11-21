@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import ListItem from "@/components/ListItem";
-import { SongProps } from "@/interfaces/Song";
+import { Song } from "@/interfaces/Song";
 import AppLayout from "@/layouts/appLayout";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {
@@ -52,7 +52,7 @@ function Queue() {
                             >
                                 {queue
                                     .slice(currentIndex + 1)
-                                    .map((song: SongProps, i: any) => (
+                                    .map((song: Song, i: any) => (
                                         <Draggable
                                             key={song.id.toString()}
                                             index={i}

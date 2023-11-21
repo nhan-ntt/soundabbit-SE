@@ -6,12 +6,12 @@ import { useState } from "react";
 import {
     CreatePlaylistStatus,
     renamePlaylist,
-} from "../stores/player/currentAudioPlayer";
+} from "@/stores/player/currentAudioPlayer";
 import { useRouter } from "next/navigation";
 import {
     addSongToPlaylist,
     createNewPlaylist,
-} from "../stores/player/currentAudioPlayer";
+} from "@/stores/player/currentAudioPlayer";
 import { toast } from "react-toastify";
 import {
     Button,

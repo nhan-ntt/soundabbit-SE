@@ -1,12 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { unLike } from "../../stores/player/currentAudioPlayer";
+import { unLike } from "@/../stores/player/currentAudioPlayer";
 import {
     addLike,
     removeLike,
     Like,
-} from "../../stores/player/currentAudioPlayer";
+} from "@/../stores/player/currentAudioPlayer";
 import { Tooltip } from "@nextui-org/react";
 
 function LikeButton({ song_id, size, isList }: any) {

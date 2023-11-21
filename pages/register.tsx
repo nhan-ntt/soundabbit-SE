@@ -8,7 +8,7 @@ import Head from "next/head";
 import { Button, Image, Link, Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { register, AuthStatus, reset } from "../stores/auth/authSlice";
+import { register, AuthStatus, reset } from "@/stores/auth/authSlice";
 import InputPassword from "@/components/InputPassword";
 
 const Register: NextPage = () => {

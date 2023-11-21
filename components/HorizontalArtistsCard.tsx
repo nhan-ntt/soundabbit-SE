@@ -1,7 +1,5 @@
 import React from "react";
-import { SongProps } from "@/interfaces/Song";
 import { Artists } from "@/interfaces/artist";
-import { shadeColor } from "../config/utils";
 import { Image } from "@nextui-org/react";
 
 function HorizontalArtistCard({

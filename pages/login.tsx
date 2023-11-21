@@ -10,7 +10,7 @@ import { Button, Image, Link, Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AuthStatus, login, reset } from "../stores/auth/authSlice";
+import { AuthStatus, login, reset } from "@/stores/auth/authSlice";
 import InputPassword from "@/components/InputPassword";
 
 const Login: NextPage = () => {

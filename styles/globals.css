@@ -3,15 +3,6 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: "ProximaNova Regular";
-    src: url("../public/ProximaNova/Proxima Nova Reg.otf");
-}
-@font-face {
-    font-family: "ProximaNova Bold";
-    src: url("../public/ProximaNova/Proxima Nova Bold.otf");
-}
-
-@font-face {
     font-family: "rhyme-icons";
     src: url("../public/rhyme-icons.ttf?x716ww") format("truetype");
     font-weight: normal;
@@ -213,7 +204,7 @@ input[type="range"]:hover::-webkit-slider-thumb {
     height: 5px;
 }
 
-.scrollbar::-webkit-scrollbar-song {
+.scrollbar::-webkit-scrollbar-track {
     border-radius: 100vh;
     background: transparent;
 }
@@ -230,18 +221,18 @@ input[type="range"]:hover::-webkit-slider-thumb {
 
 .cliped {
     clip-path: polygon(
-    59% 0,
-    49% 100%,
-    100% 30%,
-    0 100%,
-    100% 0,
-    0 66%,
-    0 37%,
-    100% 80%,
-    0 0,
-    100% 20%,
-    80% 0%,
-    87% 100%
+        59% 0,
+        49% 100%,
+        100% 30%,
+        0 100%,
+        100% 0,
+        0 66%,
+        0 37%,
+        100% 80%,
+        0 0,
+        100% 20%,
+        80% 0%,
+        87% 100%
     );
     transform: rotate(190deg);
 }
@@ -253,7 +244,9 @@ input[type="range"]:hover::-webkit-slider-thumb {
     margin: 8px auto;
     position: relative;
     background: #fff;
-    box-shadow: -20px 0 #fff, 20px 0 #fff;
+    box-shadow:
+        -20px 0 #fff,
+        20px 0 #fff;
     box-sizing: border-box;
     animation: shadowPulse 1s linear infinite;
 }
@@ -261,14 +254,20 @@ input[type="range"]:hover::-webkit-slider-thumb {
 @keyframes shadowPulse {
     33% {
         background: #fff;
-        box-shadow: -20px 0 #2bb540, 20px 0 #fff;
+        box-shadow:
+            -20px 0 #2bb540,
+            20px 0 #fff;
     }
     66% {
         background: #2bb540;
-        box-shadow: -20px 0 #fff, 20px 0 #fff;
+        box-shadow:
+            -20px 0 #fff,
+            20px 0 #fff;
     }
     100% {
         background: #fff;
-        box-shadow: -20px 0 #fff, 20px 0 #2bb540;
+        box-shadow:
+            -20px 0 #fff,
+            20px 0 #2bb540;
     }
 }

@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import AppLayout from "@/layouts/appLayout";
-import algoliaClient from "../config/algolia";
-import { toSongProps, SongProps } from "@/interfaces/Song";
+import algoliaClient from "@/config/algolia";
+import { toSongProps, Song } from "@/interfaces/Song";
 import { useState } from "react";
 import { Artists } from "@/interfaces/artist";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveSong } from "../stores/player/currentAudioPlayer";
+import { setActiveSong } from "@/stores/player/currentAudioPlayer";
 import { PlayPauseButton } from "@/components/HorizontalSongCard";
 import ListItem from "@/components/ListItem";
 import Link from "next/link";
@@ -14,7 +14,7 @@ import { RequestStatus } from "@/stores/homePage/homePageSlice";
 import { GenresState, getGenres } from "@/stores/genres/genresSlice";
 
 function Search() {
-    const [searchResult, setSearchResult] = useState<SongProps[]>([]);
+    const [searchResult, setSearchResult] = useState<Song[]>([]);
     const [artists, setArtists] = useState<Artists[]>([]);
     const { status, genres }: GenresState = useSelector(
         (state: any) => state.genres
@@ -108,7 +108,7 @@ function Search() {
 
                                     {searchResult
                                         .slice(0, 4)
-                                        .map((song: SongProps, i: number) => {
+                                        .map((song: Song, i: number) => {
                                             return (
                                                 <ListItem
                                                     onTap={() =>

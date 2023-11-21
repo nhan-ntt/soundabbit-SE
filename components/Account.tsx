@@ -8,7 +8,7 @@ import {
     Avatar,
     DropdownSection,
 } from "@nextui-org/react";
-import { reset } from "../stores/auth/authSlice";
+import { reset } from "@/stores/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 

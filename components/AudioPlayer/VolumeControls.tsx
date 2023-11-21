@@ -43,7 +43,8 @@ function VolumeControls({ volume, updateVolume, isFullScreen }: IProps) {
                         ></i>
                     </Tooltip>
                 )}
-                {volume === 0 && (
+
+                {volume == 0 && (
                     <Tooltip content="Unmute">
                         <i
                             style={{ fontSize: "20px" }}
@@ -56,6 +57,7 @@ function VolumeControls({ volume, updateVolume, isFullScreen }: IProps) {
                         ></i>
                     </Tooltip>
                 )}
+
                 <input
                     type="range"
                     value={volume}
@@ -73,6 +75,7 @@ function VolumeControls({ volume, updateVolume, isFullScreen }: IProps) {
             </div>
         );
     }
+
     return (
         <div className="flex flex-row justify-center items-center ml-1">
             {volume <= 1 && volume > 0.5 && (
@@ -100,7 +103,7 @@ function VolumeControls({ volume, updateVolume, isFullScreen }: IProps) {
                 </Tooltip>
             )}
 
-            {volume === 0 && (
+            {volume == 0 && (
                 <Tooltip content="Unmute">
                     <i
                         className="cursor-pointer icon-volume-x text-gray-400 hover:text-white"

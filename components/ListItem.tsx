@@ -3,12 +3,12 @@ import {
     addToQueue,
     removeFromQueue,
     toggleModal,
-} from "../stores/player/currentAudioPlayer";
+} from "@/stores/player/currentAudioPlayer";
 import LikeButton from "./AudioPlayer/LikeButton";
-import { removeSongFromPlaylist } from "../stores/player/currentAudioPlayer";
+import { removeSongFromPlaylist } from "@/stores/player/currentAudioPlayer";
 import { toast } from "react-toastify";
-import { SongProps } from "@/interfaces/Song";
-import { PlaylistProps } from "@/interfaces/playlist";
+import { Song } from "@/interfaces/Song";
+import { Playlist } from "@/interfaces/playlist";
 import {
     Dropdown,
     DropdownTrigger,
@@ -24,10 +24,10 @@ function ListItem({
     playlist,
     queueAction = true,
 }: {
-    song: SongProps;
+    song: Song;
     showNumber?: number;
     onTap: any;
-    playlist?: PlaylistProps;
+    playlist?: Playlist;
     queueAction?: boolean;
 }) {
     const { activeSong, queue } = useSelector((state: any) => state.player);

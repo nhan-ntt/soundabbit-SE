@@ -33,7 +33,7 @@ const Home: NextPage = () => {
     }, [router, user, status]);
 
     return (
-        <div className="font-ProximaRegular bg-[#0d0d0d] text-white">
+        <div className="bg-[#0d0d0d] text-white">
             <Head>
                 <meta
                     property="og:title"
@@ -164,15 +164,17 @@ const Home: NextPage = () => {
                 </div>
                 <div className="overflow-hidden pl-10">
                     <div className="hidden mobile:block relative h-[400px] w-[600px]">
-                        <Image src={"/landing_page.png"} className="rounded" alt=""/>
+                        <Image
+                            src={"/landing_page.png"}
+                            className="rounded"
+                            alt=""
+                        />
                     </div>
                 </div>
             </div>
 
             <div className="max-w-[1000px] mx-auto">
-                <h1 className="text-center text-3xl mt-10 mb-10">
-                    Features
-                </h1>
+                <h1 className="text-center text-3xl mt-10 mb-10">Features</h1>
 
                 <div
                     className="grid grid-cols-3 gap-4 mini-laptop:grid-cols-2 px-6
@@ -188,9 +190,7 @@ const Home: NextPage = () => {
                             <i className="icon-full-screen text-[20px]"></i>
                         </div>
 
-                        <h1 className="text-xl mb-2 ">
-                            Fully Responsive
-                        </h1>
+                        <h1 className="text-xl mb-2 ">Fully Responsive</h1>
                         <p>
                             Available for all screen Mobile, tablet, laptop and
                             desktop. The app is made to give a user full
@@ -207,9 +207,7 @@ const Home: NextPage = () => {
                             <i className="icon-add-to-playlist text-[20px]"></i>
                         </div>
 
-                        <h1 className="text-xl mb-2 ">
-                            Different Themes
-                        </h1>
+                        <h1 className="text-xl mb-2 ">Different Themes</h1>
                         <p>
                             Stock music with variety of themes. Music for
                             videos, Music for youtube videos, Vlog music
@@ -226,9 +224,7 @@ const Home: NextPage = () => {
                             <i className="icon-verified text-[24px]"></i>
                         </div>
 
-                        <h1 className="text-xl mb-2 ">
-                            Safe to use
-                        </h1>
+                        <h1 className="text-xl mb-2 ">Safe to use</h1>
                         <p>
                             Over 10k+ high quality stock music, shared by
                             community of pixabay music. safe to use without

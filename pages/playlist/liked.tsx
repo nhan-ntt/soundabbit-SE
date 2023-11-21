@@ -2,14 +2,14 @@ import React from "react";
 import API_URL from "@/config/apiUrl";
 import axios from "axios";
 import AppLayout from "@/layouts/appLayout";
-import { SongProps } from "@/interfaces/Song";
+import { Song } from "@/interfaces/Song";
 import ListItem from "@/components/ListItem";
 import { useDispatch, useSelector } from "react-redux";
 import { playPause, setActiveSong } from "@/stores/player/currentAudioPlayer";
 import ErrorComponent from "@/components/error";
 import { Button } from "@nextui-org/react";
 
-function Liked({ songs, success }: { success: boolean; songs: SongProps[] }) {
+function Liked({ songs, success }: { success: boolean; songs: Song[] }) {
     const dispatch = useDispatch();
     const { isPlaying, playingPlaylist } = useSelector(
         (state: any) => state.player
@@ -88,7 +88,7 @@ function Liked({ songs, success }: { success: boolean; songs: SongProps[] }) {
                     </div>
                 </div>
                 <div className="pt-4">
-                    {songs.map((song: SongProps, i: number) => (
+                    {songs.map((song: Song, i: number) => (
                         <ListItem
                             key={song.id}
                             song={song}

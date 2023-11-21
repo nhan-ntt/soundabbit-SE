@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import homePageApi from "./homePageApi";
 import { Artists } from "@/interfaces/artist";
-import { SongProps } from "@/interfaces/Song";
+import { Song } from "@/interfaces/Song";
 
 export enum RequestStatus {
     Loading,
@@ -12,8 +12,8 @@ export enum RequestStatus {
 export interface HomePageState {
     recentUsers: Artists[];
     trendingArtists: Artists[];
-    topHits: SongProps[];
-    popularHits: SongProps[];
+    topHits: Song[];
+    popularHits: Song[];
     status: RequestStatus;
 }
 const initialState: HomePageState = {

@@ -1,10 +1,10 @@
-import { PlaylistProps } from "@/interfaces/playlist";
-import { SongProps } from "@/interfaces/Song";
+import { Playlist } from "@/interfaces/playlist";
+import { Song } from "@/interfaces/Song";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import ApiService from "./ApiServices";
 
-const songs: SongProps[] = [
+const songs: Song[] = [
     {
         id: 1,
         name: "Rhyme",
@@ -31,19 +31,19 @@ export enum CreatePlaylistStatus {
     error,
 }
 export interface IStateProps {
-    queue: SongProps[];
+    queue: Song[];
     liked: number[];
     currentIndex: number;
     showBanner: boolean;
     isPlaying: boolean;
-    activeSong: SongProps | null;
+    activeSong: Song | null;
     volume: number;
     duration: number;
     currentTime: number;
     songProgress: number;
     isShuffle: boolean;
     isRepeat: boolean;
-    playlists: PlaylistProps[];
+    playlists: Playlist[];
     createPlaylistStatus: CreatePlaylistStatus;
     isModalOpen: boolean;
     playingPlaylist: string;
