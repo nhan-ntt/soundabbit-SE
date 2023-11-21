@@ -2,7 +2,15 @@
 module.exports = {
     reactStrictMode: false,
     swcMinify: true,
-    images: { domains: ["images.unsplash.com", "s3.us-west-2.amazonaws.com"] },
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'drive.google.com',
+            },
+        ],
+        domains: ["drive.google.com", "images.unsplash.com", "s3.us-west-2.amazonaws.com"]
+    },
 
     compiler: {
         styledComponents: true,

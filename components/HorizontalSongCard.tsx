@@ -77,14 +77,17 @@ function HorizontalSongCard({
             font-ProximaRegular mobile:text-xs tablet:text-xs"
                 >
                     {artists &&
-                        artists.map((artist: Artist) => (
-                            <Link
-                                key={artist.id}
-                                href={`/artist/${artist.id}`}
-                                className="text-gray-300"
-                            >
-                                {artist.name}
-                            </Link>
+                        artists.map((artist: Artist, index: number) => (
+                            <>
+                                <Link
+                                    key={artist.id}
+                                    href={`/artist/${artist.id}`}
+                                    className="text-gray-300"
+                                >
+                                    {artist.name}
+                                </Link>
+                                {index < artists.length - 1 && ", "}
+                            </>
                         ))}
                 </p>
             </div>
