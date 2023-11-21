@@ -3,7 +3,11 @@ import { playPause } from "@/stores/player/currentAudioPlayer";
 import { Song } from "@/interfaces/song";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { Image } from "@nextui-org/react";
+import { Image, Link } from "@nextui-org/react";
+import { Artist } from "@/interfaces/artist";
+import useSWR from "swr";
+import axios from "axios";
+import API_URL from "@/config/apiUrl";
 
 function HorizontalSongCard({
     song,
@@ -15,9 +19,16 @@ function HorizontalSongCard({
     const [showPlayButton, setPlayButton] = useState(false);
     const { activeSong, isPlaying } = useSelector((state: any) => state.player);
 
+    const { data: artists, error: errorGetSongs } = useSWR<Artist[], Error>(
+        song && song.id ? `${API_URL}/songs/${song.id}/artists` : null,
+        async (url: string) => {
+            const res = await axios.get(url);
+            return res.data.list;
+        }
+    );
+
     return (
         <div
-            key={song.id}
             className="mr-4 cursor-grab"
             onClick={onClick}
             onMouseEnter={() => setPlayButton(true)}
@@ -65,7 +76,16 @@ function HorizontalSongCard({
                     className="line-clamp-2 mt-0.5 text-sm text-gray-400 
             font-ProximaRegular mobile:text-xs tablet:text-xs"
                 >
-                    artist name
+                    {artists &&
+                        artists.map((artist: Artist) => (
+                            <Link
+                                key={artist.id}
+                                href={`/artist/${artist.id}`}
+                                className="text-gray-300"
+                            >
+                                {artist.name}
+                            </Link>
+                        ))}
                 </p>
             </div>
         </div>

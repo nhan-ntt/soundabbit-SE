@@ -3,7 +3,7 @@ import AppLayout from "@/layouts/appLayout";
 import algoliaClient from "@/config/algolia";
 import { toSongProps, Song } from "@/interfaces/song";
 import { useState } from "react";
-import { Artists } from "@/interfaces/artist";
+import { Artist } from "@/interfaces/artist";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveSong } from "@/stores/player/currentAudioPlayer";
 import { PlayPauseButton } from "@/components/HorizontalSongCard";
@@ -12,24 +12,25 @@ import Link from "next/link";
 import { Image, Input } from "@nextui-org/react";
 import { RequestStatus } from "@/stores/homePage/homePageSlice";
 import { GenresState, getGenres } from "@/stores/genres/genresSlice";
+import useSWR from "swr";
+import API_URL from "@/config/apiUrl";
+import axios from "axios";
+import { Genre } from "@/interfaces/genres";
 
 function Search() {
     const [searchResult, setSearchResult] = useState<Song[]>([]);
-    const [artists, setArtists] = useState<Artists[]>([]);
-    const { status, genres }: GenresState = useSelector(
-        (state: any) => state.genres
-    );
+    const [artists, setArtists] = useState<Artist[]>([]);
     const [topResult, setTopResult] = useState<any>();
     const [isFocus, setFocus] = useState(false);
 
     const dispatch = useDispatch<any>();
-
-    useEffect(() => {
-        if (status !== RequestStatus.Success) {
-            console.log("loading genres");
-            dispatch(getGenres());
+    const { data: genres, error: error } = useSWR<Genre[], Error>(
+        `${API_URL}/genres`,
+        async (url: string) => {
+            const res = await axios.get(url);
+            return res.data.list;
         }
-    }, []);
+    );
 
     // get response from algolia
     const searchAlgolia = async (query: string) => {
@@ -141,36 +142,39 @@ function Search() {
            laptop:gap-4 gap-6 px-8 laptop:px-6 mini-laptop:px-4
             pt-4 select-none tablet:grid-cols-2 mobile:grid-cols-2 mobile:px-4 mobile:gap-4"
                     >
-                        {genres.map((genre: any) => {
-                            return (
-                                <Link
-                                    href={`/genre/${genre.id}`}
-                                    key={genre.id}
-                                >
-                                    <div
-                                        className="hover:scale-105 transition-all cursor-pointer relative h-44 tablet:h-40 mobile:h-28 overflow-hidden rounded "
-                                        style={{
-                                            backgroundColor: "black",
-                                        }}
+                        {genres &&
+                            genres.map((genre: Genre) => {
+                                return (
+                                    <Link
+                                        href={`/genre/${genre.id}`}
+                                        key={genre.id}
                                     >
-                                        <div className="p-4 capitalize">
-                                            <p className="text-xl">
-                                                {genre.name}
-                                            </p>
-                                            <div className="absolute -right-4 -bottom-2">
-                                                <div className="shadow-xl relative mobile:w-[70px] rounded mobile:h-[70px] w-24 h-24 rotate-[30deg]">
-                                                    <Image
-                                                        src={genre.image_link}
-                                                        alt=""
-                                                        className="object-cover rounded mobile:w-[70px] mobile:h-[70px] w-24 h-24"
-                                                    />
+                                        <div
+                                            className="hover:scale-105 transition-all cursor-pointer relative h-44 tablet:h-40 mobile:h-28 overflow-hidden rounded "
+                                            style={{
+                                                backgroundColor: "black",
+                                            }}
+                                        >
+                                            <div className="p-4 capitalize">
+                                                <p className="text-xl">
+                                                    {genre.name}
+                                                </p>
+                                                <div className="absolute -right-4 -bottom-2">
+                                                    <div className="shadow-xl relative mobile:w-[70px] rounded mobile:h-[70px] w-24 h-24 rotate-[30deg]">
+                                                        <Image
+                                                            src={
+                                                                genre.image_link
+                                                            }
+                                                            alt=""
+                                                            className="object-cover rounded mobile:w-[70px] mobile:h-[70px] w-24 h-24"
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </Link>
-                            );
-                        })}
+                                    </Link>
+                                );
+                            })}
                     </div>
                 </div>
             )}
@@ -183,6 +187,13 @@ export default Search;
 function TopResult({ object, onTap }: any) {
     const [showPlayButton, setPlayButton] = useState(false);
     const { activeSong, isPlaying } = useSelector((state: any) => state.player);
+    const { data: artists, error: errorGetSongs } = useSWR<Artist[], Error>(
+        object && object.id ? `${API_URL}/songs/${object.id}/artists` : null,
+        async (url: string) => {
+            const res = await axios.get(url);
+            return res.data.list;
+        }
+    );
 
     if (object.type == "song") {
         return (
@@ -219,7 +230,18 @@ function TopResult({ object, onTap }: any) {
                             <p className="mt-4 text-2xl line-clamp-1">
                                 {object.name}
                             </p>
-                            <p>artist name</p>
+                            <p>
+                                {artists &&
+                                    artists.map((artist: Artist) => (
+                                        <Link
+                                            key={artist.id}
+                                            href={`/artist/${artist.id}`}
+                                            className="text-gray-300"
+                                        >
+                                            {artist.name}
+                                        </Link>
+                                    ))}
+                            </p>
                         </div>
                     </div>
                 </div>

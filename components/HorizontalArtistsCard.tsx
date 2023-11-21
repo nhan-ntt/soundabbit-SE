@@ -1,12 +1,12 @@
 import React from "react";
-import { Artists } from "@/interfaces/artist";
+import { Artist } from "@/interfaces/artist";
 import { Image } from "@nextui-org/react";
 
 function HorizontalArtistCard({
     artist,
     onClick,
 }: {
-    artist: Artists;
+    artist: Artist;
     onClick: () => void;
 }) {
     return (

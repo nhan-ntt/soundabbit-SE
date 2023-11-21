@@ -8,14 +8,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { playPause, setActiveSong } from "@/stores/player/currentAudioPlayer";
 import ErrorComponent from "@/components/error";
 import { Button } from "@nextui-org/react";
+import useSWR from "swr";
 
-function Liked({ songs, success }: { success: boolean; songs: Song[] }) {
+function Liked() {
     const dispatch = useDispatch();
     const { isPlaying, playingPlaylist } = useSelector(
         (state: any) => state.player
     );
+    const { user } = useSelector((state: any) => state.auth);
 
-    if (!success) {
+    const { data: songs, error } = useSWR<Song[], Error>(
+        user && user.id ? `${API_URL}/users/${user.id}/favorite/songs` : null,
+        async (url: string) => {
+            const res = await axios.get(url, {
+                headers: {
+                    authorization: `Bearer ${user.token}`,
+                },
+            });
+            return res.data.list;
+        }
+    );
+
+    if (error) {
         return (
             <AppLayout>
                 <ErrorComponent />
@@ -51,7 +65,7 @@ function Liked({ songs, success }: { success: boolean; songs: Song[] }) {
                         Liked Songs
                     </h1>
                     <p className="text-sm mt-6 tablet:mt-4 opacity-70">
-                        {songs.length} Songs
+                        {songs?.length} Songs
                     </p>
                 </div>
             </div>
@@ -88,65 +102,29 @@ function Liked({ songs, success }: { success: boolean; songs: Song[] }) {
                     </div>
                 </div>
                 <div className="pt-4">
-                    {songs.map((song: Song, i: number) => (
-                        <ListItem
-                            key={song.id}
-                            song={song}
-                            showNumber={i + 1}
-                            onTap={() => {
-                                dispatch(
-                                    setActiveSong({
-                                        songs: songs,
-                                        index: songs.indexOf(song),
-                                        playlist: "LIKED",
-                                    })
-                                );
-                            }}
-                        />
-                    ))}
+                    {songs &&
+                        songs?.map((song: Song, i: number) => (
+                            <ListItem
+                                key={song.id}
+                                song={song}
+                                showNumber={i + 1}
+                                onTap={() => {
+                                    dispatch(
+                                        setActiveSong({
+                                            songs: songs,
+                                            index: songs?.indexOf(song),
+                                            playlist: "LIKED",
+                                        })
+                                    );
+                                }}
+                            />
+                        ))}
                 </div>
             </div>
 
             <div className="pb-32"></div>
         </AppLayout>
     );
-}
-
-export async function getServerSideProps(context: any) {
-    const userCookie = context.req.cookies.user;
-    if (!userCookie) {
-        return {
-            redirect: {
-                destination: `/login`,
-                permanent: false,
-            },
-        };
-    }
-
-    try {
-        const user = JSON.parse(userCookie);
-        const response = await axios.get(
-            `${API_URL}/users/${user.id}/favorite/songs`,
-            {
-                headers: {
-                    authorization: `Bearer ${user.token}`,
-                },
-            }
-        );
-
-        return {
-            props: {
-                success: true,
-                songs: response.data.list,
-            },
-        };
-    } catch (e) {
-        return {
-            props: {
-                success: false,
-            },
-        };
-    }
 }
 
 export default Liked;

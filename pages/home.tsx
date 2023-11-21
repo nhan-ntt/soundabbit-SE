@@ -4,7 +4,7 @@ import type { NextPage } from "next";
 import AppLayout from "@/layouts/appLayout";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { Artists } from "@/interfaces/artist";
+import { Artist } from "@/interfaces/artist";
 import {
     getRecentUsers,
     HomePageState,
@@ -61,7 +61,7 @@ const Home: NextPage = () => {
                         className="select-none px-8 tablet:px-6 mobile:px-4 grid grid-cols-3 gap-x-6 gap-y-5 mini-laptop:gap-x-3 
           mini-laptop:gap-y-4 tablet:gap-y-4 tablet:gap-x-3 mobile:grid-cols-2 mobile:gap-x-3 mobile:gap-y-3"
                     >
-                        {recentArtist.map((artist: Artists) => (
+                        {recentArtist.map((artist: Artist) => (
                             <div
                                 key={artist.id}
                                 onClick={() =>

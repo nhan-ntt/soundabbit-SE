@@ -2,8 +2,8 @@ import React from "react";
 import AppLayout from "@/layouts/appLayout";
 import axios from "axios";
 import API_URL from "@/config/apiUrl";
-import { Artists } from "@/interfaces/artist";
-import { useRouter } from "next/navigation";
+import { Artist } from "@/interfaces/artist";
+import { useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { playPause, setActiveSong } from "@/stores/player/currentAudioPlayer";
 import { Song } from "@/interfaces/song";
@@ -11,19 +11,30 @@ import ListItem from "@/components/ListItem";
 import HorizontalSongsList from "@/components/HorizontalSongsList";
 import ErrorComponent from "@/components/error";
 import { Image } from "@nextui-org/react";
+import useSWR from "swr";
 
-function ArtistProfile({
-    success,
-    artist,
-    songs,
-}: {
-    artist: Artists;
-    success: boolean;
-    songs: Song[];
-}) {
+function ArtistProfile() {
     const dispatch = useDispatch();
+    const params = useParams();
 
-    if (!success) {
+    const { data: artist, error: errorGetArtist } = useSWR<Artist, Error>(
+        params && params.id ? `${API_URL}/artists/${params.id}` : null,
+        async (url: string) => {
+            const res = await axios.get(url);
+            return res.data;
+        }
+    );
+
+    const { data: songs, error: errorGetSongs } = useSWR<Song[], Error>(
+        params && params.id ? `${API_URL}/artists/${params.id}/songs` : null,
+        async (url: string) => {
+            const res = await axios.get(url);
+            return res.data.list;
+        }
+    );
+
+
+    if (errorGetArtist || errorGetSongs) {
         return (
             <AppLayout>
                 <ErrorComponent />
@@ -42,14 +53,15 @@ function ArtistProfile({
                         <div className="flex">
                             <i className="icon-verified mr-2 text-blue-300"></i>
                             <p>
-                                @{artist.name.replaceAll(" ", "").toLowerCase()}
+                                @
+                                {artist?.name.replaceAll(" ", "").toLowerCase()}
                             </p>
                         </div>
                         <h1
                             className="text-[70px] laptop:text-[60px]
             mini-laptop:text-[60px] tablet:text-[45px] mobile:text-[40px]"
                         >
-                            {artist.name}
+                            {artist?.name}
                         </h1>
                     </div>
                 </div>
@@ -80,34 +92,6 @@ function ArtistProfile({
             <div className="pb-32"></div>
         </AppLayout>
     );
-}
-
-export async function getServerSideProps(context: any) {
-    try {
-        const artist = await axios.get(
-            `${API_URL}/artists/${context.params.id}`
-        );
-        console.log(artist.data);
-        console.log(`${API_URL}/artists/${context.params.id}`);
-
-        // const songs = await axios.get(
-        //     API_URL + "/songs/artist/" + context.params.id
-        // );
-
-        return {
-            props: {
-                success: true,
-                artist: artist.data,
-                // songs: songs.data.data,
-            },
-        };
-    } catch (e) {
-        return {
-            props: {
-                success: false,
-            },
-        };
-    }
 }
 
 export default ArtistProfile;

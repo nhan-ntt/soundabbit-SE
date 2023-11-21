@@ -8,19 +8,31 @@ import { Song } from "@/interfaces/song";
 import ListItem from "@/components/ListItem";
 import { Genre } from "@/interfaces/genres";
 import ErrorComponent from "@/components/error";
+import { useParams } from "next/navigation";
+import useSWR from "swr";
 
-function GenrePage({
-    genre,
-    songs,
-    success,
-}: {
-    success: boolean;
-    genre: Genre;
-    songs: Song[];
-}) {
+function GenrePage() {
     const dispatch = useDispatch<any>();
+    const params = useParams();
 
-    if (!success) {
+    const { data: genre, error: errorGetGenre } = useSWR<Genre, Error>(
+        params && params.id ? `${API_URL}/genres/${params.id}` : null,
+        async (url: string) => {
+            const res = await axios.get(url);
+            return res.data;
+        }
+    );
+
+    // Use SWR to fetch artist
+    const { data: songs, error: errorGetSongs } = useSWR<Song[], Error>(
+        params && params.id ? `${API_URL}/artists/${params.id}/songs` : null,
+        async (url: string) => {
+            const res = await axios.get(url);
+            return res.data.list;
+        }
+    );
+
+    if (errorGetGenre || errorGetSongs) {
         return (
             <AppLayout>
                 <ErrorComponent />
@@ -35,20 +47,16 @@ function GenrePage({
                     className="pb-6 text-[70px] laptop:text-[60px] 
             mini-laptop:text-[60px] tablet:text-[45px] mobile:text-[40px] capitalize "
                 >
-                    {genre!.name}
+                    {genre?.name}
                 </h1>
             </div>
             <div className="px-8 mini-laptop:px-6 tablet:px-6 mobile:px-4">
                 {songs ? (
-                    <h4 className="pt-8 pb-6 text-gray-400">
-                        Songs:
-                    </h4>
-
+                    <h4 className="pt-8 pb-6 text-gray-400">Songs:</h4>
                 ) : (
                     <h4 className="pt-8 pb-6 text-gray-400">
                         Genre do not have any song
                     </h4>
-
                 )}
                 {songs?.map((song: Song, i: number) => {
                     return (
@@ -68,25 +76,6 @@ function GenrePage({
             <div className="pb-32"></div>
         </AppLayout>
     );
-}
-
-export async function getServerSideProps(context: any) {
-    try {
-        const genre = await axios.get(`${API_URL}/genres/${context.params.id}`);
-
-        return {
-            props: {
-                success: true,
-                genre: genre.data
-            },
-        };
-    } catch (e) {
-        return {
-            props: {
-                success: false,
-            },
-        };
-    }
 }
 
 export default GenrePage;

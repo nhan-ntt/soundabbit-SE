@@ -14,8 +14,13 @@ import {
     DropdownTrigger,
     DropdownMenu,
     DropdownItem,
+    Link,
 } from "@nextui-org/react";
 import { Image } from "@nextui-org/react";
+import API_URL from "@/config/apiUrl";
+import useSWR from "swr";
+import { Artist } from "@/interfaces/artist";
+import axios from "axios";
 
 function ListItem({
     song,
@@ -33,6 +38,14 @@ function ListItem({
     const { activeSong, queue } = useSelector((state: any) => state.player);
     const { user } = useSelector((state: any) => state.auth);
     const dispatch = useDispatch<any>();
+
+    const { data: artists, error: errorGetSongs } = useSWR<Artist[], Error>(
+        song && song.id ? `${API_URL}/songs/${song.id}/artists` : null,
+        async (url: string) => {
+            const res = await axios.get(url);
+            return res.data.list;
+        }
+    );
 
     return (
         <div className="relative" onClick={onTap}>
@@ -58,13 +71,23 @@ function ListItem({
 
                     <div className="">
                         <p
-                            className={`mobile:text-sm line-clamp-1 ${activeSong.id == song.id &&
-                                "text-[#2bb540] "
+                            className={`mobile:text-sm line-clamp-1 ${activeSong.id == song.id && "text-[#2bb540] "
                                 }`}
                             dangerouslySetInnerHTML={{ __html: song.name }}
                         ></p>
-                        <p className="text-sm mobile:text-xs text-gray-300">
-                            artist name
+                        <p className="text-sm mobile:text-xs">
+                            {artists &&
+                                artists.map((artist: Artist, index: number) => (
+                                    <>
+                                        <Link
+                                            href={`/artist/${artist.id}`}
+                                            className="text-gray-300"
+                                        >
+                                            {artist.name}
+                                        </Link>
+                                        {(index < artists.length - 1) && ', '}
+                                    </>
+                                ))}
                         </p>
                     </div>
                 </div>

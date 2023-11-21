@@ -1,8 +1,8 @@
 import { useRouter } from "next/navigation";
 import ScrollContainer from "react-indiana-drag-scroll";
-import { Artists } from "@/interfaces/artist";
+import { Artist } from "@/interfaces/artist";
 import HorizontalArtistCard from "./HorizontalArtistsCard";
-function HorizontalArtistsList({ artists }: { artists: Artists[] }) {
+function HorizontalArtistsList({ artists }: { artists: Artist[] }) {
     const router = useRouter();
     return (
         <ScrollContainer
@@ -11,7 +11,7 @@ function HorizontalArtistsList({ artists }: { artists: Artists[] }) {
             className="flex flex-row"
         >
             <div className="mx-4 mobile:mx-2 tablet:mx-3 mini-laptop:mx-2"></div>
-            {artists.map((artist: Artists) => (
+            {artists.map((artist: Artist) => (
                 <HorizontalArtistCard
                     key={artist.id}
                     artist={artist}

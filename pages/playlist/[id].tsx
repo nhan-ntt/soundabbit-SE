@@ -25,9 +25,9 @@ import {
 } from "@nextui-org/react";
 import { Image } from "@nextui-org/react";
 import { Playlist } from "@/interfaces/playlist";
-import { persistor } from "@/stores/store";
+import useSWR from "swr";
 
-function Playlist({ songs, success }: { success: boolean; songs: Song[] }) {
+function Playlist() {
     const router = useRouter();
     const dispatch = useDispatch<any>();
     const params = useParams();
@@ -37,6 +37,14 @@ function Playlist({ songs, success }: { success: boolean; songs: Song[] }) {
     const { user } = useSelector((state: any) => state.auth);
     const [playlist, setPlaylist] = useState<Playlist>();
 
+    const { data: songs, error: errorGetSongs } = useSWR<Song[], Error>(
+        params && params.id ? `${API_URL}/playlists/${params.id}/songs` : null,
+        async (url: string) => {
+            const res = await axios.get(url);
+            return res.data.list;
+        }
+    );
+
     useEffect(() => {
         if (playlistStatus != PlaylistsStatus.success) {
             dispatch(getPlaylists(user.token));
@@ -44,13 +52,15 @@ function Playlist({ songs, success }: { success: boolean; songs: Song[] }) {
     }, []);
 
     useEffect(() => {
-        setPlaylist(
-            playlists.find((playlist: any) => playlist.id == params.id)
-        );
+        if (params && params.id) {
+            setPlaylist(
+                playlists.find((playlist: any) => playlist.id == params.id)
+            );
+        }
     }, [playlists, params]);
 
     const playPlaylist = () => {
-        if (songs.length == 0) {
+        if (songs?.length == 0) {
             return;
         }
 
@@ -77,7 +87,7 @@ function Playlist({ songs, success }: { success: boolean; songs: Song[] }) {
         router.replace("/library");
     };
 
-    if (!success) {
+    if (!errorGetSongs) {
         return (
             <AppLayout>
                 <ErrorComponent />
@@ -98,9 +108,7 @@ function Playlist({ songs, success }: { success: boolean; songs: Song[] }) {
                 </h1>
                 <Image
                     className="mr-6 tablet:mr-0 w-[230px] min-w-[230px] h-[230px] mobile:mr-0 object-cover"
-                    src={
-                        playlist?.image_link
-                    }
+                    src={playlist?.image_link}
                     alt=""
                 />
                 <div>
@@ -114,7 +122,7 @@ function Playlist({ songs, success }: { success: boolean; songs: Song[] }) {
                         {playlist?.name}
                     </h1>
                     <p className="text-sm mt-6 tablet:mt-4 opacity-70">
-                        {songs.length} Songs
+                        {songs?.length} Songs
                     </p>
                 </div>
             </div>
@@ -123,7 +131,7 @@ function Playlist({ songs, success }: { success: boolean; songs: Song[] }) {
                     <div className="w-full flex items-center mb-2">
                         <Button
                             radius="full"
-                            isDisabled={songs.length == 0}
+                            isDisabled={songs?.length == 0}
                             isIconOnly
                             onClick={playPlaylist}
                             className="bg-[#2bb540] hover:scale-110 flex justify-center items-center"
@@ -176,7 +184,7 @@ function Playlist({ songs, success }: { success: boolean; songs: Song[] }) {
                 </div>
 
                 <div className="pt-4">
-                    {songs.map((song: Song, i: number) => (
+                    {songs?.map((song: Song, i: number) => (
                         <ListItem
                             key={song.id}
                             song={song}
@@ -199,45 +207,6 @@ function Playlist({ songs, success }: { success: boolean; songs: Song[] }) {
             <div className="pb-32"></div>
         </AppLayout>
     );
-}
-
-export async function getServerSideProps(context: any) {
-    const userCookie = context.req.cookies.user;
-
-    if (!userCookie) {
-        return {
-            redirect: {
-                destination: `/login`,
-                permanent: false,
-            },
-        };
-    }
-
-    try {
-        const user = JSON.parse(userCookie);
-
-        const songs = await axios.get(
-            `${API_URL}/playlists/${context.params.id}/songs`,
-            {
-                headers: {
-                    authorization: `Bearer ${user.token}`,
-                },
-            }
-        );
-
-        return {
-            props: {
-                success: true,
-                songs: songs.data.list,
-            },
-        };
-    } catch (e) {
-        return {
-            props: {
-                success: false,
-            },
-        };
-    }
 }
 
 export default Playlist;

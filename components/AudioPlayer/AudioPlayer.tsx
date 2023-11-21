@@ -15,7 +15,11 @@ import Controls from "./Controls";
 import SeekBar from "./SeekBar";
 import Buttons from "./Buttons";
 import { useRouter } from "next/navigation";
-import { Image } from "@nextui-org/react";
+import { Image, Link } from "@nextui-org/react";
+import API_URL from "@/config/apiUrl";
+import { Artist } from "@/interfaces/artist";
+import useSWR from "swr";
+import axios from "axios";
 
 function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
     const router = useRouter();
@@ -35,6 +39,15 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
     const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>();
     const [seekBarColor, setSeekBarColor] = useState("#fff");
     const changeSeekBarColor = (color: string) => setSeekBarColor(color);
+    const { data: artists, error: errorGetSongs } = useSWR<Artist[], Error>(
+        activeSong && activeSong.id
+            ? `${API_URL}/songs/${activeSong.id}/artists`
+            : null,
+        async (url: string) => {
+            const res = await axios.get(url);
+            return res.data.list;
+        }
+    );
 
     const toNextSong = () => {
         if (isShuffle) {
@@ -120,15 +133,19 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
                             {activeSong!.name}
                         </p>
 
-                        <p
-                            className="text-gray-400 text-sm mobile:text-xs 
-            hover:underline cursor-pointer"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                // router.push(`/artist/${activeSong?.artist_id}`);
-                            }}
-                        >
-                            artist name
+                        <p>
+                            {artists &&
+                                artists.map((artist: Artist, index: number) => (
+                                    <>
+                                        <Link
+                                            href={`/artist/${artist.id}`}
+                                            className="text-gray-300"
+                                        >
+                                            {artist.name}
+                                        </Link>
+                                        {index < artists.length - 1 && ", "}
+                                    </>
+                                ))}
                         </p>
                     </div>
                 </div>

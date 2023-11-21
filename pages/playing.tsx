@@ -27,6 +27,10 @@ import {
     DropdownTrigger,
     Tooltip,
 } from "@nextui-org/react";
+import useSWR from "swr";
+import { Artist } from "@/interfaces/artist";
+import axios from "axios";
+import API_URL from "@/config/apiUrl";
 
 function Playing() {
     const {
@@ -46,6 +50,16 @@ function Playing() {
     const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>();
     const [seekBarColor, setSeekBarColor] = useState("#fff");
     const changeSeekBarColor = (color: string) => setSeekBarColor(color);
+
+    const { data: artists, error: errorGetSongs } = useSWR<Artist[], Error>(
+        activeSong && activeSong.id
+            ? `${API_URL}/songs/${activeSong.id}/artists`
+            : null,
+        async (url: string) => {
+            const res = await axios.get(url);
+            return res.data.list;
+        }
+    );
 
     const toNextSong = () => {
         if (isShuffle) {
@@ -201,7 +215,25 @@ function Playing() {
                                             className="text-gray-400 text-sm mini-laptop:text-sm
                        tablet:text-sm mobile:text-xs hover:underline cursor-pointer"
                                         >
-                                            png
+                                            {artists &&
+                                                artists.map(
+                                                    (
+                                                        artist: Artist,
+                                                        index: number
+                                                    ) => (
+                                                        <>
+                                                            <Link
+                                                                href={`/artist/${artist.id}`}
+                                                                className="text-gray-300"
+                                                            >
+                                                                {artist.name}
+                                                            </Link>
+                                                            {index <
+                                                                artists.length -
+                                                                1 && ", "}
+                                                        </>
+                                                    )
+                                                )}
                                         </p>
                                     </div>
                                     <div className="w-10 h-10 flex items-center justify-center">

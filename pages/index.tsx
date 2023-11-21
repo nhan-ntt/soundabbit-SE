@@ -7,22 +7,6 @@ import { useEffect } from "react";
 import { Link, Button, Image } from "@nextui-org/react";
 import Head from "next/head";
 
-export async function getServerSideProps(ctx: any) {
-    const token = ctx.req.cookies.user;
-    if (token) {
-        return {
-            redirect: {
-                destination: `/home`,
-                permanent: false,
-            },
-        };
-    }
-
-    return {
-        props: {},
-    };
-}
-
 const Home: NextPage = () => {
     const { status, user } = useSelector((state: any) => state.auth);
     const router = useRouter();
