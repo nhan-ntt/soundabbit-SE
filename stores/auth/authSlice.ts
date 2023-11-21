@@ -31,7 +31,7 @@ const authSlice = createSlice({
     name: "auth",
     initialState: initalState,
     reducers: {
-        reset: (state) => {
+        logout: (state) => {
             deleteCookie("user");
             state.status = AuthStatus.Initial;
             state.user = null;
@@ -98,5 +98,5 @@ export const login = createAsyncThunk(
     }
 );
 
-export const { reset } = authSlice.actions;
+export const { logout } = authSlice.actions;
 export default authSlice.reducer;

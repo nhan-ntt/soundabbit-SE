@@ -8,16 +8,18 @@ import {
     Avatar,
     DropdownSection,
 } from "@nextui-org/react";
-import { reset } from "@/stores/auth/authSlice";
+import { logout } from "@/stores/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
+import { resetState } from "@/stores/action";
 
 export default function Account() {
     const dispatch = useDispatch<any>();
     const router = useRouter();
 
-    const logout = () => {
-        dispatch(reset());
+    const onLogout = () => {
+        dispatch(resetState());
+        dispatch(logout());
     };
 
     return (
@@ -37,7 +39,7 @@ export default function Account() {
                         Account
                     </DropdownItem>
                 </DropdownSection>
-                <DropdownItem onClick={logout}>Log out</DropdownItem>
+                <DropdownItem onClick={onLogout}>Log out</DropdownItem>
             </DropdownMenu>
         </Dropdown>
     );

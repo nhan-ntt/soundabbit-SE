@@ -145,12 +145,12 @@ const deletePlaylist = async ({
     token: string;
     playlist_id: string;
 }) => {
-    await axios.delete(`${API_URL}/playlists/${playlist_id}`, {
+    const response = await axios.delete(`${API_URL}/playlists/${playlist_id}`, {
         headers: {
             authorization: `Bearer ${token}`,
         },
     });
-    return { playlist_id };
+    return { ...response.data, playlist_id };
 };
 
 const ApiService = {

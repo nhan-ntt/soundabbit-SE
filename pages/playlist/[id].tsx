@@ -25,6 +25,7 @@ import {
 } from "@nextui-org/react";
 import { Image } from "@nextui-org/react";
 import { Playlist } from "@/interfaces/playlist";
+import { persistor } from "@/stores/store";
 
 function Playlist({ songs, success }: { success: boolean; songs: Song[] }) {
     const router = useRouter();
@@ -64,6 +65,16 @@ function Playlist({ songs, success }: { success: boolean; songs: Song[] }) {
         } else {
             dispatch(playPause(!isPlaying));
         }
+    };
+
+    const onDeletePlaylist = () => {
+        dispatch(
+            deletePlaylist({
+                token: user.token,
+                playlist_id: params.id,
+            })
+        );
+        router.replace("/library");
     };
 
     if (!success) {
@@ -155,16 +166,7 @@ function Playlist({ songs, success }: { success: boolean; songs: Song[] }) {
                                     <DropdownItem
                                         className="text-danger"
                                         color="danger"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            dispatch(
-                                                deletePlaylist({
-                                                    token: user.token,
-                                                    playlist_id: params.id,
-                                                })
-                                            );
-                                            router.replace("/library");
-                                        }}
+                                        onClick={onDeletePlaylist}
                                     >
                                         Delete playlist
                                     </DropdownItem>

@@ -64,7 +64,6 @@ const initialState: IStateProps = {
     playlists: [],
     fetchlikedStatus: LikedStatus.Initial,
     createPlaylistStatus: CreatePlaylistStatus.Initial,
-
     playlistStatus: PlaylistsStatus.Initial,
     passedDataToModal: {},
     isShuffle: false,
@@ -184,11 +183,11 @@ const playerSlice = createSlice({
         });
 
         builder.addCase(deletePlaylist.fulfilled, (state, action) => {
-            const playlists = state.playlists.filter(
-                (playlist: any) => playlist.id !== action.payload!.playlist_id
+            const updatedPlaylists = state.playlists.filter(
+                (playlist: any) => playlist.id != action.payload?.playlist_id
             );
-            //@ts-ignore
-            state.playlists = playlists;
+
+            state.playlists = updatedPlaylists;
         });
 
         builder.addCase(createNewPlaylist.fulfilled, (state, action) => {
@@ -222,7 +221,7 @@ export const getLikedSongs = createAsyncThunk(
 
 export const getPlaylists = createAsyncThunk(
     "ApiServices/getPlaylists",
-    async (token:string,  thunkAPI) => {
+    async (token: string, thunkAPI) => {
         try {
             return await ApiService.getPlaylists(token);
         } catch (error) {
