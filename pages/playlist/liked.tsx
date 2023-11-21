@@ -2,7 +2,7 @@ import React from "react";
 import API_URL from "@/config/apiUrl";
 import axios from "axios";
 import AppLayout from "@/layouts/appLayout";
-import { Song } from "@/interfaces/Song";
+import { Song } from "@/interfaces/song";
 import ListItem from "@/components/ListItem";
 import { useDispatch, useSelector } from "react-redux";
 import { playPause, setActiveSong } from "@/stores/player/currentAudioPlayer";

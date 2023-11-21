@@ -4,7 +4,7 @@ import axios from "axios";
 import API_URL from "@/config/apiUrl";
 import { useDispatch } from "react-redux";
 import { setActiveSong } from "@/stores/player/currentAudioPlayer";
-import { Song } from "@/interfaces/Song";
+import { Song } from "@/interfaces/song";
 import ListItem from "@/components/ListItem";
 import { Genre } from "@/interfaces/genres";
 import ErrorComponent from "@/components/error";

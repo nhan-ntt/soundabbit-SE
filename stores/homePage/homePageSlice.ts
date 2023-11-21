@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import homePageApi from "./homePageApi";
 import { Artists } from "@/interfaces/artist";
-import { Song } from "@/interfaces/Song";
+import { Song } from "@/interfaces/song";
 
 export enum RequestStatus {
     Loading,

@@ -2,8 +2,8 @@ export interface Song {
     id: number;
     name: string;
     audio_link: string;
-    cover_image?: string;
-    streams: number,
+    image_link?: string;
+    streams: number;
 }
 
 export const toSongProps = (songs: any): Song[] => {
@@ -12,6 +12,8 @@ export const toSongProps = (songs: any): Song[] => {
             id: song.id,
             name: song.name,
             audio_link: song.audio_link,
+            image_link: song.streams,
+            streams: song.streams,
         };
     });
 };

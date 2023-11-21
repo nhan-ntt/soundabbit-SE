@@ -79,7 +79,7 @@ function Library() {
                                             className="p-0 m-0 rounded"
                                         >
                                             <Image
-                                                src="https://images3.alphacoders.com/690/690494.jpg"
+                                                src={playlist.image_link}
                                                 width="300"
                                                 height="300"
                                                 alt="playlist cover image"

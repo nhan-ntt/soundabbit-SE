@@ -25,7 +25,7 @@ function HorizontalArtistCard({
                 >
                     <Image
                         alt=""
-                        src={"https://images3.alphacoders.com/690/690494.jpg"}
+                        src={artist.image_link}
                         className="w-[160px] h-[160px]  
                     object-cover
           mini-laptop:w-[140px] mini-laptop:h-[140px] 

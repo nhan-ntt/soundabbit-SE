@@ -6,7 +6,7 @@ import { Artists } from "@/interfaces/artist";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { playPause, setActiveSong } from "@/stores/player/currentAudioPlayer";
-import { Song } from "@/interfaces/Song";
+import { Song } from "@/interfaces/song";
 import ListItem from "@/components/ListItem";
 import HorizontalSongsList from "@/components/HorizontalSongsList";
 import ErrorComponent from "@/components/error";
@@ -54,7 +54,7 @@ function ArtistProfile({
                     </div>
                 </div>
 
-                <Image src={artist.avatar} alt="Avatar" />
+                <Image src={artist.image_link} alt="Avatar" />
             </div>
 
             <div>

@@ -1,5 +1,5 @@
 import { Playlist } from "@/interfaces/playlist";
-import { Song } from "@/interfaces/Song";
+import { Song } from "@/interfaces/song";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import ApiService from "./ApiServices";

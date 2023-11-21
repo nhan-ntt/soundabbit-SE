@@ -42,19 +42,10 @@ function Playing() {
     }: IStateProps = useSelector((state: any) => state.player);
     const router = useRouter();
 
-    let activeSongDemo = JSON.parse(JSON.stringify(activeSong));
-    activeSongDemo.artist_name = "png";
-    activeSongDemo.artist_id = 1;
-    activeSongDemo.cover_image = {
-        color: "black",
-        url: "https://images3.alphacoders.com/690/690494.jpg",
-    };
-
     const dispatch = useDispatch<any>();
     const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>();
     const [seekBarColor, setSeekBarColor] = useState("#fff");
     const changeSeekBarColor = (color: string) => setSeekBarColor(color);
-
 
     const toNextSong = () => {
         if (isShuffle) {
@@ -92,15 +83,12 @@ function Playing() {
     };
 
     const currentPercentage = () => {
-        return duration
-            ? `${(songProgress / duration) * 100}%`
-            : "0%";
+        return duration ? `${(songProgress / duration) * 100}%` : "0%";
     };
 
     const songStyling = `
     -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage()}, ${seekBarColor}), color-stop(${currentPercentage()}, #777))
   `;
-
 
     return (
         <div
@@ -119,7 +107,7 @@ function Playing() {
               justify-center items-center tablet:items-start mobile:items-start"
                     >
                         <SongCoverImage
-                            activeSong={activeSongDemo}
+                            activeSong={activeSong}
                             className="tablet:hidden mobile:hidden"
                         />
                         <div
@@ -176,7 +164,7 @@ function Playing() {
                                                             toggleModal({
                                                                 data: true,
                                                                 song_id:
-                                                                    activeSongDemo.id,
+                                                                    activeSong?.id,
                                                             })
                                                         );
                                                     }}
@@ -190,7 +178,7 @@ function Playing() {
                             </div>
 
                             <SongCoverImage
-                                activeSong={activeSongDemo}
+                                activeSong={activeSong}
                                 className="hidden tablet:block mobile:block tablet:my-4 tablet:mb-6 mobile:mb-6 mobile:my-4"
                             />
                             <div className="flex flex-col justify-center items-center mobile:pb-14">
@@ -218,7 +206,7 @@ function Playing() {
                                     </div>
                                     <div className="w-10 h-10 flex items-center justify-center">
                                         <LikeButton
-                                            song_id={activeSongDemo.id}
+                                            song_id={activeSong?.id}
                                             size={"text-[24px]"}
                                         />
                                     </div>
@@ -265,10 +253,12 @@ function Playing() {
                                         <Tooltip content="Download">
                                             <Link
                                                 href={
-                                                    activeSongDemo.audio_link +
-                                                    `?filename=${activeSongDemo.audio_link}.mp3`
+                                                    activeSong?.audio_link +
+                                                    `?filename=${activeSong?.audio_link}.mp3`
                                                 }
-                                                download={activeSongDemo.audio_link}
+                                                download={
+                                                    activeSong?.audio_link
+                                                }
                                                 target="_blank"
                                             >
                                                 <i
@@ -313,7 +303,7 @@ function SongCoverImage({ activeSong, className }: any) {
             }
         >
             <Image
-                src={activeSong!.cover_image.url}
+                src={activeSong!.image_link}
                 alt=""
                 className="
 w-[450px] h-[450px] min-w-[450px]

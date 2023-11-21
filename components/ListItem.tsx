@@ -7,7 +7,7 @@ import {
 import LikeButton from "./AudioPlayer/LikeButton";
 import { removeSongFromPlaylist } from "@/stores/player/currentAudioPlayer";
 import { toast } from "react-toastify";
-import { Song } from "@/interfaces/Song";
+import { Song } from "@/interfaces/song";
 import { Playlist } from "@/interfaces/playlist";
 import {
     Dropdown,
@@ -34,14 +34,6 @@ function ListItem({
     const { user } = useSelector((state: any) => state.auth);
     const dispatch = useDispatch<any>();
 
-    let songDemo = JSON.parse(JSON.stringify(song));
-    songDemo.artist_name = "png";
-    songDemo.artist_id = 1;
-    songDemo.cover_image = {
-        color: "black",
-        url: "https://images3.alphacoders.com/690/690494.jpg",
-    };
-
     return (
         <div className="relative" onClick={onTap}>
             <div
@@ -57,7 +49,7 @@ function ListItem({
                     <div>
                         <div className="relative w-12 h-12 min-w-12 mx-2 mobile:w-10 mobile:h-10">
                             <Image
-                                src={songDemo.cover_image.url}
+                                src={song.image_link}
                                 alt=""
                                 className="w-12 h-12 min-w-12 mobile:w-10 mobile:h-10 rounded object-cover"
                             />
@@ -66,14 +58,13 @@ function ListItem({
 
                     <div className="">
                         <p
-                            className={`mobile:text-sm line-clamp-1 ${
-                                activeSong.id == song.id &&
+                            className={`mobile:text-sm line-clamp-1 ${activeSong.id == song.id &&
                                 "text-[#2bb540] "
-                            }`}
-                            dangerouslySetInnerHTML={{ __html: songDemo.name }}
+                                }`}
+                            dangerouslySetInnerHTML={{ __html: song.name }}
                         ></p>
                         <p className="text-sm mobile:text-xs text-gray-300">
-                            {songDemo.artist_name}
+                            artist name
                         </p>
                     </div>
                 </div>
@@ -107,7 +98,7 @@ function ListItem({
 
                         <DropdownItem
                             onClick={() => {
-                                dispatch(addToQueue(songDemo));
+                                dispatch(addToQueue(song));
                             }}
                         >
                             Play Next

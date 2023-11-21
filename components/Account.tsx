@@ -4,7 +4,6 @@ import {
     DropdownTrigger,
     DropdownMenu,
     DropdownItem,
-    Button,
     Avatar,
     DropdownSection,
 } from "@nextui-org/react";
@@ -12,9 +11,12 @@ import { logout } from "@/stores/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { resetState } from "@/stores/action";
+import { useSelector } from "react-redux";
 
 export default function Account() {
     const dispatch = useDispatch<any>();
+    const { user } = useSelector((state: any) => state.auth);
+
     const router = useRouter();
 
     const onLogout = () => {
@@ -29,7 +31,7 @@ export default function Account() {
                     as="button"
                     size="sm"
                     isBordered
-                    src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                    src={user.image_link}
                 />
             </DropdownTrigger>
 

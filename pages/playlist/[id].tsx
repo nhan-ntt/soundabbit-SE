@@ -2,7 +2,7 @@ import React from "react";
 import API_URL from "@/config/apiUrl";
 import axios from "axios";
 import AppLayout from "@/layouts/appLayout";
-import { Song } from "@/interfaces/Song";
+import { Song } from "@/interfaces/song";
 import ListItem from "@/components/ListItem";
 import { useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
@@ -99,8 +99,7 @@ function Playlist({ songs, success }: { success: boolean; songs: Song[] }) {
                 <Image
                     className="mr-6 tablet:mr-0 w-[230px] min-w-[230px] h-[230px] mobile:mr-0 object-cover"
                     src={
-                        playlist?.cover_image ||
-                        "https://images3.alphacoders.com/690/690494.jpg"
+                        playlist?.image_link
                     }
                     alt=""
                 />

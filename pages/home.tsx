@@ -81,9 +81,7 @@ const Home: NextPage = () => {
                                 >
                                     <Image
                                         alt=""
-                                        src={
-                                            "https://images3.alphacoders.com/690/690494.jpg"
-                                        }
+                                        src={artist.image_link}
                                         className="
                                             object-cover
                                             w-20 h-20 mini-laptop:w-16 mini-laptop:h-16

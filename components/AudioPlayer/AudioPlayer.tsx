@@ -31,14 +31,6 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
         isRepeat,
     }: IStateProps = useSelector((state: any) => state.player);
 
-    let activeSongDemo = JSON.parse(JSON.stringify(activeSong));
-    activeSongDemo.artist_name = "png";
-    activeSongDemo.artist_id = 1;
-    activeSongDemo.cover_image = {
-        color: "black",
-        url: "https://images3.alphacoders.com/690/690494.jpg",
-    };
-
     const dispatch = useDispatch<any>();
     const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>();
     const [seekBarColor, setSeekBarColor] = useState("#fff");
@@ -105,11 +97,6 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
             >
                 <div className="flex flex-row items-center w-full cursor-pointer">
                     <div
-                        style={{
-                            backgroundColor: activeSongDemo!.cover_image.color,
-                            boxShadow:
-                                "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
-                        }}
                         className="w-[50px] h-[50px] min-w-[50px]
          relative mini-laptop:w-[40px] mini-laptop:h-[40px]
           mini-laptop:min-w-[40px] mobile:min-w-[35px] mobile:w-[35px]
@@ -121,7 +108,7 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
           mini-laptop:min-w-[40px] mobile:min-w-[35px] mobile:w-[35px]
            mobile:h-[35px] cursor-pointer rounded"
                             alt=""
-                            src={activeSongDemo!.cover_image.url}
+                            src={activeSong!.image_link}
                         />
                     </div>
 
@@ -130,7 +117,7 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
                             className="text-gray-300 
           cursor-pointer line-clamp-1 mobile:text-sm"
                         >
-                            {activeSongDemo!.name}
+                            {activeSong!.name}
                         </p>
 
                         <p
@@ -138,12 +125,10 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
             hover:underline cursor-pointer"
                             onClick={(e) => {
                                 e.stopPropagation();
-                                router.push(
-                                    `/artist/${activeSongDemo?.artist_id}`
-                                );
+                                // router.push(`/artist/${activeSong?.artist_id}`);
                             }}
                         >
-                            {activeSongDemo!.artist_name}
+                            artist name
                         </p>
                     </div>
                 </div>
@@ -170,8 +155,8 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
                     />
                 </div>
                 <Buttons
-                    download_url={activeSongDemo!.audio_link}
-                    song_id={activeSongDemo!.id}
+                    download_url={activeSong!.audio_link}
+                    song_id={activeSong!.id}
                     updateVolume={updateVolume}
                     showVolumeSeekBar
                     volume={volume}

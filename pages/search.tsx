@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import AppLayout from "@/layouts/appLayout";
 import algoliaClient from "@/config/algolia";
-import { toSongProps, Song } from "@/interfaces/Song";
+import { toSongProps, Song } from "@/interfaces/song";
 import { useState } from "react";
 import { Artists } from "@/interfaces/artist";
 import { useDispatch, useSelector } from "react-redux";
@@ -160,10 +160,7 @@ function Search() {
                                             <div className="absolute -right-4 -bottom-2">
                                                 <div className="shadow-xl relative mobile:w-[70px] rounded mobile:h-[70px] w-24 h-24 rotate-[30deg]">
                                                     <Image
-                                                        src={
-                                                            genre.coverImage ||
-                                                            "https://images3.alphacoders.com/690/690494.jpg"
-                                                        }
+                                                        src={genre.image_link}
                                                         alt=""
                                                         className="object-cover rounded mobile:w-[70px] mobile:h-[70px] w-24 h-24"
                                                     />
@@ -188,14 +185,6 @@ function TopResult({ object, onTap }: any) {
     const { activeSong, isPlaying } = useSelector((state: any) => state.player);
 
     if (object.type == "song") {
-        let songDemo = JSON.parse(JSON.stringify(object));
-        songDemo.artist_name = "png";
-        songDemo.artist_id = 1;
-        songDemo.cover_image = {
-            color: "black",
-            url: "https://images3.alphacoders.com/690/690494.jpg",
-        };
-
         return (
             <div
                 onClick={onTap}
@@ -205,9 +194,9 @@ function TopResult({ object, onTap }: any) {
               hover:bg-[#5f5d5d72] rounded tablet:h-full mobile:h-full"
             >
                 <div>
-                    {activeSong.id === songDemo.id ? (
+                    {activeSong.id === object.id ? (
                         <PlayPauseButton
-                            condition={activeSong.id === songDemo.id}
+                            condition={activeSong.id === object.id}
                             isPlaying={isPlaying}
                         />
                     ) : showPlayButton ? (
@@ -219,25 +208,18 @@ function TopResult({ object, onTap }: any) {
                     ) : null}
 
                     <div className="p-6 tablet:flex mobile:flex ">
-                        <div
-                            className="rounded relative w-24 h-24 "
-                            style={{
-                                backgroundColor: songDemo.cover_image.color,
-                                boxShadow:
-                                    "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
-                            }}
-                        >
+                        <div className="rounded relative w-24 h-24 ">
                             <Image
                                 alt=""
-                                src={songDemo.cover_image.url}
+                                src={object.image_link}
                                 className="object-cover rounded w-24 h-24"
                             />
                         </div>
                         <div className="tablet:mx-4 mobile:mx-4">
                             <p className="mt-4 text-2xl line-clamp-1">
-                                {songDemo.name}
+                                {object.name}
                             </p>
-                            <p>{songDemo.artist_name}</p>
+                            <p>artist name</p>
                         </div>
                     </div>
                 </div>
@@ -251,24 +233,15 @@ function TopResult({ object, onTap }: any) {
                 className=" mobile:hidden tablet:hidden h-[250px] flex flex-col p-6 bg-[#5f5d5d2f] 
               hover:bg-[#5f5d5d72] rounded tablet:h-full mobile:h-full"
             >
-                <div
-                    className="rounded-full relative w-24 h-24"
-                    style={{
-                        backgroundColor: object.avatar.color,
-                        boxShadow:
-                            "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
-                    }}
-                >
+                <div className="rounded-full relative w-24 h-24">
                     <Image
-                        src={object.avatar.url}
+                        src={object.image_link}
                         alt=""
                         className="rounded-full"
                     />
                 </div>
 
-                <p className="mt-4 text-2xl line-clamp-1">
-                    {object.artist_name}
-                </p>
+                <p className="mt-4 text-2xl line-clamp-1">{object.name}</p>
                 <p>Artist</p>
             </div>
         </Link>

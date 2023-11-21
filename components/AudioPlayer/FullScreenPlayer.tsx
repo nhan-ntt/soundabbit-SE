@@ -11,7 +11,7 @@ import {
     playPause,
     toggleModal,
 } from "@/stores/player/currentAudioPlayer";
-import { Song } from "@/interfaces/Song";
+import { Song } from "@/interfaces/song";
 import Link from "next/link";
 import LikeButton from "./LikeButton";
 import {
@@ -269,7 +269,7 @@ function FullScreenCoverImage({ activeSong, className }: any) {
             }
         >
             <Image
-                src={activeSong!.cover_image.url}
+                src={activeSong!.image_link}
                 alt=""
                 className="
 w-[450px] h-[450px] min-w-[450px]

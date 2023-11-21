@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import ListItem from "@/components/ListItem";
-import { Song } from "@/interfaces/Song";
+import { Song } from "@/interfaces/song";
 import AppLayout from "@/layouts/appLayout";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {

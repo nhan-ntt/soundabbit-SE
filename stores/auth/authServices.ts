@@ -6,7 +6,10 @@ import API_URL from "@/config/apiUrl";
 // Register user
 const register = async (userData: any) => {
     try {
-        return await axios.post(`${API_URL}/auth/register`, userData);
+        return await axios.post(`${API_URL}/auth/register`, {
+            ...userData,
+            image_link: null,
+        });
     } catch (error: any) {
         if (error.response) {
             throw {

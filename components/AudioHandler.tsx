@@ -29,18 +29,10 @@ function AudioHandler() {
         isRepeat,
     }: IStateProps = useSelector((state: any) => state.player);
 
-    let activeSongDemo = JSON.parse(JSON.stringify(activeSong));
-    activeSongDemo.artist_name = "png";
-    activeSongDemo.artist_id = 1;
-    activeSongDemo.cover_image = {
-        color: "black",
-        url: "https://images3.alphacoders.com/690/690494.jpg",
-    };
-
     const dispatch = useDispatch<any>();
     const audioRef = useRef(
         typeof Audio !== "undefined"
-            ? new Audio(activeSongDemo!.audio_link)
+            ? new Audio(activeSong!.audio_link)
             : null
     );
     const isReady = useRef(false);
