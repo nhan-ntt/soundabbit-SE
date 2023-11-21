@@ -105,6 +105,7 @@ const createNewPlaylist = async ({
         {
             name,
             is_public: false,
+            image_link: null,
         },
         {
             headers: {
