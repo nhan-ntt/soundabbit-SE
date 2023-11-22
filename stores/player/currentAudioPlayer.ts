@@ -145,7 +145,7 @@ const playerSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(addSongToPlaylist.fulfilled, (state, action) => { });
+        builder.addCase(addSongToPlaylist.fulfilled, (state, action) => {});
 
         builder.addCase(getLikedSongs.fulfilled, (state, action) => {
             state.fetchlikedStatus = LikedStatus.success;
@@ -171,13 +171,18 @@ const playerSlice = createSlice({
             state.createPlaylistStatus = CreatePlaylistStatus.error;
         });
 
-        builder.addCase(renamePlaylist.fulfilled, (state, action) => {
+        builder.addCase(updatePlaylist.fulfilled, (state, action) => {
             const playlist = state.playlists.find(
                 (e: any) => e.id == action.payload.id
             );
-            if (playlist)
-                // @ts-ignore
-                playlist.name = action.payload.name;
+            if (playlist) {
+                if(action.payload.name) {
+                    playlist.name = action.payload.name;
+                }
+                if(action.payload.image_link) {
+                    playlist.image_link = action.payload.image_link;
+                }
+            }
 
             state.playlists = state.playlists;
         });
@@ -299,11 +304,11 @@ export const createNewPlaylist = createAsyncThunk(
     }
 );
 
-export const renamePlaylist = createAsyncThunk(
-    "ApiServices/renamePlaylist",
-    async ({ id, name, token }: any, thunkAPI) => {
+export const updatePlaylist = createAsyncThunk(
+    "ApiServices/updatePlaylist",
+    async ({ id, token, update }: any, thunkAPI) => {
         try {
-            return await ApiService.renamePlaylist({ token, id, name });
+            return await ApiService.updatePlaylist({ token, id, update });
         } catch (error) {
             // console.log(error);
         }

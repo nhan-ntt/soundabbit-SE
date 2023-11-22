@@ -117,18 +117,18 @@ const createNewPlaylist = async ({
     return response.data;
 };
 
-const renamePlaylist = async ({
+const updatePlaylist = async ({
     token,
     id,
-    name,
+    update,
 }: {
     token: string;
     id: string;
-    name: string;
+    update: any;
 }) => {
     const response = await axios.put(
         `${API_URL}/playlists/${id}`,
-        { id, name },
+        update,
         {
             headers: {
                 authorization: `Bearer ${token}`,
@@ -163,7 +163,7 @@ const ApiService = {
     removeSongFromPlaylist,
     getPlaylists,
     deletePlaylist,
-    renamePlaylist,
+    updatePlaylist,
 };
 
 export default ApiService;

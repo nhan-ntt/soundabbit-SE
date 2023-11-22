@@ -6,8 +6,7 @@ import { Song } from "@/interfaces/song";
 import ListItem from "@/components/ListItem";
 import { useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useRef, useEffect } from "react";
-import { toast } from "react-toastify";
+import { useState, useEffect } from "react";
 import {
     PlaylistsStatus,
     deletePlaylist,
@@ -15,6 +14,7 @@ import {
     playPause,
     setActiveSong,
     toggleModal,
+    updatePlaylist,
 } from "@/stores/player/currentAudioPlayer";
 import ErrorComponent from "@/components/error";
 import {
@@ -23,22 +23,50 @@ import {
     DropdownMenu,
     DropdownItem,
     Button,
+    useDisclosure,
 } from "@nextui-org/react";
 import { Image } from "@nextui-org/react";
 import { Playlist } from "@/interfaces/playlist";
 import useSWR from "swr";
 import { NextPage } from "next";
 import { ContentLoading } from "@/components/ContentLoading";
+import {
+    Input,
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+} from "@nextui-org/react";
+import { toast } from "react-toastify";
 
 const Playlist: NextPage = () => {
     const router = useRouter();
     const dispatch = useDispatch<any>();
     const params = useParams();
 
-    const { isPlaying, playingPlaylist, playlists, playlistStatus } =
-        useSelector((state: any) => state.player);
+    const { isPlaying, playingPlaylist, playlistStatus } = useSelector(
+        (state: any) => state.player
+    );
     const { user } = useSelector((state: any) => state.auth);
-    const [playlist, setPlaylist] = useState<Playlist>();
+
+    const {
+        data: playlist,
+        error: errorGetPlaylist,
+        isLoading: isLoadingPlaylist,
+    } = useSWR<Playlist, Error>(
+        user && user.id && params && params.id
+            ? `${API_URL}/playlists/${params.id}`
+            : null,
+        async (url: string) => {
+            const res = await axios.get(url, {
+                headers: {
+                    authorization: `Bearer ${user.token}`,
+                },
+            });
+            return res.data;
+        }
+    );
 
     const { data: songs, error: errorGetSongs } = useSWR<Song[], Error>(
         user && user.id && params && params.id
@@ -54,19 +82,16 @@ const Playlist: NextPage = () => {
         }
     );
 
+    const [playlistImage, setPlaylistImage] = useState<string>(
+        playlist?.image_link || " "
+    );
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
     useEffect(() => {
         if (playlistStatus != PlaylistsStatus.success) {
             dispatch(getPlaylists(user.token));
         }
     }, []);
-
-    useEffect(() => {
-        if (params && params.id) {
-            setPlaylist(
-                playlists.find((playlist: any) => playlist.id == params.id)
-            );
-        }
-    }, [playlists, params]);
 
     const playPlaylist = () => {
         if (songs?.length == 0) {
@@ -96,8 +121,7 @@ const Playlist: NextPage = () => {
         router.replace("/library");
     };
 
-
-    if (playlistStatus != PlaylistsStatus.success) {
+    if (isLoadingPlaylist) {
         return (
             <AppLayout>
                 <ContentLoading />
@@ -105,7 +129,7 @@ const Playlist: NextPage = () => {
         );
     }
 
-    if (errorGetSongs) {
+    if (errorGetPlaylist || errorGetSongs) {
         return (
             <AppLayout>
                 <ErrorComponent />
@@ -172,6 +196,9 @@ const Playlist: NextPage = () => {
                                     ></i>
                                 </DropdownTrigger>
                                 <DropdownMenu>
+                                    <DropdownItem onClick={onOpen}>
+                                        Change Image
+                                    </DropdownItem>
                                     <DropdownItem
                                         onClick={(e) => {
                                             e.stopPropagation();
@@ -223,6 +250,61 @@ const Playlist: NextPage = () => {
             </div>
 
             <div className="pb-32"></div>
+            <Modal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                placement="center"
+                backdrop="blur"
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">
+                                Change Playlist Image
+                            </ModalHeader>
+                            <ModalBody>
+                                <Image
+                                    src={playlistImage}
+                                    width={150}
+                                    height={150}
+                                />
+                                <Input
+                                    label="Image link"
+                                    defaultValue={playlistImage}
+                                    onChange={(e) =>
+                                        setPlaylistImage(e.target.value)
+                                    }
+                                />
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button onPress={onClose}>Cancle</Button>
+                                <Button
+                                    color="primary"
+                                    isDisabled={!playlistImage}
+                                    onPress={() => {
+                                        dispatch(
+                                            updatePlaylist({
+                                                token: user.token,
+                                                id: playlist?.id,
+                                                update: {
+                                                    image_link: playlistImage,
+                                                },
+                                            })
+                                        );
+                                        toast.success(
+                                            "Playlist image has been updated"
+                                        );
+                                        onClose();
+                                    }}
+                                    className="bg-[#2bb540]"
+                                >
+                                    Change
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </AppLayout>
     );
 };

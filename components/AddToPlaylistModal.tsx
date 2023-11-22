@@ -5,7 +5,7 @@ import { playPause, toggleModal } from "@/stores/player/currentAudioPlayer";
 import { useState } from "react";
 import {
     CreatePlaylistStatus,
-    renamePlaylist,
+    updatePlaylist,
 } from "@/stores/player/currentAudioPlayer";
 import { useRouter } from "next/navigation";
 import {
@@ -33,7 +33,7 @@ function AddToPlaylistModal() {
     const router = useRouter();
     const dispatch = useDispatch<any>();
     const modal = useRef(null);
-    const [playlistID, setPlaylistID] = useState<string>("");
+    const [playlistID, setPlaylistID] = useState<string>();
     const [name, setname] = useState<string>("");
     useEffect(() => {
         if (!isModalOpen) return;
@@ -138,10 +138,10 @@ function AddToPlaylistModal() {
                                     isDisabled={name.length === 0}
                                     onClick={() => {
                                         dispatch(
-                                            renamePlaylist({
+                                            updatePlaylist({
                                                 token: user.token,
-                                                name: name,
                                                 id: passedDataToModal.playlist_id,
+                                                update: { name },
                                             })
                                         );
                                         dispatch(
@@ -180,6 +180,7 @@ function AddToPlaylistModal() {
                             </ModalBody>
                             <ModalFooter>
                                 <Button
+                                    isDisabled={!playlistID}
                                     className="bg-[#2bb540] disabled:bg-[#287b34] w-full p-1.5 text-center uppercase text-white tracking-wider font-bold"
                                     onClick={() => {
                                         dispatch(

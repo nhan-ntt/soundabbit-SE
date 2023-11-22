@@ -11,6 +11,8 @@ import PlaylistCard from "@/components/PlaylistCard";
 import { NextPage } from "next";
 import { Playlist } from "@/interfaces/playlist";
 import { ContentLoading } from "@/components/ContentLoading";
+import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
+import { useRouter } from "next/router";
 
 const Library: NextPage = () => {
     const { playlists, playlistStatus } = useSelector(
@@ -18,6 +20,7 @@ const Library: NextPage = () => {
     );
 
     const { user } = useSelector((state: any) => state.auth);
+    const router = useRouter();
 
     const dispatch = useDispatch<any>();
 
@@ -48,14 +51,11 @@ const Library: NextPage = () => {
          
           mobile:grid-cols-2 mobile:gap-4"
                 >
-                    <Link href="/playlist/liked">
-                        <div
-                            className="flex flex-col p-3.5cursor-pointer p-3.5 bg-gradient-to-t from-[#2c2a2a4a] to-[#2c2a2ac7] hover:bg-[#4340409d]
-           tablet:hover:bg-transparent mobile:hover:bg-transparent 
-           rounded h-full mini-laptop:p-3 tablet:p-0 tablet:from-transparent tablet:to-transparent
-           mobile:from-transparent mobile:to-transparent mobile:p-0 mobile:mr-0
-           "
-                        >
+                    <Card
+                        isPressable
+                        onPress={() => router.push(`/playlist/liked`)}
+                    >
+                        <CardBody>
                             <div
                                 className="cursor-pointer  rounded-lg hover:from-[#bdb6d3] hover:to-[#4C17F3]
             bg-gradient-to-tl to-[#4C17F3] from-[#a79ccc]
@@ -64,11 +64,12 @@ const Library: NextPage = () => {
                             >
                                 <i className="icon-heart text-[70px] mobile:text-[70px] laptop:text-[100px]"></i>
                             </div>
-                            <div className="py-3">
-                                <p className="">Liked Songs</p>
-                            </div>
-                        </div>
-                    </Link>
+                        </CardBody>
+                        <CardFooter>
+                            <p>Liked Songs</p>
+                        </CardFooter>
+                    </Card>
+
                     {playlists.map((playlist: Playlist, index: number) => (
                         <PlaylistCard key={index} playlist={playlist} />
                     ))}
