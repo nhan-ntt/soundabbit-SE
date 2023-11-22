@@ -3,7 +3,14 @@ import LikeButton from "./LikeButton";
 import VolumeControls from "./VolumeControls";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Tooltip } from "@nextui-org/react";
+import { Button, Tooltip } from "@nextui-org/react";
+import { useDispatch } from "react-redux";
+import {
+    addSongToPlaylist,
+    toggleModal,
+} from "@/stores/player/currentAudioPlayer";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 interface IProps {
     volume: number;
     updateVolume: (e: any) => void;
@@ -21,7 +28,10 @@ function Buttons({
     song_id,
     download_url,
 }: IProps) {
+    const { user } = useSelector((state: any) => state.auth);
+
     const router = useRouter();
+    const dispatch = useDispatch<any>();
     return (
         <div
             className={
@@ -30,12 +40,49 @@ function Buttons({
             }
         >
             <div
-                className="flex flex-row items-center"
+                className="flex flex-row items-center gap-1"
                 onClick={(e) => {
                     e.stopPropagation();
                 }}
             >
                 <LikeButton song_id={song_id} />
+
+                <Tooltip content="Add to playlist">
+                    <div
+                        className="cursor-pointer: song.id"
+                        onClick={() => {
+                            dispatch(
+                                toggleModal({
+                                    data: true,
+                                    song_id,
+                                })
+                            );
+                        }}
+                    >
+                        <svg
+                            width={24}
+                            height={24}
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M6 12H18"
+                                stroke="currentColor"
+                                stroke-width="1"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+                            <path
+                                d="M12 18V6"
+                                stroke="currentColor"
+                                stroke-width="1"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+                        </svg>
+                    </div>
+                </Tooltip>
 
                 <Tooltip content="Download">
                     <Link

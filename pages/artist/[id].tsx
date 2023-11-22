@@ -11,6 +11,7 @@ import ListItem from "@/components/ListItem";
 import ErrorComponent from "@/components/error";
 import useSWR from "swr";
 import { NextPage } from "next";
+import { Image } from "@nextui-org/react";
 
 const ArtistProfile: NextPage = () => {
     const dispatch = useDispatch();
@@ -48,19 +49,32 @@ const ArtistProfile: NextPage = () => {
                         className="px-10 pb-10 mobile:pb-6 tablet:pb-6 mobile:px-4
                       tablet:px-6 mini-laptop:px-7"
                     >
-                        <div className="flex">
-                            <i className="icon-verified mr-2 text-blue-300"></i>
-                            <p>
-                                @
-                                {artist?.name.replaceAll(" ", "").toLowerCase()}
-                            </p>
+                        <div className="flex gap-5">
+                            <Image
+                                src={artist?.image_link}
+                                alt="artist avatar"
+                                className="object-cover w-[150px] h-[150px]"
+                                width={150}
+                                height={150}
+                            />
+                            <div className="flex flex-col">
+                                <div className="flex">
+                                    <i className="icon-verified mr-2 text-blue-300"></i>
+                                    <p>
+                                        @
+                                        {artist?.name
+                                            .replaceAll(" ", "")
+                                            .toLowerCase()}
+                                    </p>
+                                </div>
+                                <h1
+                                    className="text-[70px] laptop:text-[60px]
+            mini-laptop:text-[60px] tablet:text-[45px] mobile:text-[30px]"
+                                >
+                                    {artist?.name}
+                                </h1>
+                            </div>
                         </div>
-                        <h1
-                            className="text-[70px] laptop:text-[60px]
-            mini-laptop:text-[60px] tablet:text-[45px] mobile:text-[40px]"
-                        >
-                            {artist?.name}
-                        </h1>
                     </div>
                 </div>
             </div>

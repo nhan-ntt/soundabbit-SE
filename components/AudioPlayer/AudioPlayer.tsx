@@ -9,12 +9,23 @@ import {
     setSongProgress,
     setVolume,
     setCurrentTime,
+    toggleModal,
+    removeSongFromPlaylist,
+    addToQueue,
 } from "@/stores/player/currentAudioPlayer";
 import Controls from "./Controls";
 import SeekBar from "./SeekBar";
 import Buttons from "./Buttons";
 import { useRouter } from "next/navigation";
-import { Image, Link } from "@nextui-org/react";
+import {
+    Image,
+    Dropdown,
+    DropdownTrigger,
+    DropdownMenu,
+    DropdownItem,
+    Link,
+    Button,
+} from "@nextui-org/react";
 import API_URL from "@/config/apiUrl";
 import { Artist } from "@/interfaces/artist";
 import useSWR from "swr";

@@ -7,6 +7,7 @@ import ListItem from "@/components/ListItem";
 import { useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useRef, useEffect } from "react";
+import { toast } from "react-toastify";
 import {
     PlaylistsStatus,
     deletePlaylist,
@@ -39,9 +40,15 @@ const Playlist: NextPage = () => {
     const [playlist, setPlaylist] = useState<Playlist>();
 
     const { data: songs, error: errorGetSongs } = useSWR<Song[], Error>(
-        params && params.id ? `${API_URL}/playlists/${params.id}/songs` : null,
+        user && user.id && params && params.id
+            ? `${API_URL}/playlists/${params.id}/songs`
+            : null,
         async (url: string) => {
-            const res = await axios.get(url);
+            const res = await axios.get(url, {
+                headers: {
+                    authorization: `Bearer ${user.token}`,
+                },
+            });
             return res.data.list;
         }
     );
@@ -88,7 +95,7 @@ const Playlist: NextPage = () => {
         router.replace("/library");
     };
 
-    if (!errorGetSongs) {
+    if (errorGetSongs) {
         return (
             <AppLayout>
                 <ErrorComponent />
@@ -137,7 +144,7 @@ const Playlist: NextPage = () => {
                             onClick={playPlaylist}
                             className="bg-[#2bb540] hover:scale-110 flex justify-center items-center"
                         >
-                            {playingPlaylist !== params.id ? (
+                            {playingPlaylist !== params?.id ? (
                                 <i className="icon-play text-[20px] ml-1 text-black " />
                             ) : !isPlaying ? (
                                 <i className="icon-play text-[20px] ml-1 text-black" />
