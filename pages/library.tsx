@@ -9,6 +9,7 @@ import {
 import { useDispatch } from "react-redux";
 import PlaylistCard from "@/components/PlaylistCard";
 import { NextPage } from "next";
+import { Playlist } from "@/interfaces/playlist";
 
 const Library: NextPage = () => {
     const { playlists, playlistStatus } = useSelector(
@@ -59,10 +60,9 @@ const Library: NextPage = () => {
                             </div>
                         </div>
                     </Link>
-                    {playlists &&
-                        playlists.map((playlist: any) => {
-                            <PlaylistCard playlist={playlist} />;
-                        })}
+                    {playlists.map((playlist: Playlist, index: number) => (
+                        <PlaylistCard key={index} playlist={playlist} />
+                    ))}
                 </div>
                 <div className="pb-32"></div>
             </div>
