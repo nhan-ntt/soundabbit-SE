@@ -8,8 +8,9 @@ import {
     reorderQueue,
     setActiveSong,
 } from "@/stores/player/currentAudioPlayer";
+import { NextPage } from "next";
 
-function Queue() {
+const Queue: NextPage = () => {
     const { queue, currentIndex } = useSelector((state: any) => state.player);
     const dispatch = useDispatch<any>();
 
@@ -91,6 +92,6 @@ function Queue() {
             </div>
         </AppLayout>
     );
-}
+};
 
 export default Queue;

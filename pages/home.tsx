@@ -1,9 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import type { NextPage } from "next";
 
 import AppLayout from "@/layouts/appLayout";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Artist } from "@/interfaces/artist";
 import {
     getRecentUsers,
@@ -12,9 +11,9 @@ import {
 } from "@/stores/homePage/homePageSlice";
 import HorizontalSongsList from "@/components/HorizontalSongsList";
 import HorizontalArtistsList from "@/components/HorizontalArtistsList";
-import { useRouter } from "next/navigation";
 import ErrorComponent from "@/components/error";
-import { Image } from "@nextui-org/react";
+import { Spinner } from "@nextui-org/react";
+import VerticalArtistCard from "@/components/verticalArtistCard";
 
 const Home: NextPage = () => {
     const {
@@ -27,7 +26,6 @@ const Home: NextPage = () => {
     const { user } = useSelector((state: any) => state.auth);
 
     const dispatch = useDispatch<any>();
-    const router = useRouter();
 
     useEffect(() => {
         if (user) {
@@ -45,10 +43,12 @@ const Home: NextPage = () => {
         tablet:w-screen mobile:w-screen overflow-x-hidden  h-screen mobile:h-[calc(100vh_-_50px)] 
         tablet:h-[calc(100vh_-_50px)] flex flex-col items-center justify-center"
                 >
-                    <span className="loader"></span>
-                    <p className="text-sm text-white my-3 font-ProximaRegular">
-                        Loading...
-                    </p>
+                    <Spinner
+                        className="mb-40"
+                        size="lg"
+                        color="success"
+                        labelColor="success"
+                    />
                 </div>
             ) : status == RequestStatus.Error ? (
                 <ErrorComponent />
@@ -61,29 +61,8 @@ const Home: NextPage = () => {
                         className="select-none px-8 tablet:px-6 mobile:px-4 grid grid-cols-3 gap-x-6 gap-y-5 mini-laptop:gap-x-3 
           mini-laptop:gap-y-4 tablet:gap-y-4 tablet:gap-x-3 mobile:grid-cols-2 mobile:gap-x-3 mobile:gap-y-3"
                     >
-                        {recentArtist.map((artist: Artist) => (
-                            <div
-                                key={artist.id}
-                                onClick={() =>
-                                    router.push(`/artist/${artist.id}`)
-                                }
-                                className="flex flex-row items-center
-                      w-full bg-[#5f5d5d60]
-                      rounded cursor-pointer hover:bg-[#5f5d5da1]"
-                            >
-                                <Image
-                                    alt=""
-                                    src={artist.image_link}
-                                    className="
-                                    object-cover
-                                    relative w-20 h-20 mini-laptop:w-16 mini-laptop:h-16
-                                    rounded-none rounded-tl-md rounded-bl-md tablet:w-16 tablet:h-16 mobile:w-14 mobile:h-14"
-                                />
-                                <div></div>
-                                <p className="p-4 mini-laptop:p-2 tablet:p-2 tablet:text-[15px] mobile:p-0 mobile:px-2 mobile:text-[14px]">
-                                    {artist.name}
-                                </p>
-                            </div>
+                        {recentArtist.map((artist: Artist, index: number) => (
+                            <VerticalArtistCard key={index} artist={artist} />
                         ))}
                     </div>
                     <div className="mt-12">

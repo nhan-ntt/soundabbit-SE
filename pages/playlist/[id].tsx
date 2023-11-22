@@ -26,8 +26,9 @@ import {
 import { Image } from "@nextui-org/react";
 import { Playlist } from "@/interfaces/playlist";
 import useSWR from "swr";
+import { NextPage } from "next";
 
-function Playlist() {
+const Playlist: NextPage = () => {
     const router = useRouter();
     const dispatch = useDispatch<any>();
     const params = useParams();
@@ -207,6 +208,6 @@ function Playlist() {
             <div className="pb-32"></div>
         </AppLayout>
     );
-}
+};
 
 export default Playlist;

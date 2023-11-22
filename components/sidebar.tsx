@@ -2,11 +2,11 @@ import { toggleModal } from "@/stores/player/currentAudioPlayer";
 import Link from "next/link";
 import SidebarItem from "@/components/sidebarItem";
 import { Image } from "@nextui-org/react";
-import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
+import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
-    const router = useRouter();
+    const pathname = usePathname();
     const dispatch = useDispatch();
 
     return (
@@ -55,7 +55,7 @@ export default function Sidebar() {
                 <Link href={`/playlist/liked`}>
                     <div
                         className={`${
-                            router.pathname == "/playlist/liked"
+                            pathname == "/playlist/liked"
                                 ? "opacity-100"
                                 : "opacity-70"
                         } hover:opacity-100 mini-laptop:hidden tablet:hidden mobile:hidden group select-none cursor-pointer mt-4 flex flex-row items-center 

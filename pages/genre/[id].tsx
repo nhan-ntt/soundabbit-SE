@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import AppLayout from "@/layouts/appLayout";
 import axios from "axios";
 import API_URL from "@/config/apiUrl";
@@ -10,8 +10,9 @@ import { Genre } from "@/interfaces/genres";
 import ErrorComponent from "@/components/error";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
+import { NextPage } from "next";
 
-function GenrePage() {
+const GenrePage: NextPage = () => {
     const dispatch = useDispatch<any>();
     const params = useParams();
 

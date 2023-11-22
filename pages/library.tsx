@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import AppLayout from "@/layouts/appLayout";
 import { useSelector } from "react-redux";
-import { Image } from "@nextui-org/react";
 import Link from "next/link";
 import {
     PlaylistsStatus,
     getPlaylists,
 } from "@/stores/player/currentAudioPlayer";
 import { useDispatch } from "react-redux";
+import PlaylistCard from "@/components/PlaylistCard";
+import { NextPage } from "next";
 
-function Library() {
+const Library: NextPage = () => {
     const { playlists, playlistStatus } = useSelector(
         (state: any) => state.player
     );
@@ -60,45 +61,13 @@ function Library() {
                     </Link>
                     {playlists &&
                         playlists.map((playlist: any) => {
-                            return (
-                                <Link
-                                    key={playlist.id}
-                                    href={`/playlist/${playlist.id}`}
-                                >
-                                    <div
-                                        className="cursor-pointer p-3.5 bg-gradient-to-t from-[#2c2a2a4a] to-[#2c2a2ac7] hover:bg-[#4340409d]
-           tablet:hover:bg-transparent mobile:hover:bg-transparent 
-           rounded h-full mini-laptop:p-3 tablet:p-0 tablet:from-transparent tablet:to-transparent
-           mobile:from-transparent mobile:to-transparent mobile:p-0 mobile:mr-0
-           "
-                                    >
-                                        <div
-                                            style={{
-                                                backgroundColor: playlist.color,
-                                            }}
-                                            className="p-0 m-0 rounded"
-                                        >
-                                            <Image
-                                                src={playlist.image_link}
-                                                width="300"
-                                                height="300"
-                                                alt="playlist cover image"
-                                            />
-                                        </div>
-
-                                        <div className="py-3">
-                                            <p className="">{playlist.name}</p>
-                                            <p className="text-gray-300 text-sm mt-1"></p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            );
+                            <PlaylistCard playlist={playlist} />;
                         })}
                 </div>
                 <div className="pb-32"></div>
             </div>
         </AppLayout>
     );
-}
+};
 
 export default Library;

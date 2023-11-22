@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Image } from "@nextui-org/react";
@@ -31,8 +30,9 @@ import useSWR from "swr";
 import { Artist } from "@/interfaces/artist";
 import axios from "axios";
 import API_URL from "@/config/apiUrl";
+import { NextPage } from "next";
 
-function Playing() {
+const Playing: NextPage = () => {
     const {
         isPlaying,
         activeSong,
@@ -51,7 +51,7 @@ function Playing() {
     const [seekBarColor, setSeekBarColor] = useState("#fff");
     const changeSeekBarColor = (color: string) => setSeekBarColor(color);
 
-    const { data: artists, error: errorGetSongs } = useSWR<Artist[], Error>(
+    const { data: artists } = useSWR<Artist[], Error>(
         activeSong && activeSong.id
             ? `${API_URL}/songs/${activeSong.id}/artists`
             : null,
@@ -106,7 +106,7 @@ function Playing() {
 
     return (
         <div
-            className="font-ProximaRegular
+            className="
         fixed bottom-0 left-0 right-0 top-0 
         select-none overflow-hidden h-screen w-screen max-w-full"
         >

@@ -22,8 +22,9 @@ import {
     useDisclosure,
     Divider,
 } from "@nextui-org/react";
+import { NextPage } from "next";
 
-export default function AccountPage() {
+const AccountPage: NextPage = () => {
     const dispatch = useDispatch<any>();
     const { user } = useSelector((state: any) => state.auth);
     const [avatar, setAvatar] = useState<string>(user?.image_link);
@@ -290,4 +291,5 @@ export default function AccountPage() {
             </Modal>
         </AppLayout>
     );
-}
+};
+export default AccountPage;

@@ -1,18 +1,13 @@
 import React from "react";
 import classnames from "classnames";
-import { useRouter } from "next/router";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-interface IProps {
-    name: string;
-    label: string;
-}
-
-const SidebarItem = ({ name, label }: IProps) => {
-    const router = useRouter();
+const SidebarItem = ({ name, label }: { name: string; label: string }) => {
+    const pathname = usePathname();
 
     const isActive = () => {
-        return router.pathname === `/${name.toLowerCase()}`;
+        return pathname === `/${name.toLowerCase()}`;
     };
     const iconName = () => {
         if (!isActive()) {
@@ -38,7 +33,7 @@ const SidebarItem = ({ name, label }: IProps) => {
                 ></i>
                 <p
                     className={classnames(
-                        "mini-laptop:hidden text-white mobile:text-[10px] tablet:text-[10px] mobile:font-ProximaRegular tablet:font-ProximaRegular",
+                        "mini-laptop:hidden text-white mobile:text-[10px] tablet:text-[10px] mobile: tablet:",
                         {
                             "opacity-70 group-hover:opacity-100": !isActive(),
                         },

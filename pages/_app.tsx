@@ -3,7 +3,6 @@ import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { store, persistor } from "@/stores/store";
 import PagesProgressBar from "nextjs-progressbar";
-import { useRouter } from "next/router";
 import AudioPlayer from "@/components/AudioPlayer/AudioPlayer";
 import Head from "next/head";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,9 +14,11 @@ import { ThemeProvider } from "next-themes";
 import AudioHandler from "@/components/AudioHandler";
 import MobileMenu from "@/components/MobileMenu";
 import { PersistGate } from "redux-persist/integration/react";
+import { usePathname, useRouter } from "next/navigation";
 
 function App({ Component, pageProps }: AppProps) {
     const router = useRouter();
+    const pathname = usePathname();
     const isKeyboardOpen = useDetectKeyboardOpen();
 
     return (
@@ -47,12 +48,12 @@ function App({ Component, pageProps }: AppProps) {
                             "/_error",
                             "/playing",
                             "/",
-                        ].includes(router.pathname) && (
-                                <>
-                                    <MobileMenu isHidden={isKeyboardOpen} />
-                                    <AudioPlayer isHidden={isKeyboardOpen} />
-                                </>
-                            )}
+                        ].includes(pathname) && (
+                            <>
+                                <MobileMenu isHidden={isKeyboardOpen} />
+                                <AudioPlayer isHidden={isKeyboardOpen} />
+                            </>
+                        )}
 
                         <Component {...pageProps} />
 

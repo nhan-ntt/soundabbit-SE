@@ -9,8 +9,9 @@ import { playPause, setActiveSong } from "@/stores/player/currentAudioPlayer";
 import ErrorComponent from "@/components/error";
 import { Button } from "@nextui-org/react";
 import useSWR from "swr";
+import { NextPage } from "next";
 
-function Liked() {
+const Liked: NextPage = () => {
     const dispatch = useDispatch();
     const { isPlaying, playingPlaylist } = useSelector(
         (state: any) => state.player
@@ -125,6 +126,6 @@ function Liked() {
             <div className="pb-32"></div>
         </AppLayout>
     );
-}
+};
 
 export default Liked;

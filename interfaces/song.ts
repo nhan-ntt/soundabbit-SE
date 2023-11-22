@@ -12,7 +12,7 @@ export const toSongProps = (songs: any): Song[] => {
             id: song.id,
             name: song.name,
             audio_link: song.audio_link,
-            image_link: song.streams,
+            image_link: song.image_link,
             streams: song.streams,
         };
     });

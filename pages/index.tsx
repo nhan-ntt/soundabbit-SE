@@ -1,13 +1,11 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import type { NextPage } from "next";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
-import { Link, Button, Image } from "@nextui-org/react";
-import Head from "next/head";
+import { Button, Image } from "@nextui-org/react";
 
-const Home: NextPage = () => {
+const Intro: NextPage = () => {
     const { status, user } = useSelector((state: any) => state.auth);
     const router = useRouter();
     useEffect(() => {
@@ -18,50 +16,6 @@ const Home: NextPage = () => {
 
     return (
         <div className="bg-[#0d0d0d] text-white">
-            <Head>
-                <meta
-                    property="og:title"
-                    content="Rhyme - Download & use free music anywhere."
-                />
-                <meta
-                    property="og:site_name"
-                    content="Rhyme - Download & use free music anywhere."
-                />
-                <meta property="og:url" content="https://Rhyme.vercel.app" />
-
-                <meta
-                    property="og:description"
-                    content="Explore & download free stock music and use it anywhere you like
-            with spotify web player experience."
-                />
-
-                <meta
-                    property="og:image"
-                    itemProp="image"
-                    content="https://Rhyme.vercel.app/Rhyme_intro_card.png"
-                />
-
-                <meta property="og:type" content="article" />
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:site" content="Rhyme.vercel.app" />
-                <meta name="twitter:creator" content="@AnshhRathod" />
-                <meta
-                    name="twitter:title"
-                    content="Rhyme - Download & use free music anywhere."
-                />
-                <meta
-                    name="twitter:description"
-                    content="Explore & download free stock music and use it anywhere you like
-            with spotify web player experience."
-                />
-                <meta
-                    name="twitter:image"
-                    itemProp="image"
-                    content="https://Rhyme.vercel.app/Rhyme_intro_card.png"
-                />
-                <title>Rhyme - Free music anywhere.</title>
-            </Head>
-
             <div className="fixed top-0 left-0 right-0 z-40 bg-[#0d0d0d]">
                 <div className="flex flex-row max-w-[1280px] justify-between items-center mx-auto p-2">
                     <div className="flex flex-row items-center">
@@ -226,4 +180,4 @@ const Home: NextPage = () => {
     );
 };
 
-export default Home;
+export default Intro;

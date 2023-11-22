@@ -37,7 +37,7 @@ function HorizontalArtistCard({
                 </p>
                 <p
                     className="line-clamp-2 mt-0.5 text-sm text-gray-400 
-            font-ProximaRegular mobile:text-xs tablet:text-xs
+             mobile:text-xs tablet:text-xs
             mobile:text-center tablet:text-center "
                 >
                     Artist

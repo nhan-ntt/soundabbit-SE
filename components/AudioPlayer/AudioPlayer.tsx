@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -95,7 +94,7 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
     return (
         <div
             onClick={() => router.push("/playing")}
-            className={`font-ProximaRegular 
+            className={` 
       fixed bottom-0 left-0 right-0 py-3 px-4 pb-4
      border-t-[#242424] border-t
      mobile:py-1 mobile:px-2 z-20

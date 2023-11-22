@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
     PlaylistsStatus,
@@ -15,7 +14,7 @@ import { useEffect } from "react";
 import { getPlaylists } from "@/stores/player/currentAudioPlayer";
 
 function AudioHandler() {
-    const { user, status } = useSelector((state: any) => state.auth);
+    const { user } = useSelector((state: any) => state.auth);
     const {
         isPlaying,
         activeSong,
@@ -44,6 +43,7 @@ function AudioHandler() {
             startTimer();
         } else {
             audioRef.current!.pause();
+            clearInterval(intervalRef.current);
         }
     }, [isPlaying]);
 

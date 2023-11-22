@@ -3,17 +3,16 @@ import AppLayout from "@/layouts/appLayout";
 import axios from "axios";
 import API_URL from "@/config/apiUrl";
 import { Artist } from "@/interfaces/artist";
-import { useParams, useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
-import { playPause, setActiveSong } from "@/stores/player/currentAudioPlayer";
+import { useParams } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setActiveSong } from "@/stores/player/currentAudioPlayer";
 import { Song } from "@/interfaces/song";
 import ListItem from "@/components/ListItem";
-import HorizontalSongsList from "@/components/HorizontalSongsList";
 import ErrorComponent from "@/components/error";
-import { Image } from "@nextui-org/react";
 import useSWR from "swr";
+import { NextPage } from "next";
 
-function ArtistProfile() {
+const ArtistProfile: NextPage = () => {
     const dispatch = useDispatch();
     const params = useParams();
 
@@ -32,7 +31,6 @@ function ArtistProfile() {
             return res.data.list;
         }
     );
-
 
     if (errorGetArtist || errorGetSongs) {
         return (
@@ -92,6 +90,6 @@ function ArtistProfile() {
             <div className="pb-32"></div>
         </AppLayout>
     );
-}
+};
 
 export default ArtistProfile;

@@ -16,15 +16,16 @@ import useSWR from "swr";
 import API_URL from "@/config/apiUrl";
 import axios from "axios";
 import { Genre } from "@/interfaces/genres";
+import { NextPage } from "next";
 
-function Search() {
+const Search: NextPage = () => {
     const [searchResult, setSearchResult] = useState<Song[]>([]);
     const [artists, setArtists] = useState<Artist[]>([]);
     const [topResult, setTopResult] = useState<any>();
     const [isFocus, setFocus] = useState(false);
 
     const dispatch = useDispatch<any>();
-    const { data: genres, error: error } = useSWR<Genre[], Error>(
+    const { data: genres } = useSWR<Genre[], Error>(
         `${API_URL}/genres`,
         async (url: string) => {
             const res = await axios.get(url);
@@ -181,7 +182,7 @@ function Search() {
             <div className="mb-32"></div>
         </AppLayout>
     );
-}
+};
 export default Search;
 
 function TopResult({ object, onTap }: any) {

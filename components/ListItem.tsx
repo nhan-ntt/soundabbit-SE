@@ -39,7 +39,7 @@ function ListItem({
     const { user } = useSelector((state: any) => state.auth);
     const dispatch = useDispatch<any>();
 
-    const { data: artists, error: errorGetSongs } = useSWR<Artist[], Error>(
+    const { data: artists} = useSWR<Artist[], Error>(
         song && song.id ? `${API_URL}/songs/${song.id}/artists` : null,
         async (url: string) => {
             const res = await axios.get(url);
@@ -62,8 +62,8 @@ function ListItem({
                     <div>
                         <div className="relative w-12 h-12 min-w-12 mx-2 mobile:w-10 mobile:h-10">
                             <Image
-                                src={song.image_link}
                                 alt=""
+                                src={song.image_link}
                                 className="w-12 h-12 min-w-12 mobile:w-10 mobile:h-10 rounded object-cover"
                             />
                         </div>

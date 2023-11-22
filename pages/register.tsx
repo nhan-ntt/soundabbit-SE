@@ -54,11 +54,7 @@ const Register: NextPage = () => {
     };
 
     return (
-        <div className="font-ProximaRegular text-white bg-[#000000]">
-            <Head>
-                <title>Rhyme - register</title>
-            </Head>
-
+        <div className=" text-white bg-[#000000]">
             <div
                 className="bg-[url('https://images.unsplash.com/photo-1596300919357-77dbd158c7b8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80')] 
         h-screen w-screen bg-no-repeat bg-cover"
