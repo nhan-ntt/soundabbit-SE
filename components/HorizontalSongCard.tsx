@@ -69,9 +69,11 @@ function HorizontalSongCard({
                     />
                 </div>
 
-                <p className="line-clamp-2 mt-3 text-base mobile:text-sm tablet:text-sm">
-                    {song.name}
-                </p>
+                <div>
+                    <p className="line-clamp-2 mt-3 text-base mobile:text-sm tablet:text-sm">
+                        {song.name}
+                    </p>
+                </div>
                 <p
                     className="line-clamp-2 mt-0.5 text-sm text-gray-400 
             font-ProximaRegular mobile:text-xs tablet:text-xs"
@@ -82,7 +84,7 @@ function HorizontalSongCard({
                                 <Link
                                     key={artist.id}
                                     href={`/artist/${artist.id}`}
-                                    className="text-gray-300"
+                                    className="text-gray-300 text-sm"
                                 >
                                     {artist.name}
                                 </Link>

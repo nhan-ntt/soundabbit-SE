@@ -71,24 +71,15 @@ const Home: NextPage = () => {
                       w-full bg-[#5f5d5d60]
                       rounded cursor-pointer hover:bg-[#5f5d5da1]"
                             >
-                                <div
-                                    style={{
-                                        boxShadow:
-                                            "10px 0 10px -7px rgba(18, 18, 18, 0.50), -0px 0 0px -4px rgba(0, 0, 0, 0)",
-                                    }}
-                                    className="relative w-20 h-20 mini-laptop:w-16 mini-laptop:h-16
-                        rounded-tl-md rounded-bl tablet:w-16 tablet:h-16 mobile:w-14 mobile:h-14"
-                                >
-                                    <Image
-                                        alt=""
-                                        src={artist.image_link}
-                                        className="
-                                            object-cover
-                                            w-20 h-20 mini-laptop:w-16 mini-laptop:h-16
-                                            rounded-none tablet:w-16 tablet:h-16 mobile:w-14 mobile:h-14
-                                        "
-                                    />
-                                </div>
+                                <Image
+                                    alt=""
+                                    src={artist.image_link}
+                                    className="
+                                    object-cover
+                                    relative w-20 h-20 mini-laptop:w-16 mini-laptop:h-16
+                                    rounded-none rounded-tl-md rounded-bl-md tablet:w-16 tablet:h-16 mobile:w-14 mobile:h-14"
+                                />
+                                <div></div>
                                 <p className="p-4 mini-laptop:p-2 tablet:p-2 tablet:text-[15px] mobile:p-0 mobile:px-2 mobile:text-[14px]">
                                     {artist.name}
                                 </p>

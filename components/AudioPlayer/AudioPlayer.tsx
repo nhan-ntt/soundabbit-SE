@@ -39,7 +39,7 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
     const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>();
     const [seekBarColor, setSeekBarColor] = useState("#fff");
     const changeSeekBarColor = (color: string) => setSeekBarColor(color);
-    const { data: artists, error: errorGetSongs } = useSWR<Artist[], Error>(
+    const { data: artists } = useSWR<Artist[], Error>(
         activeSong && activeSong.id
             ? `${API_URL}/songs/${activeSong.id}/artists`
             : null,
@@ -139,7 +139,7 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
                                     <>
                                         <Link
                                             href={`/artist/${artist.id}`}
-                                            className="text-gray-300"
+                                            className="text-gray-300 text-sm"
                                         >
                                             {artist.name}
                                         </Link>
