@@ -12,6 +12,7 @@ import { useParams } from "next/navigation";
 import useSWR from "swr";
 import { NextPage } from "next";
 import { ContentLoading } from "@/components/ContentLoading";
+import { Image } from "@nextui-org/react";
 
 const GenrePage: NextPage = () => {
     const dispatch = useDispatch<any>();
@@ -57,12 +58,15 @@ const GenrePage: NextPage = () => {
     return (
         <AppLayout>
             <div className="px-10 pt-32 mobile:pt-20 mini-laptop:px-6 tablet:px-6 mobile:px-4">
-                <h1
-                    className="pb-6 text-[70px] laptop:text-[60px] 
+                <div className="flex gap-3">
+                    <Image src={genre?.image_link} width={150} height={150} />
+                    <h1
+                        className="pb-6 text-[70px] laptop:text-[60px] 
             mini-laptop:text-[60px] tablet:text-[45px] mobile:text-[40px] capitalize "
-                >
-                    {genre?.name}
-                </h1>
+                    >
+                        {genre?.name}
+                    </h1>
+                </div>
             </div>
             <div className="px-8 mini-laptop:px-6 tablet:px-6 mobile:px-4">
                 {songs ? (
