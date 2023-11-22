@@ -63,14 +63,22 @@ function HorizontalSongCard({
                     <Image
                         src={song.image_link}
                         alt="song cover image"
+                        width={200}
+                        height={200}
                         className="z-6 w-[200px] h-[200px] relative 
           mini-laptop:w-[140px] mini-laptop:h-[140px] 
           tablet:w-[130px] tablet:h-[130px] rounded mobile:w-[100px] mobile:h-[100px] object-cover"
                     />
                 </div>
 
-                <div>
-                    <p className="line-clamp-2 mt-3 text-base mobile:text-sm tablet:text-sm">
+                <div
+                    className="
+                w-[200px] relative 
+                mini-laptop:w-[140px] 
+                tablet:w-[130px] rounded mobile:w-[100px] 
+                "
+                >
+                    <p className="truncate mt-3 text-base mobile:text-sm tablet:text-sm">
                         {song.name}
                     </p>
                 </div>

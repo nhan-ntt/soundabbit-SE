@@ -228,7 +228,7 @@ function TopResult({ object, onTap }: any) {
                             />
                         </div>
                         <div className="tablet:mx-4 mobile:mx-4">
-                            <p className="mt-4 text-2xl line-clamp-1">
+                            <p className="truncate mt-4 text-2xl">
                                 {object.name}
                             </p>
                             <p>
