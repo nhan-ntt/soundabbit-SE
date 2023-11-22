@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { Howl, Howler } from "howler";
 import { useSelector, useDispatch } from "react-redux";
 import {
     PlaylistsStatus,
@@ -29,22 +30,37 @@ function AudioHandler() {
     }: IStateProps = useSelector((state: any) => state.player);
 
     const dispatch = useDispatch<any>();
-    const audioRef = useRef(
-        typeof Audio !== "undefined"
-            ? new Audio(activeSong!.audio_link)
-            : null
-    );
+    const audioRef = useRef<Howl | null>(null);
     const isReady = useRef(false);
-    const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>();
+    const requestRef = useRef<number | null>(null);
+
+    const animate = () => {
+        if (audioRef.current) {
+            dispatch(setSongProgress(audioRef.current.seek()));
+            requestRef.current = requestAnimationFrame(animate);
+        }
+    };
+
+    const handlePlay = () => {
+        requestRef.current = requestAnimationFrame(animate);
+    };
+
+    const handlePause = () => {
+        cancelAnimationFrame(requestRef.current!);
+    };
 
     useEffect(() => {
         if (isPlaying) {
-            if (audioRef.current) audioRef.current!.play();
-            startTimer();
+            if (audioRef.current) {
+                audioRef.current.play();
+            }
         } else {
-            audioRef.current!.pause();
-            clearInterval(intervalRef.current);
+            if (audioRef.current) {
+                audioRef.current.pause();
+            }
         }
+
+        return () => cancelAnimationFrame(requestRef.current!);
     }, [isPlaying]);
 
     const toNextSong = () => {
@@ -55,62 +71,73 @@ function AudioHandler() {
         }
     };
 
+    const handleLoad = () => {
+        if (audioRef.current) {
+            dispatch(setDuration(audioRef.current.duration()));
+        }
+    };
+
     useEffect(() => {
-        audioRef.current!.loop = isRepeat;
+        if (audioRef.current) {
+            audioRef.current.loop(isRepeat);
+        }
     }, [isRepeat]);
 
     useEffect(() => {
-        audioRef.current!.currentTime = currentTime;
+        if (audioRef.current) {
+            audioRef.current.seek(currentTime);
+        }
     }, [currentTime]);
 
     useEffect(() => {
-        audioRef.current!.volume = volume;
+        if (audioRef.current) {
+            audioRef.current.volume(volume);
+        }
     }, [volume]);
 
     useEffect(() => {
-        audioRef.current!.pause();
+        if (audioRef.current) {
+            audioRef.current.pause();
+        }
 
-        audioRef.current = new Audio(activeSong!.audio_link);
-        dispatch(setSongProgress(audioRef.current.currentTime));
+        audioRef.current = new Howl({
+            src: [activeSong!.audio_link],
+            html5: true,
+            onend: toNextSong,
+            onload: handleLoad,
+            onplay: handlePlay,
+            onpause: handlePause,
+        });
 
         if (isReady.current) {
             audioRef.current.play();
             dispatch(playPause(true));
-            startTimer();
         } else {
             isReady.current = true;
         }
+
+        return () => {
+            if (audioRef.current) {
+                audioRef.current.pause();
+            }
+            cancelAnimationFrame(requestRef.current!);
+        };
     }, [activeSong, currentIndex]);
 
-    const startTimer = () => {
-        // Clear any timers already running
-        clearInterval(intervalRef.current);
-
-        intervalRef.current = setInterval(() => {
-            if (audioRef.current!.ended) {
-                toNextSong();
-            } else {
-                dispatch(setSongProgress(audioRef.current!.currentTime));
-                dispatch(setDuration(audioRef.current!.duration || 0));
-            }
-        }, 1000);
-    };
-
     useEffect(() => {
-        if (fetchlikedStatus == LikedStatus.Initial) {
-            if (user) {
-                dispatch(getLikedSongs(user));
-            }
-        } // Pause and clean up on unmount
-
-        if (playlistStatus == PlaylistsStatus.Initial) {
-            if (user) {
-                dispatch(getPlaylists(user.token));
-            }
+        if (fetchlikedStatus === LikedStatus.Initial && user) {
+            dispatch(getLikedSongs(user));
         }
+
+        if (playlistStatus === PlaylistsStatus.Initial && user) {
+            dispatch(getPlaylists(user.token));
+        }
+
         return () => {
-            audioRef.current!.pause();
-            clearInterval(intervalRef.current);
+            if (audioRef.current) {
+                audioRef.current.pause();
+            }
+            cancelAnimationFrame(requestRef.current!);
         };
     }, []);
 
