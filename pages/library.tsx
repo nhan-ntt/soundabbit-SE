@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import PlaylistCard from "@/components/PlaylistCard";
 import { NextPage } from "next";
 import { Playlist } from "@/interfaces/playlist";
+import { ContentLoading } from "@/components/ContentLoading";
 
 const Library: NextPage = () => {
     const { playlists, playlistStatus } = useSelector(
@@ -25,6 +26,14 @@ const Library: NextPage = () => {
             dispatch(getPlaylists(user.token));
         }
     }, []);
+
+    if (playlistStatus != PlaylistsStatus.success) {
+        return (
+            <AppLayout>
+                <ContentLoading />
+            </AppLayout>
+        );
+    }
 
     return (
         <AppLayout>

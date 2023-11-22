@@ -11,12 +11,17 @@ import ErrorComponent from "@/components/error";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
 import { NextPage } from "next";
+import { ContentLoading } from "@/components/ContentLoading";
 
 const GenrePage: NextPage = () => {
     const dispatch = useDispatch<any>();
     const params = useParams();
 
-    const { data: genre, error: errorGetGenre } = useSWR<Genre, Error>(
+    const {
+        data: genre,
+        error: errorGetGenre,
+        isLoading,
+    } = useSWR<Genre, Error>(
         params && params.id ? `${API_URL}/genres/${params.id}` : null,
         async (url: string) => {
             const res = await axios.get(url);
@@ -32,6 +37,14 @@ const GenrePage: NextPage = () => {
             return res.data.list;
         }
     );
+
+    if (isLoading) {
+        return (
+            <AppLayout>
+                <ContentLoading />
+            </AppLayout>
+        );
+    }
 
     if (errorGetGenre || errorGetSongs) {
         return (
@@ -77,6 +90,6 @@ const GenrePage: NextPage = () => {
             <div className="pb-32"></div>
         </AppLayout>
     );
-}
+};
 
 export default GenrePage;

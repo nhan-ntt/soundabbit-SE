@@ -10,6 +10,7 @@ import ErrorComponent from "@/components/error";
 import { Button } from "@nextui-org/react";
 import useSWR from "swr";
 import { NextPage } from "next";
+import { ContentLoading } from "@/components/ContentLoading";
 
 const Liked: NextPage = () => {
     const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const Liked: NextPage = () => {
     );
     const { user } = useSelector((state: any) => state.auth);
 
-    const { data: songs, error } = useSWR<Song[], Error>(
+    const { data: songs, error, isLoading } = useSWR<Song[], Error>(
         user && user.id ? `${API_URL}/users/${user.id}/favorite/songs` : null,
         async (url: string) => {
             const res = await axios.get(url, {
@@ -29,6 +30,14 @@ const Liked: NextPage = () => {
             return res.data.list;
         }
     );
+
+    if (isLoading) {
+        return (
+            <AppLayout>
+                <ContentLoading />
+            </AppLayout>
+        );
+    }
 
     if (error) {
         return (

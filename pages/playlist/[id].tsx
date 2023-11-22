@@ -28,6 +28,7 @@ import { Image } from "@nextui-org/react";
 import { Playlist } from "@/interfaces/playlist";
 import useSWR from "swr";
 import { NextPage } from "next";
+import { ContentLoading } from "@/components/ContentLoading";
 
 const Playlist: NextPage = () => {
     const router = useRouter();
@@ -94,6 +95,15 @@ const Playlist: NextPage = () => {
         );
         router.replace("/library");
     };
+
+
+    if (playlistStatus != PlaylistsStatus.success) {
+        return (
+            <AppLayout>
+                <ContentLoading />
+            </AppLayout>
+        );
+    }
 
     if (errorGetSongs) {
         return (

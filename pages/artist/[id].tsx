@@ -12,12 +12,13 @@ import ErrorComponent from "@/components/error";
 import useSWR from "swr";
 import { NextPage } from "next";
 import { Image } from "@nextui-org/react";
+import { ContentLoading } from "@/components/ContentLoading";
 
 const ArtistProfile: NextPage = () => {
     const dispatch = useDispatch();
     const params = useParams();
 
-    const { data: artist, error: errorGetArtist } = useSWR<Artist, Error>(
+    const { data: artist, error: errorGetArtist, isLoading } = useSWR<Artist, Error>(
         params && params.id ? `${API_URL}/artists/${params.id}` : null,
         async (url: string) => {
             const res = await axios.get(url);
@@ -32,6 +33,14 @@ const ArtistProfile: NextPage = () => {
             return res.data.list;
         }
     );
+
+    if (isLoading) {
+        return (
+            <AppLayout>
+                <ContentLoading />
+            </AppLayout>
+        );
+    }
 
     if (errorGetArtist || errorGetSongs) {
         return (
