@@ -2,7 +2,7 @@
 ![Next.js](https://img.shields.io/badge/Built%20with-Next.js-000000?style=flat&logo=next.js)
 ![Vercel](https://vercelbadge.vercel.app/api/rhyme-music-app/rhyme-frontend)
 <p align="center">
-  <a rel="noopener noreferrer" target="_blank" href="https://www.vercel.com?utm_source=nextui&utm_marketing=oss">
+  <a rel="noopener noreferrer" target="_blank" href="https://rhyme-uet.vercel.app/">
     <img height="34px" src="https://raw.githubusercontent.com/nextui-org/nextui/main/apps/docs/public/deployed-on-vercel.svg" alt="Deployed on vercel">
   </a>
 </p>
