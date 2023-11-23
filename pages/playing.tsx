@@ -110,6 +110,14 @@ const Playing: NextPage = () => {
         fixed bottom-0 left-0 right-0 top-0 
         select-none overflow-hidden h-screen w-screen max-w-full"
         >
+            <Image
+                src="/bg-gradient-right.png"
+                className="fixed dark:opacity-70 -top-[40%] -right-[30%] mobile:-right-[10%] mobile:-top-0 tablet:-right-[10%] tablet:-top-0 z-0 rotate-12"
+            />
+            <Image
+                src="/bg-gradient-left.png"
+                className="fixed dark:md:block dark:opacity-70 -left-[20%] z-0"
+            />
             <div className="bg-gradient-to-t from-[#121212] via-[#1a1919b8] to-[#0000006b] w-full h-full">
                 <div
                     className="backdrop-blur-[100px] w-full h-full flex flex-row 

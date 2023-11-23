@@ -20,13 +20,16 @@ function AppLayout({ children }: any) {
                 <title>Rhyme</title>
             </Head>
 
-            <div className={`bg-[#121212] ${inter.className}`}>
-                <div className="flex flex-row h-screen w-screen max-w-full">
+            <div className={`bg-[#121212] relative ${inter.className}`}>
+                <div className="flex flex-row h-screen w-screen max-w-full relative">
                     <Image
-                        src="/bg-gradient.png"
+                        src="/bg-gradient-right.png"
                         className="fixed dark:opacity-70 -top-[40%] -right-[30%] mobile:-right-[10%] mobile:-top-0 tablet:-right-[10%] tablet:-top-0 z-0 rotate-12"
                     />
-
+                    <Image
+                        src="/bg-gradient-left.png"
+                        className="fixed dark:md:block dark:opacity-70 -left-[20%] tablet:-top-[50%] mobile:-top-[50%] z-0"
+                    />
                     <Sidebar />
                     <div className="h-screen scroll overflow-y-scroll">
                         <Navbar />

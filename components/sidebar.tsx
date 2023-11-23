@@ -11,8 +11,8 @@ export default function Sidebar() {
 
     return (
         <div
-            className="w-[14rem] mini-laptop:w-[55px] bg-black p-3
-           border-r-[#242424] border-r mini-laptop:p-0 tablet:hidden mobile:hidden"
+            className="w-[14rem] border-r-[#242424] border-r mini-laptop:w-[55px] relative bg-black/50 backdrop-blur-xl p-3
+            mini-laptop:p-0 tablet:hidden mobile:hidden"
         >
             <Link href="/">
                 <div className="flex flex-row items-center px-3 mt-2 select-none cursor-pointer">
@@ -54,11 +54,10 @@ export default function Sidebar() {
                 </div>
                 <Link href={`/playlist/liked`}>
                     <div
-                        className={`${
-                            pathname == "/playlist/liked"
-                                ? "opacity-100"
-                                : "opacity-70"
-                        } hover:opacity-100 mini-laptop:hidden tablet:hidden mobile:hidden group select-none cursor-pointer mt-4 flex flex-row items-center 
+                        className={`${pathname == "/playlist/liked"
+                            ? "opacity-100"
+                            : "opacity-70"
+                            } hover:opacity-100 mini-laptop:hidden tablet:hidden mobile:hidden group select-none cursor-pointer mt-4 flex flex-row items-center 
                mini-laptop:w-full mini-laptop:mt-6 mobile:mt-0 tablet:mt-0 mobile:mx-8 tablet:mx-10`}
                     >
                         <div className=" rounded bg-gradient-to-tl to-[#4C17F3] from-[#ddd7d7] px-2 py-2 flex items-center mr-3">

@@ -110,7 +110,7 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
      border-t-[#242424] border-t
      mobile:py-1 mobile:px-2 z-20
      mobile:bottom-12 tablet:bottom-12
-      bg-[#121212] 
+      bg-[#121212]/70 backdrop-blur-xl 
       select-none ${isHidden ? "invisible" : "visible"}`}
         >
             <div
