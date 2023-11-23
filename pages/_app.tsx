@@ -15,6 +15,20 @@ import AudioHandler from "@/components/AudioHandler";
 import MobileMenu from "@/components/MobileMenu";
 import { PersistGate } from "redux-persist/integration/react";
 import { usePathname, useRouter } from "next/navigation";
+import { Metadata } from "next";
+import { siteConfig } from "@/config/site";
+
+export const metadata: Metadata = {
+    title: {
+        default: siteConfig.name,
+        template: `% s - ${siteConfig.name}`,
+    },
+    description: siteConfig.description,
+    themeColor: [
+        { media: "(prefers-color-scheme: light)", color: "white" },
+        { media: "(prefers-color-scheme: dark)", color: "black" },
+    ],
+};
 
 function App({ Component, pageProps }: AppProps) {
     const router = useRouter();

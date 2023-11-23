@@ -2,8 +2,15 @@ import type { NextPage } from "next";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-
-import { Button, Image } from "@nextui-org/react";
+import { Button, Image, Card, CardBody, CardHeader } from "@nextui-org/react";
+import {
+    Navbar as NextUINavbar,
+    NavbarContent,
+    NavbarBrand,
+} from "@nextui-org/react";
+import Link from "next/link";
+import { GithubIcon } from "@/components/icons";
+import { siteConfig } from "@/config/site";
 
 const Intro: NextPage = () => {
     const { status, user } = useSelector((state: any) => state.auth);
@@ -16,40 +23,44 @@ const Intro: NextPage = () => {
 
     return (
         <div className="bg-[#0d0d0d] text-white">
-            <div className="fixed top-0 left-0 right-0 z-40 bg-[#0d0d0d]">
-                <div className="flex flex-row max-w-[1280px] justify-between items-center mx-auto p-2">
-                    <div className="flex flex-row items-center">
-                        <Image
-                            src="/logo.png"
-                            width={40}
-                            height={40}
-                            alt="logo"
-                        />
-                        <h1
-                            className="text-center uppercase mx-2 
-              tracking-wider "
-                        >
-                            Rhyme
-                        </h1>
-                    </div>
-                    <div className="flex gap-3 ">
-                        <Button
-                            variant="bordered"
-                            className="text-bold text-sm"
-                            onClick={() => router.push("/login")}
-                        >
-                            Login
-                        </Button>
-                        <Button
-                            variant="bordered"
-                            className="text-bold text-sm"
-                            onClick={() => router.push("/register")}
-                        >
-                            Register
-                        </Button>
-                    </div>
-                </div>
-            </div>
+            <NextUINavbar maxWidth="xl" position="sticky">
+                <NavbarContent
+                    className="basis-1/5 sm:basis-full"
+                    justify="start"
+                >
+                    <NavbarBrand as="li" className="gap-3 max-w-fit">
+                        <Link href="/">
+                            <div className="flex flex-row items-center px-3 mt-2 select-none cursor-pointer">
+                                <div className="mini-laptop:mt-4 relative w-[40px] h-[40px] mini-laptop:w-[30px]">
+                                    <Image src="/logo.jpeg" alt="logo" />
+                                </div>
+
+                                <h1
+                                    className="text-center uppercase mx-2 text-md 
+                 tracking-wider mini-laptop:hidden"
+                                >
+                                    Rhyme
+                                </h1>
+                            </div>
+                        </Link>
+                    </NavbarBrand>
+                </NavbarContent>
+
+                <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
+                    <Button
+                        variant="bordered"
+                        onClick={() => router.push("/login")}
+                    >
+                        Login
+                    </Button>
+                    <Button
+                        variant="bordered"
+                        onClick={() => router.push("/register")}
+                    >
+                        Register
+                    </Button>
+                </NavbarContent>
+            </NextUINavbar>
 
             <div className="relative">
                 <div
@@ -119,62 +130,80 @@ const Intro: NextPage = () => {
         tablet:grid-cols-1 mobile:grid-cols-1
         "
                 >
-                    <div
+                    <Card
+                        isHoverable={true}
+                        isPressable={true}
                         className="bg-gradient-to-tr to-[#a15c1c] 
           from-[#6a2009] py-4 px-6 rounded flex text-center 
-          flex-col  items-center"
+          flex-col items-center"
                     >
-                        <div className="mb-4 mt-3 bg-[#2ed146] w-fit p-3 rounded-full text-center flex items-center">
+                        <CardHeader className="mb-4 bg-[#2ed146] w-fit p-3 rounded-full text-center flex items-center">
                             <i className="icon-full-screen text-[20px]"></i>
-                        </div>
+                        </CardHeader>
 
-                        <h1 className="text-xl mb-2 ">Fully Responsive</h1>
-                        <p>
-                            Available for all screen Mobile, tablet, laptop and
-                            desktop. The app is made to give a user full
-                            experience of spotify client. it has almost same Ui
-                            as Spotify for every page.
-                        </p>
-                    </div>
-                    <div
+                        <CardBody>
+                            <h1 className="text-xl mb-2 text-center">
+                                Fully Responsive
+                            </h1>
+                            <p>
+                                Available for all screen Mobile, tablet, laptop
+                                and desktop. The app is made to give a user full
+                                experience of spotify client. it has almost same
+                                Ui as Spotify for every page.
+                            </p>
+                        </CardBody>
+                    </Card>
+                    <Card
+                        isHoverable={true}
+                        isPressable={true}
                         className="bg-gradient-to-b from-[#8b0847] 
           to-[#580b64] py-4 px-6 rounded flex text-center 
           flex-col  items-center"
                     >
-                        <div className="mb-4 mt-3 bg-[#2ed146] w-fit p-3 rounded-full text-center flex items-center">
+                        <CardHeader className="mb-4 mt-3 bg-[#2ed146] w-fit p-3 rounded-full text-center flex items-center">
                             <i className="icon-add-to-playlist text-[20px]"></i>
-                        </div>
+                        </CardHeader>
 
-                        <h1 className="text-xl mb-2 ">Different Themes</h1>
-                        <p>
-                            Stock music with variety of themes. Music for
-                            videos, Music for youtube videos, Vlog music
-                            Background, Film music, Podcast music, Cinematic
-                            music and much more.
-                        </p>
-                    </div>
-                    <div
+                        <CardBody>
+                            <h1 className="text-xl mb-2 ">Different Themes</h1>
+                            <p>
+                                Stock music with variety of themes. Music for
+                                videos, Music for youtube videos, Vlog music
+                                Background, Film music, Podcast music, Cinematic
+                                music and much more.
+                            </p>
+                        </CardBody>
+                    </Card>
+                    <Card
+                        isHoverable={true}
+                        isPressable={true}
                         className="bg-gradient-to-tr to-[#0d2477] 
           from-[#522bbf] py-4 px-6 rounded flex text-center
            flex-col items-center"
                     >
-                        <div className="mb-4 mt-3 bg-[#2ed146] w-fit p-3 rounded-full text-center flex items-center">
+                        <CardHeader className="mb-4 mt-3 bg-[#2ed146] w-fit p-3 rounded-full text-center flex items-center">
                             <i className="icon-verified text-[24px]"></i>
-                        </div>
+                        </CardHeader>
 
-                        <h1 className="text-xl mb-2 ">Safe to use</h1>
-                        <p>
-                            Over 10k+ high quality stock music, shared by
-                            community of pixabay music. safe to use without
-                            asking for permission or giving credit to the artist
-                            - even for commercial purposes.
-                        </p>
-                    </div>
+                        <CardBody>
+                            <h1 className="text-xl mb-2 ">Safe to use</h1>
+                            <p>
+                                Over 10k+ high quality stock music, shared by
+                                community of pixabay music. safe to use without
+                                asking for permission or giving credit to the
+                                artist - even for commercial purposes.
+                            </p>
+                        </CardBody>
+                    </Card>
                 </div>
                 <div
                     className="mt-10  py-10 border-t 
          items-center flex flex-col border-t-slate-800"
-                ></div>
+                >
+                    <Link href={siteConfig.links.github} aria-label="Github">
+                        <GithubIcon size={30} className="text-default-500" />
+                    </Link>
+                </div>
             </div>
         </div>
     );

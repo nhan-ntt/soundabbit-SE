@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
 import Head from "next/head";
-import { Button, Image, Link, Input } from "@nextui-org/react";
+import { Button, Image, Link, Input, Card } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { register, AuthStatus, logout } from "@/stores/auth/authSlice";
@@ -64,9 +64,9 @@ const Register: NextPage = () => {
          from-black to-[#00000086] flex
           justify-center items-center"
                 >
-                    <div
+                    <Card
                         className="select-none px-20 mobile:pt-8 mobile:pb-10 pt-14 pb-16 mini-laptop:px-10 tablet:px-10 mobile:px-6 
-          flex flex-col items-center bg-black rounded-xl"
+          flex flex-col items-center bg-black/90 rounded-xl"
                     >
                         <div className="flex flex-row items-center">
                             <Image
@@ -144,7 +144,7 @@ const Register: NextPage = () => {
                                 </Link>
                             </p>
                         </form>
-                    </div>
+                    </Card>
                 </div>
             </div>
         </div>
