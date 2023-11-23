@@ -57,7 +57,7 @@ const Search: NextPage = () => {
         <AppLayout>
             <div className="w-full">
                 <div
-                    className="py-4 px-6 mobile:py-2 mobile:px-4 tablet:px-4 fixed z-40 bg-[#121212] flex flex-row 
+                    className="py-4 px-6 mobile:py-2 mobile:px-4 tablet:px-4 fixed z-40 bg-black/70  backdrop-blur-sm flex flex-row 
         w-[calc(100vw_-_14rem_-_16px)] mini-laptop:w-[calc(100vw_-_55px)] 
         tablet:w-screen mobile:w-screen items-center"
                 >
@@ -68,7 +68,7 @@ const Search: NextPage = () => {
                         }
                         onChange={(e: any) => searchAlgolia(e.target.value)}
                         type="text"
-                        className="tablet:w-full mobile:w-full w-[300px]"
+                        className="tablet:w-full mobile:w-full w-[500px]"
                         placeholder="Search Music.."
                     />
                 </div>

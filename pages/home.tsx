@@ -12,7 +12,6 @@ import {
 import HorizontalSongsList from "@/components/HorizontalSongsList";
 import HorizontalArtistsList from "@/components/HorizontalArtistsList";
 import ErrorComponent from "@/components/error";
-import { Spinner } from "@nextui-org/react";
 import VerticalArtistCard from "@/components/verticalArtistCard";
 import { ContentLoading } from "@/components/ContentLoading";
 
