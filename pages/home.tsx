@@ -28,10 +28,8 @@ const Home: NextPage = () => {
     const dispatch = useDispatch<any>();
 
     useEffect(() => {
-        if (user) {
-            if (status !== RequestStatus.Success) {
-                dispatch(getRecentUsers());
-            }
+        if (user && status !== RequestStatus.Success) {
+            dispatch(getRecentUsers());
         }
     }, []);
 

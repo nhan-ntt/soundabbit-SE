@@ -10,8 +10,6 @@ import { PlayPauseButton } from "@/components/HorizontalSongCard";
 import ListItem from "@/components/ListItem";
 import Link from "next/link";
 import { Image, Input } from "@nextui-org/react";
-import { RequestStatus } from "@/stores/homePage/homePageSlice";
-import { GenresState, getGenres } from "@/stores/genres/genresSlice";
 import useSWR from "swr";
 import API_URL from "@/config/apiUrl";
 import axios from "axios";
@@ -20,7 +18,6 @@ import { NextPage } from "next";
 
 const Search: NextPage = () => {
     const [searchResult, setSearchResult] = useState<Song[]>([]);
-    const [artists, setArtists] = useState<Artist[]>([]);
     const [topResult, setTopResult] = useState<any>();
     const [isFocus, setFocus] = useState(false);
 

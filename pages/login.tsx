@@ -5,12 +5,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
-import Head from "next/head";
 import { Button, Image, Link, Input, Card } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AuthStatus, login, logout } from "@/stores/auth/authSlice";
+import { AuthStatus, login } from "@/stores/auth/authSlice";
 import InputPassword from "@/components/InputPassword";
 
 const Login: NextPage = () => {
