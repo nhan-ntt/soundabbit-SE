@@ -39,6 +39,7 @@ import {
     ModalFooter,
 } from "@nextui-org/react";
 import { toast } from "react-toastify";
+import { useSession } from "next-auth/react";
 
 const Playlist: NextPage = () => {
     const router = useRouter();
@@ -48,20 +49,20 @@ const Playlist: NextPage = () => {
     const { isPlaying, playingPlaylist, playlistStatus } = useSelector(
         (state: any) => state.player
     );
-    const { user } = useSelector((state: any) => state.auth);
+    const { data: session, status } = useSession();
 
     const {
         data: playlist,
         error: errorGetPlaylist,
         isLoading: isLoadingPlaylist,
     } = useSWR<Playlist, Error>(
-        user && user.id && params && params.id
+        params && params.id
             ? `${API_URL}/playlists/${params.id}`
             : null,
         async (url: string) => {
             const res = await axios.get(url, {
                 headers: {
-                    authorization: `Bearer ${user.token}`,
+                    authorization: `Bearer ${session?.user.token}`,
                 },
             });
             return res.data;
@@ -69,13 +70,13 @@ const Playlist: NextPage = () => {
     );
 
     const { data: songs, error: errorGetSongs } = useSWR<Song[], Error>(
-        user && user.id && params && params.id
+        params && params.id
             ? `${API_URL}/playlists/${params.id}/songs`
             : null,
         async (url: string) => {
             const res = await axios.get(url, {
                 headers: {
-                    authorization: `Bearer ${user.token}`,
+                    authorization: `Bearer ${session?.user.token}`,
                 },
             });
             return res.data.list;
@@ -89,7 +90,7 @@ const Playlist: NextPage = () => {
 
     useEffect(() => {
         if (playlistStatus != PlaylistsStatus.success) {
-            dispatch(getPlaylists(user.token));
+            dispatch(getPlaylists(session?.user.token || " "));
         }
     }, []);
 
@@ -114,7 +115,7 @@ const Playlist: NextPage = () => {
     const onDeletePlaylist = () => {
         dispatch(
             deletePlaylist({
-                token: user.token,
+                token: session?.user.token,
                 playlist_id: params.id,
             })
         );
@@ -284,7 +285,7 @@ const Playlist: NextPage = () => {
                                     onPress={() => {
                                         dispatch(
                                             updatePlaylist({
-                                                token: user.token,
+                                                token: session?.user.token,
                                                 id: playlist?.id,
                                                 update: {
                                                     image_link: playlistImage,

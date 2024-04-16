@@ -45,10 +45,12 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
         isRepeat,
     }: IStateProps = useSelector((state: any) => state.player);
 
-    const dispatch = useDispatch<any>();
     const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>();
+    const dispatch = useDispatch<any>();
     const [seekBarColor, setSeekBarColor] = useState("#fff");
     const changeSeekBarColor = (color: string) => setSeekBarColor(color);
+
+
     const { data: artists } = useSWR<Artist[], Error>(
         activeSong && activeSong.id
             ? `${API_URL}/songs/${activeSong.id}/artists`
@@ -101,6 +103,10 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
     const songStyling = `
     -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage()}, ${seekBarColor}), color-stop(${currentPercentage()}, #777))
   `;
+
+    if (!activeSong) {
+        return;
+    }
 
     return (
         <div

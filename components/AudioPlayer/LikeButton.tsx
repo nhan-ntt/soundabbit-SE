@@ -8,12 +8,13 @@ import {
     Like,
 } from "@/stores/player/currentAudioPlayer";
 import { Tooltip } from "@nextui-org/react";
+import { useSession } from "next-auth/react";
 
 function LikeButton({ song_id, size, isList }: any) {
     const [like, setLike] = useState(false);
     const dispatch = useDispatch<any>();
     const { liked } = useSelector((state: any) => state.player);
-    const { user } = useSelector((state: any) => state.auth);
+    const { data: session, status } = useSession();
 
     useEffect(() => {
         setLike(liked.includes(song_id));
@@ -33,9 +34,9 @@ function LikeButton({ song_id, size, isList }: any) {
                     <i
                         onClick={(e) => {
                             e.stopPropagation();
-                            dispatch(addLike({ user, song_id }));
+                            dispatch(addLike({ user: session?.user, song_id }));
                             setLike(true);
-                            dispatch(Like({ user, song_id }));
+                            dispatch(Like({ user: session?.user, song_id }));
                         }}
                         className={`cursor-pointer icon-Like text-gray-400 
           ${size ? size : "text-[14px]"} mx-2 hover:text-white`}
@@ -49,7 +50,7 @@ function LikeButton({ song_id, size, isList }: any) {
 
                             dispatch(removeLike({ song_id }));
                             setLike(false);
-                            dispatch(unLike({ user, song_id }));
+                            dispatch(unLike({ user: session?.user, song_id }));
                         }}
                         className={`cursor-pointer icon-heart 
           text-[#2bb540] ${size ? size : "text-[15px]"} mx-2`}

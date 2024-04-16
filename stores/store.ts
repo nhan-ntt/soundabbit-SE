@@ -1,41 +1,18 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-
+import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "./auth/authSlice";
-import genresSlice from "./genres/genresSlice";
-import homePageSlice from "./homePage/homePageSlice";
 import audioPlayer from "./player/currentAudioPlayer";
-import { persistReducer, persistStore } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-import { RESET_STATE } from "./action";
+import homePageSlice from "./homePage/homePageSlice";
+import genresSlice from "./genres/genresSlice";
 
-const appReducer = combineReducers({
-    auth: authSlice,
-    player: audioPlayer,
-    homePage: homePageSlice,
-    genres: genresSlice,
-});
-
-const rootReducer = (state: any, action: any) => {
-    if (action.type === RESET_STATE) {
-        storage.removeItem("persist:root");
-        return appReducer(undefined, action);
-    }
-
-    return appReducer(state, action);
-};
-
-const persistConfig = {
-    key: "root",
-    storage,
-    blacklist: ["auth"],
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-export const store = configureStore({
-    reducer: persistedReducer,
+const store = configureStore({
+    reducer: {
+        auth: authSlice,
+        player: audioPlayer,
+        homePage: homePageSlice,
+        genres: genresSlice,
+    },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({ serializableCheck: false }),
 });
 
-export const persistor = persistStore(store);
+export default store;

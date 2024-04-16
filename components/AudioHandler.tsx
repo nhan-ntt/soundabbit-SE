@@ -13,9 +13,10 @@ import {
 } from "@/stores/player/currentAudioPlayer";
 import { useEffect } from "react";
 import { getPlaylists } from "@/stores/player/currentAudioPlayer";
+import { useSession } from "next-auth/react";
 
 function AudioHandler() {
-    const { user } = useSelector((state: any) => state.auth);
+    const { data: session, status } = useSession();
     const {
         isPlaying,
         activeSong,
@@ -96,6 +97,10 @@ function AudioHandler() {
     }, [volume]);
 
     useEffect(() => {
+        if (!activeSong) {
+            return;
+        }
+
         if (audioRef.current) {
             audioRef.current.pause();
         }
@@ -125,12 +130,12 @@ function AudioHandler() {
     }, [activeSong, currentIndex]);
 
     useEffect(() => {
-        if (fetchlikedStatus === LikedStatus.Initial && user) {
-            dispatch(getLikedSongs(user));
+        if (fetchlikedStatus === LikedStatus.Initial) {
+            dispatch(getLikedSongs(session?.user.token));
         }
 
-        if (playlistStatus === PlaylistsStatus.Initial && user) {
-            dispatch(getPlaylists(user.token));
+        if (playlistStatus === PlaylistsStatus.Initial) {
+            dispatch(getPlaylists(session?.user.token || " "));
         }
 
         return () => {

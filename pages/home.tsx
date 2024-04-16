@@ -23,20 +23,17 @@ const Home: NextPage = () => {
         popularHits,
         trendingArtists,
     }: HomePageState = useSelector((state: any) => state.homePage);
-    const { user } = useSelector((state: any) => state.auth);
 
     const dispatch = useDispatch<any>();
 
     useEffect(() => {
-        if (user && status !== RequestStatus.Success) {
-            dispatch(getRecentUsers());
-        }
+        dispatch(getRecentUsers());
     }, []);
 
     return (
         <AppLayout>
             {status == RequestStatus.Loading ? (
-                <ContentLoading/>
+                <ContentLoading />
             ) : status == RequestStatus.Error ? (
                 <ErrorComponent />
             ) : status == RequestStatus.Success ? (

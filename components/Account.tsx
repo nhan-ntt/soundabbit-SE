@@ -7,22 +7,20 @@ import {
     Avatar,
     DropdownSection,
 } from "@nextui-org/react";
-import { logout } from "@/stores/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { resetState } from "@/stores/action";
-import { useSelector } from "react-redux";
+import { signOut, useSession } from "next-auth/react";
 
 export default function Account() {
     const dispatch = useDispatch<any>();
-    const { user } = useSelector((state: any) => state.auth);
+    const { data: session, status } = useSession();
 
     const router = useRouter();
 
     const onLogout = () => {
         dispatch(resetState());
-        dispatch(logout());
-        router.push("/");
+        signOut();
     };
 
     return (
@@ -32,7 +30,7 @@ export default function Account() {
                     as="button"
                     size="sm"
                     isBordered
-                    src={user?.image_link}
+                    src={session?.user.image_link}
                 />
             </DropdownTrigger>
 

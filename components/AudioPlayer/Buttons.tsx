@@ -3,14 +3,11 @@ import LikeButton from "./LikeButton";
 import VolumeControls from "./VolumeControls";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Button, Tooltip } from "@nextui-org/react";
+import { Tooltip } from "@nextui-org/react";
 import { useDispatch } from "react-redux";
 import {
-    addSongToPlaylist,
     toggleModal,
 } from "@/stores/player/currentAudioPlayer";
-import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
 interface IProps {
     volume: number;
     updateVolume: (e: any) => void;
@@ -28,8 +25,6 @@ function Buttons({
     song_id,
     download_url,
 }: IProps) {
-    const { user } = useSelector((state: any) => state.auth);
-
     const router = useRouter();
     const dispatch = useDispatch<any>();
     return (

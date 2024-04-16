@@ -1,18 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import type { NextPage } from "next";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
-import Head from "next/head";
 import { Button, Image, Link, Input, Card } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { register, AuthStatus, logout } from "@/stores/auth/authSlice";
+import { register, AuthStatus } from "@/stores/auth/authSlice";
 import InputPassword from "@/components/InputPassword";
+import { useSession } from "next-auth/react";
 
 const Register: NextPage = () => {
-    const { status, user, message } = useSelector((state: any) => state.auth);
+    const dispatch = useDispatch<any>();
+    const router = useRouter();
+
+    const { status: authStatus } = useSession();
+
+    useEffect(() => {
+        if (authStatus == "authenticated") {
+            router.replace("/home")
+        }
+    }, [authStatus])
+
+    const { status, message } = useSelector((state: any) => state.auth);
+
     const validationSchema = Yup.object().shape({
         username: Yup.string().required("Username is required"),
         email: Yup.string()
@@ -36,8 +48,6 @@ const Register: NextPage = () => {
     } = useForm(formOptions);
     const { errors } = formState;
 
-    const dispatch = useDispatch<any>();
-    const router = useRouter();
 
     const onSubmit = async (data: any) => {
         const respone = await dispatch(

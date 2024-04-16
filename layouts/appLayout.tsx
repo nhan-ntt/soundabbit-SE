@@ -1,6 +1,5 @@
 import React from "react";
 import Head from "next/head";
-import { useLogin } from "@/hooks/useLogin";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/sidebar";
 import { Inter } from "next/font/google";
@@ -12,8 +11,6 @@ const inter = Inter({
 });
 
 function AppLayout({ children }: any) {
-    useLogin();
-
     return (
         <div>
             <Head>
@@ -31,7 +28,7 @@ function AppLayout({ children }: any) {
                         className="fixed dark:md:block dark:opacity-70 -left-[20%] tablet:-top-[50%] mobile:-top-[50%] z-0"
                     />
                     <Sidebar />
-                    <div className="h-screen scroll overflow-y-scroll">
+                    <div className="h-screen scroll overflow-x-hidden overflow-y-scroll">
                         <Navbar />
                         <div
                             className="relative w-[calc(100vw_-_14rem)] 

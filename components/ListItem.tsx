@@ -21,6 +21,7 @@ import API_URL from "@/config/apiUrl";
 import useSWR from "swr";
 import { Artist } from "@/interfaces/artist";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
 function ListItem({
     song,
@@ -36,10 +37,10 @@ function ListItem({
     queueAction?: boolean;
 }) {
     const { activeSong, queue } = useSelector((state: any) => state.player);
-    const { user } = useSelector((state: any) => state.auth);
+    const { data: session, status } = useSession();
     const dispatch = useDispatch<any>();
 
-    const { data: artists} = useSWR<Artist[], Error>(
+    const { data: artists } = useSWR<Artist[], Error>(
         song && song.id ? `${API_URL}/songs/${song.id}/artists` : null,
         async (url: string) => {
             const res = await axios.get(url);
@@ -71,7 +72,7 @@ function ListItem({
 
                     <div className="">
                         <p
-                            className={`mobile:text-sm line-clamp-1 ${activeSong.id == song.id && "text-[#2bb540] "
+                            className={`mobile:text-sm line-clamp-1 ${activeSong?.id == song.id && "text-[#2bb540] "
                                 }`}
                             dangerouslySetInnerHTML={{ __html: song.name }}
                         ></p>
@@ -131,7 +132,7 @@ function ListItem({
                                 onClick={() => {
                                     dispatch(
                                         removeSongFromPlaylist({
-                                            token: user.token,
+                                            token: session?.user.token,
                                             playlist_id: playlist,
                                             song_id: song.id,
                                         })

@@ -11,20 +11,21 @@ import { Button } from "@nextui-org/react";
 import useSWR from "swr";
 import { NextPage } from "next";
 import { ContentLoading } from "@/components/ContentLoading";
+import { useSession } from "next-auth/react";
 
 const Liked: NextPage = () => {
     const dispatch = useDispatch();
     const { isPlaying, playingPlaylist } = useSelector(
         (state: any) => state.player
     );
-    const { user } = useSelector((state: any) => state.auth);
+    const { data: session, status } = useSession();
 
     const { data: songs, error, isLoading } = useSWR<Song[], Error>(
-        user && user.id ? `${API_URL}/users/${user.id}/favorite/songs` : null,
+        `${API_URL}/users/${session?.user.id}/favorite/songs`,
         async (url: string) => {
             const res = await axios.get(url, {
                 headers: {
-                    authorization: `Bearer ${user.token}`,
+                    authorization: `Bearer ${session?.user.token}`,
                 },
             });
             return res.data.list;

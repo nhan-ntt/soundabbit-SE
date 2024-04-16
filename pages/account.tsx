@@ -4,11 +4,10 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import InputPassword from "@/components/InputPassword";
-import { useSelector } from "react-redux";
 import axios from "axios";
 import API_URL from "@/config/apiUrl";
 import { toast } from "react-toastify";
-import { logout, updateUser } from "@/stores/auth/authSlice";
+import { updateUser } from "@/stores/auth/authSlice";
 import { useDispatch } from "react-redux";
 import {
     Modal,
@@ -23,11 +22,13 @@ import {
     Divider,
 } from "@nextui-org/react";
 import { NextPage } from "next";
+import { signOut, useSession } from "next-auth/react";
 
 const AccountPage: NextPage = () => {
     const dispatch = useDispatch<any>();
-    const { user } = useSelector((state: any) => state.auth);
-    const [avatar, setAvatar] = useState<string>(user?.image_link);
+    const { data: session, status } = useSession();
+
+    const [avatar, setAvatar] = useState<string>(session?.user?.image_link || "");
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [token, setToken] = useState();
 
@@ -50,7 +51,7 @@ const AccountPage: NextPage = () => {
             .test(
                 "match",
                 "Confirm newPassword must match",
-                function (confirmNewPassword) {
+                function(confirmNewPassword) {
                     const { newPassword } = this.parent;
                     if (newPassword !== null && newPassword !== undefined) {
                         return confirmNewPassword === newPassword;
@@ -81,7 +82,7 @@ const AccountPage: NextPage = () => {
     const onSubmitLogin = async (data: any) => {
         try {
             const response = await axios.post(`${API_URL}/auth/login`, {
-                email: user.email,
+                email: session?.user.email,
                 password: data.password,
             });
             setToken(response.data.token);
@@ -100,11 +101,11 @@ const AccountPage: NextPage = () => {
                 update = { ...update, password: data.newPassword };
             }
 
-            if (data.username && data.username != user.name) {
+            if (data.username && data.username != session?.user.name) {
                 update = { ...update, name: data.username };
             }
 
-            if (data.image_link && data.image_link != user.image_link) {
+            if (data.image_link && data.image_link != session?.user.image_link) {
                 update = { ...update, image_link: data.image_link };
             }
 
@@ -113,7 +114,7 @@ const AccountPage: NextPage = () => {
                 return;
             }
 
-            await axios.put(`${API_URL}/users/${user.id}`, update, {
+            await axios.put(`${API_URL}/users/${session?.user.id}`, update, {
                 headers: {
                     authorization: `Bearer ${token}`,
                 },
@@ -129,12 +130,12 @@ const AccountPage: NextPage = () => {
 
     const onDeleteAccount = async () => {
         try {
-            await axios.delete(`${API_URL}/user/${user.id}`, {
+            await axios.delete(`${API_URL}/user/${session?.user.id}`, {
                 headers: {
                     authorization: `Bearer ${token}`,
                 },
             });
-            dispatch(logout);
+            signOut();
         } catch (error: any) {
             toast.error(error.response.data.message);
         }
@@ -217,7 +218,7 @@ const AccountPage: NextPage = () => {
                             variant="bordered"
                             label="Your name"
                             type="text"
-                            defaultValue={user?.name}
+                            defaultValue={session?.user?.name}
                             {...registerUpdateForm("username")}
                             errorMessage={
                                 formStateUpdate.errors.username?.message

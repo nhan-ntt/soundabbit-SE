@@ -24,12 +24,13 @@ import {
     Autocomplete,
     AutocompleteItem,
 } from "@nextui-org/react";
+import { useSession } from "next-auth/react";
 
 function AddToPlaylistModal() {
     const { isModalOpen, playlists, passedDataToModal, createPlaylistStatus } =
         useSelector((state: any) => state.player);
 
-    const { user } = useSelector((state: any) => state.auth);
+    const { data: session, status } = useSession();
     const router = useRouter();
     const dispatch = useDispatch<any>();
     const modal = useRef(null);
@@ -100,12 +101,12 @@ function AddToPlaylistModal() {
                                     isDisabled={
                                         name.length === 0 ||
                                         createPlaylistStatus ==
-                                            CreatePlaylistStatus.waiting
+                                        CreatePlaylistStatus.waiting
                                     }
                                     onClick={() => {
                                         dispatch(
                                             createNewPlaylist({
-                                                token: user.token,
+                                                token: session?.user.token,
                                                 name: name,
                                                 song_id: undefined,
                                             })
@@ -139,7 +140,7 @@ function AddToPlaylistModal() {
                                     onClick={() => {
                                         dispatch(
                                             updatePlaylist({
-                                                token: user.token,
+                                                token: session?.user.token,
                                                 id: passedDataToModal.playlist_id,
                                                 update: { name },
                                             })
@@ -185,7 +186,7 @@ function AddToPlaylistModal() {
                                     onClick={() => {
                                         dispatch(
                                             addSongToPlaylist({
-                                                token: user.token,
+                                                token: session?.user.token,
                                                 playlist_id: playlistID,
                                                 song_id:
                                                     passedDataToModal.song_id,

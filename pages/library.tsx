@@ -13,20 +13,21 @@ import { Playlist } from "@/interfaces/playlist";
 import { ContentLoading } from "@/components/ContentLoading";
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 const Library: NextPage = () => {
     const { playlists, playlistStatus } = useSelector(
         (state: any) => state.player
     );
 
-    const { user } = useSelector((state: any) => state.auth);
+    const { data: session, status } = useSession();
     const router = useRouter();
 
     const dispatch = useDispatch<any>();
 
     useEffect(() => {
-        if (playlistStatus != PlaylistsStatus.success) {
-            dispatch(getPlaylists(user.token));
+        if (status == "authenticated" && playlistStatus != PlaylistsStatus.success) {
+            dispatch(getPlaylists(session.user.token || " "));
         }
     }, []);
 

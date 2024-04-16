@@ -1,5 +1,7 @@
+"use client"
+
 import type { NextPage } from "next";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,27 +9,22 @@ import * as Yup from "yup";
 
 import { Button, Image, Link, Input, Card } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AuthStatus, login } from "@/stores/auth/authSlice";
 import InputPassword from "@/components/InputPassword";
+import { signIn, useSession } from "next-auth/react";
 
 const Login: NextPage = () => {
-    const { status, user, message } = useSelector((state: any) => state.auth);
-    const dispatch = useDispatch<any>();
     const router = useRouter();
 
+    const { status } = useSession();
     useEffect(() => {
-        if (user || status == AuthStatus.Success) {
-            router.push("/home");
+        if (status == "authenticated") {
+            router.replace("/home")
         }
-    }, [router, user, dispatch, status]);
+    }, [status])
 
-    useEffect(() => {
-        if (status == AuthStatus.Error) {
-            dispatch(reset());
-        }
-    }, [router]);
+    const [message, setMessage] = useState<any>('');
+    const [loading, setLoading] = useState<boolean>(false);
+
 
     const validationSchema = Yup.object().shape({
         email: Yup.string()
@@ -41,21 +38,34 @@ const Login: NextPage = () => {
     const formOptions = { resolver: yupResolver(validationSchema) };
 
     const {
-        register: registerForm,
+        register: loginForm,
         handleSubmit,
         reset,
         formState,
     } = useForm(formOptions);
     const { errors } = formState;
 
-    const onSubmit = (data: any) => {
-        dispatch(
-            login({
-                email: data.email,
-                password: data.password,
-            })
-        );
+    const onSubmit = async (data: any) => {
+        setLoading(true);
+        const result = await signIn("credentials", {
+            email: data.email,
+            password: data.password,
+            redirect: false,
+        })
+
+        if (result?.ok) {
+            router.replace("/home")
+        } else {
+            console.log({ result })
+            setMessage(result?.error);
+            reset();
+        }
+        setLoading(false);
     };
+
+    const onChange = () => {
+        setMessage('');
+    }
 
     return (
         <div className=" text-white bg-[#000000]">
@@ -91,7 +101,7 @@ const Login: NextPage = () => {
                         <h1 className="mobile:text-xl text-3xl w-80 mb-10 mobile:w-64 mobile:text-center mt-10 font-extrabold ">
                             Download & listen free music lifetime.
                         </h1>
-                        {status == AuthStatus.Error && (
+                        {message && (
                             <p
                                 className="bg-red-500 border border-red-800 
               bg-opacity-40 px-3 mt-6 mb-4 py-2 rounded-3xl  w-full text-center"
@@ -102,6 +112,7 @@ const Login: NextPage = () => {
 
                         <form
                             onSubmit={handleSubmit(onSubmit)}
+                            onChange={onChange}
                             className="flex flex-col gap-5"
                         >
                             <Input
@@ -109,23 +120,23 @@ const Login: NextPage = () => {
                                 type="text"
                                 variant="bordered"
                                 errorMessage={errors.email?.message}
-                                {...registerForm("email")}
+                                {...loginForm("email")}
                                 className="w-80 mobile:w-64"
                             />
 
                             <InputPassword
                                 label="Password"
                                 variant="bordered"
-                                register={registerForm("password")}
+                                register={loginForm("password")}
                                 errorMessage={errors.password?.message}
                             />
 
                             <Button
-                                disabled={status == AuthStatus.Loading}
+                                disabled={loading}
                                 className="tracking-wider bg-[#2bb540] uppercase font-bold"
                                 type="submit"
                             >
-                                {status == AuthStatus.Loading ? (
+                                {loading ? (
                                     <span className="inline-loader"></span>
                                 ) : (
                                     <div>Login</div>

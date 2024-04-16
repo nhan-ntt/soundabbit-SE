@@ -47,7 +47,7 @@ function HorizontalSongCard({
           mini-laptop:w-[140px] mini-laptop:h-[140px] 
           tablet:w-[130px] tablet:h-[130px] mobile:w-[100px] mobile:h-[100px]"
                 >
-                    {activeSong.id === song.id ? (
+                    {activeSong && activeSong.id === song.id ? (
                         <PlayPauseButton
                             condition={activeSong.id === song.id}
                             isPlaying={isPlaying}

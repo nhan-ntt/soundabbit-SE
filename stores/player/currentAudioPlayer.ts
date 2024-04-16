@@ -4,16 +4,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import ApiService from "./ApiServices";
 
-const songs: Song[] = [
-    {
-        id: 1,
-        name: "Rhyme",
-        audio_link:
-            "https://drive.google.com/uc?id=17ZlrPeRBZoPv0OFA8g0RvR__XIWVPW-4&export=download",
-        streams: 0,
-    },
-];
-
 export enum LikedStatus {
     Initial,
     success,
@@ -36,7 +26,7 @@ export interface IStateProps {
     currentIndex: number;
     showBanner: boolean;
     isPlaying: boolean;
-    activeSong: Song | null;
+    activeSong?: Song | null;
     volume: number;
     duration: number;
     currentTime: number;
@@ -53,7 +43,7 @@ export interface IStateProps {
 }
 
 const initialState: IStateProps = {
-    queue: songs,
+    queue: [],
     currentIndex: 0,
     isModalOpen: false,
     volume: 1,
@@ -70,7 +60,7 @@ const initialState: IStateProps = {
     isRepeat: false,
     showBanner: false,
     isPlaying: false,
-    activeSong: songs[0],
+    activeSong: null,
     songProgress: 0,
 };
 
@@ -145,7 +135,7 @@ const playerSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(addSongToPlaylist.fulfilled, (state, action) => {});
+        builder.addCase(addSongToPlaylist.fulfilled, (state, action) => { });
 
         builder.addCase(getLikedSongs.fulfilled, (state, action) => {
             state.fetchlikedStatus = LikedStatus.success;
@@ -176,10 +166,10 @@ const playerSlice = createSlice({
                 (e: any) => e.id == action.payload.id
             );
             if (playlist) {
-                if(action.payload.name) {
+                if (action.payload.name) {
                     playlist.name = action.payload.name;
                 }
-                if(action.payload.image_link) {
+                if (action.payload.image_link) {
                     playlist.image_link = action.payload.image_link;
                 }
             }

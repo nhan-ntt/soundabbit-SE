@@ -1,7 +1,5 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
 import { Button, Image, Card, CardBody, CardHeader } from "@nextui-org/react";
 import {
     Navbar as NextUINavbar,
@@ -13,13 +11,7 @@ import { GithubIcon } from "@/components/icons";
 import { siteConfig } from "@/config/site";
 
 const Intro: NextPage = () => {
-    const { status, user } = useSelector((state: any) => state.auth);
     const router = useRouter();
-    useEffect(() => {
-        if (user) {
-            router.push("/home");
-        }
-    }, [router, user, status]);
 
     return (
         <div className="bg-[#0d0d0d] text-white">

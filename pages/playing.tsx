@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Image } from "@nextui-org/react";
 import {
@@ -46,11 +46,14 @@ const Playing: NextPage = () => {
     }: IStateProps = useSelector((state: any) => state.player);
     const router = useRouter();
 
-    const dispatch = useDispatch<any>();
+    useEffect(() => {
+        if (!activeSong){ router.replace("/home")};
+    }, [activeSong]);
+
     const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>();
+    const dispatch = useDispatch<any>();
     const [seekBarColor, setSeekBarColor] = useState("#fff");
     const changeSeekBarColor = (color: string) => setSeekBarColor(color);
-
     const { data: artists } = useSWR<Artist[], Error>(
         activeSong && activeSong.id
             ? `${API_URL}/songs/${activeSong.id}/artists`
@@ -77,21 +80,17 @@ const Playing: NextPage = () => {
     };
 
     const onScrub = (value: any) => {
-        // Clear any timers already running
         clearInterval(intervalRef.current);
         dispatch(setCurrentTime(value));
         dispatch(setSongProgress(value));
     };
 
     const onScrubEnd = () => {
-        // If not already playing, start
         if (!isPlaying) {
             dispatch(playPause(true));
         }
     };
-    // get formated time in 0:00
 
-    // update volume function
     const updateVolume = (e: any) => {
         dispatch(setVolume(e));
     };
@@ -103,6 +102,10 @@ const Playing: NextPage = () => {
     const songStyling = `
     -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage()}, ${seekBarColor}), color-stop(${currentPercentage()}, #777))
   `;
+
+    if (!activeSong) {
+        return
+    }
 
     return (
         <div
