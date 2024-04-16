@@ -49,8 +49,7 @@ export default NextAuth({
             return token
         },
         async session({ session, token, user }) {
-            session.user = { ...session.user, ...token };
-            return session;
+            return { ...session, user: { ...session.user, ...token } };
         },
     },
 });

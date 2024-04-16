@@ -48,6 +48,10 @@ function ListItem({
         }
     );
 
+    if (!song || !showNumber) {
+        return;
+    }
+
     return (
         <div className="relative" onClick={onTap}>
             <div
