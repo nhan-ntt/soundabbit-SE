@@ -37,7 +37,7 @@ const Queue: NextPage = () => {
                 <h1 className="text-3xl mb-6">Queue</h1>
                 <h1 className="text-base text-gray-400 mb-2">Now Playing</h1>
                 <ListItem
-                    onTap={() => {}}
+                    onTap={() => { }}
                     song={queue[currentIndex]}
                     showNumber={1}
                     queueAction={false}

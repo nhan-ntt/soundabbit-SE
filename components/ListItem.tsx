@@ -48,6 +48,10 @@ function ListItem({
         }
     );
 
+    if (!song) {
+        return;
+    }
+
     return (
         <div className="relative" onClick={onTap}>
             <div
