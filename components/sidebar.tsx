@@ -14,7 +14,7 @@ export default function Sidebar() {
             className="w-[14rem] border-r-[#242424] border-r mini-laptop:w-[55px] relative bg-black/50 backdrop-blur-xl p-3
             mini-laptop:p-0 tablet:hidden mobile:hidden"
         >
-            <Link href="/">
+            <Link href="/home">
                 <div className="flex flex-row items-center px-3 mt-2 select-none cursor-pointer">
                     <div className="mini-laptop:mt-4 relative w-[40px] h-[40px] mini-laptop:w-[30px]">
                         <Image src="/logo.jpeg" alt="logo" />
