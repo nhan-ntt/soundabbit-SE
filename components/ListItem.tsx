@@ -48,10 +48,6 @@ function ListItem({
         }
     );
 
-    if (!song || !showNumber) {
-        return;
-    }
-
     return (
         <div className="relative" onClick={onTap}>
             <div
@@ -76,7 +72,7 @@ function ListItem({
 
                     <div className="">
                         <p
-                            className={`mobile:text-sm line-clamp-1 ${activeSong?.id == song.id && "text-[#2bb540] "
+                            className={`mobile:text-sm line-clamp-1 ${activeSong && activeSong?.id == song.id && "text-[#2bb540] "
                                 }`}
                             dangerouslySetInnerHTML={{ __html: song.name }}
                         ></p>

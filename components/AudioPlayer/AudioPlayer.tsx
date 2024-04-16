@@ -52,8 +52,8 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
 
 
     const { data: artists } = useSWR<Artist[], Error>(
-        activeSong && activeSong.id
-            ? `${API_URL}/songs/${activeSong.id}/artists`
+        activeSong?.id
+            ? `${API_URL}/songs/${activeSong?.id}/artists`
             : null,
         async (url: string) => {
             const res = await axios.get(url);

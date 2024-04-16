@@ -47,7 +47,7 @@ const Playing: NextPage = () => {
     const router = useRouter();
 
     useEffect(() => {
-        if (!activeSong){ router.replace("/home")};
+        if (!activeSong) { router.replace("/home") };
     }, [activeSong]);
 
     const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>();
@@ -55,8 +55,8 @@ const Playing: NextPage = () => {
     const [seekBarColor, setSeekBarColor] = useState("#fff");
     const changeSeekBarColor = (color: string) => setSeekBarColor(color);
     const { data: artists } = useSWR<Artist[], Error>(
-        activeSong && activeSong.id
-            ? `${API_URL}/songs/${activeSong.id}/artists`
+        activeSong?.id
+            ? `${API_URL}/songs/${activeSong?.id}/artists`
             : null,
         async (url: string) => {
             const res = await axios.get(url);

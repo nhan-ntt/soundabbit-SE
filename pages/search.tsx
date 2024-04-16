@@ -203,9 +203,9 @@ function TopResult({ object, onTap }: any) {
               hover:bg-[#5f5d5d72] rounded tablet:h-full mobile:h-full"
             >
                 <div>
-                    {activeSong.id === object.id ? (
+                    {activeSong?.id === object.id ? (
                         <PlayPauseButton
-                            condition={activeSong.id === object.id}
+                            condition={activeSong?.id === object.id}
                             isPlaying={isPlaying}
                         />
                     ) : showPlayButton ? (
