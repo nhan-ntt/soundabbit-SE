@@ -22,6 +22,7 @@ import useSWR from "swr";
 import { Artist } from "@/interfaces/artist";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import clsx from "clsx";
 
 function ListItem({
     song,
@@ -47,6 +48,7 @@ function ListItem({
             return res.data.list;
         }
     );
+    console.log({ activeSong, song });
 
     if (!song) {
         return;
@@ -76,10 +78,12 @@ function ListItem({
 
                     <div className="">
                         <p
-                            className={`mobile:text-sm line-clamp-1 ${activeSong && activeSong?.id == song.id && "text-[#2bb540] "
-                                }`}
-                            dangerouslySetInnerHTML={{ __html: song.name }}
-                        ></p>
+                            className={clsx("mobile:text-sm line-clamp-1",
+                                activeSong?.id === song.id && "text-[#2bb540]"
+                            )}
+                        >
+                            {song.name}
+                        </p>
                         <p className="text-sm mobile:text-xs">
                             {artists &&
                                 artists.map((artist: Artist, index: number) => (

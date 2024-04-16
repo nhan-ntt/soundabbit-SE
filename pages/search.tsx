@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import AppLayout from "@/layouts/appLayout";
 import algoliaClient from "@/config/algolia";
-import { toSongProps, Song } from "@/interfaces/song";
 import { useState } from "react";
 import { Artist } from "@/interfaces/artist";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +14,7 @@ import API_URL from "@/config/apiUrl";
 import axios from "axios";
 import { Genre } from "@/interfaces/genres";
 import { NextPage } from "next";
+import { Song } from "@/interfaces/song";
 
 const Search: NextPage = () => {
     const [searchResult, setSearchResult] = useState<Song[]>([]);
@@ -29,6 +29,18 @@ const Search: NextPage = () => {
             return res.data.list;
         }
     );
+
+    const toSongProps = (songs: any): Song[] => {
+        return songs.map((song: any) => {
+            return {
+                id: song.objectID,
+                name: song.name,
+                audio_link: song.audio_link,
+                image_link: song.image_link,
+                streams: song.streams,
+            };
+        });
+    };
 
     // get response from algolia
     const searchAlgolia = async (query: string) => {

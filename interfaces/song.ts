@@ -6,14 +6,3 @@ export interface Song {
     streams: number;
 }
 
-export const toSongProps = (songs: any): Song[] => {
-    return songs.map((song: any) => {
-        return {
-            id: song.id,
-            name: song.name,
-            audio_link: song.audio_link,
-            image_link: song.image_link,
-            streams: song.streams,
-        };
-    });
-};
