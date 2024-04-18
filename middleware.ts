@@ -32,7 +32,6 @@ export const config = {
         "/home",
         "/index",
         "/library",
-        "/playing",
         "/providers",
         "/queue",
         "/search",

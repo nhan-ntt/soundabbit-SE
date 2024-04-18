@@ -12,6 +12,7 @@ import { usePathname } from "next/navigation";
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import Provider from "./providers";
+import PlayingModal from "@/components/Playing";
 
 export const metadata: Metadata = {
     title: {
@@ -45,7 +46,6 @@ export default function App({ Component, pageProps }: AppProps) {
                 "/login",
                 "/register",
                 "/_error",
-                "/playing",
                 "/",
             ].includes(pathname) && (
                     <>
