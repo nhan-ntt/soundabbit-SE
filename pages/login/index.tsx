@@ -1,32 +1,25 @@
-import React, { useEffect } from "react";
+"use client"
+
 import type { NextPage } from "next";
+import React, { useState } from "react";
+
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
 import { Button, Image, Link, Input, Card } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
-import { register, AuthStatus } from "@/stores/auth/authSlice";
 import InputPassword from "@/components/InputPassword";
-import { useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
-const Register: NextPage = () => {
-    const dispatch = useDispatch<any>();
+const Login: NextPage = () => {
     const router = useRouter();
 
-    const { status: authStatus } = useSession();
+    const [message, setMessage] = useState<any>('');
+    const [loading, setLoading] = useState<boolean>(false);
 
-    useEffect(() => {
-        if (authStatus == "authenticated") {
-            router.replace("/home")
-        }
-    }, [authStatus])
-
-    const { status, message } = useSelector((state: any) => state.auth);
 
     const validationSchema = Yup.object().shape({
-        username: Yup.string().required("Username is required"),
         email: Yup.string()
             .required("Email is required")
             .email("Email is invalid"),
@@ -34,34 +27,38 @@ const Register: NextPage = () => {
             .min(8, "Password must be at least 8 characters")
             .max(24, "Password is too long, maximum 24 characters")
             .required("Password is required"),
-        confirmPassword: Yup.string()
-            .oneOf([Yup.ref("password")], "Passwords must match")
-            .required("Confirm Password is required"),
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
 
     const {
-        register: registerForm,
+        register: loginForm,
         handleSubmit,
-        reset: formReset,
+        reset,
         formState,
     } = useForm(formOptions);
     const { errors } = formState;
 
-
     const onSubmit = async (data: any) => {
-        const respone = await dispatch(
-            register({
-                name: data.username,
-                email: data.email,
-                password: data.password,
-            })
-        );
+        setLoading(true);
+        const result = await signIn("credentials", {
+            email: data.email,
+            password: data.password,
+            redirect: false,
+        })
 
-        if (respone.meta.requestStatus == "fulfilled") {
-            router.push("/login");
+        if (result?.ok) {
+            router.replace("/home")
+        } else {
+            console.log({ result })
+            setMessage(result?.error);
+            reset();
         }
+        setLoading(false);
     };
+
+    const onChange = () => {
+        setMessage('');
+    }
 
     return (
         <div className=" text-white bg-[#000000]">
@@ -75,8 +72,9 @@ const Register: NextPage = () => {
           justify-center items-center"
                 >
                     <Card
+                        shadow="sm"
                         className="select-none px-20 mobile:pt-8 mobile:pb-10 pt-14 pb-16 mini-laptop:px-10 tablet:px-10 mobile:px-6 
-          flex flex-col items-center bg-black/90 rounded-xl"
+          flex flex-col items-center bg-black/90"
                     >
                         <div className="flex flex-row items-center">
                             <Image
@@ -93,11 +91,10 @@ const Register: NextPage = () => {
                             </h1>
                         </div>
 
-                        <h1 className="mobile:text-xl text-3xl w-80 mobile:w-64 mobile:text-center mt-10 mb-10 font-extrabold ">
+                        <h1 className="mobile:text-xl text-3xl w-80 mb-10 mobile:w-64 mobile:text-center mt-10 font-extrabold ">
                             Download & listen free music lifetime.
                         </h1>
-
-                        {status == AuthStatus.Error && (
+                        {message && (
                             <p
                                 className="bg-red-500 border border-red-800 
               bg-opacity-40 px-3 mt-6 mb-4 py-2 rounded-3xl  w-full text-center"
@@ -105,52 +102,46 @@ const Register: NextPage = () => {
                                 {message}
                             </p>
                         )}
+
                         <form
                             onSubmit={handleSubmit(onSubmit)}
+                            onChange={onChange}
                             className="flex flex-col gap-5"
                         >
-                            <Input
-                                label="Your name"
-                                type="text"
-                                variant="bordered"
-                                errorMessage={errors.username?.message}
-                                {...registerForm("username")}
-                                className="w-80 mobile:w-64"
-                            />
                             <Input
                                 label="Email"
                                 type="text"
                                 variant="bordered"
                                 errorMessage={errors.email?.message}
-                                {...registerForm("email")}
+                                {...loginForm("email")}
                                 className="w-80 mobile:w-64"
                             />
+
                             <InputPassword
                                 label="Password"
-                                register={registerForm("password")}
+                                variant="bordered"
+                                register={loginForm("password")}
                                 errorMessage={errors.password?.message}
-                            />
-                            <InputPassword
-                                label="Confirm Password"
-                                register={registerForm("confirmPassword")}
-                                errorMessage={errors.confirmPassword?.message}
                             />
 
                             <Button
-                                disabled={status == AuthStatus.Loading}
+                                disabled={loading}
                                 className="tracking-wider bg-[#2bb540] uppercase font-bold"
                                 type="submit"
                             >
-                                {status == AuthStatus.Loading ? (
+                                {loading ? (
                                     <span className="inline-loader"></span>
                                 ) : (
-                                    <div>Register</div>
+                                    <div>Login</div>
                                 )}
                             </Button>
                             <p>
-                                Already have an account?{" "}
-                                <Link href="/login" className="text-[#2bb540]">
-                                    Login
+                                Not have an account?{" "}
+                                <Link
+                                    href="/register"
+                                    className="text-[#2bb540]"
+                                >
+                                    Register
                                 </Link>
                             </p>
                         </form>
@@ -161,4 +152,4 @@ const Register: NextPage = () => {
     );
 };
 
-export default Register;
+export default Login;
