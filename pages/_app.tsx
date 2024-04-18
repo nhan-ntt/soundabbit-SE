@@ -1,6 +1,5 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import PagesProgressBar from "nextjs-progressbar";
 import AudioPlayer from "@/components/AudioPlayer/AudioPlayer";
 import Head from "next/head";
 import "react-toastify/dist/ReactToastify.css";
@@ -41,12 +40,6 @@ function App({ Component, pageProps }: AppProps) {
                     type="font/ttf"
                 />
             </Head>
-
-            <PagesProgressBar
-                color="#2bb540"
-                height={3}
-                options={{ showSpinner: false }}
-            />
 
             {![
                 "/login",

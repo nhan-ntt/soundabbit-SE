@@ -2034,11 +2034,6 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-16.18.60.tgz#0b0f4316906f1bd0e03b640363f67bd4e86958bd"
   integrity sha512-ZUGPWx5vKfN+G2/yN7pcSNLkIkXEvlwNaJEd4e0ppX7W2S8XAkdc/37hM4OUNJB9sa0p12AOvGvxL4JCPiz9DA==
 
-"@types/nprogress@^0.2.0":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@types/nprogress/-/nprogress-0.2.2.tgz#c73bf540ac7926fb1b6d03f9d2725e07b3848d65"
-  integrity sha512-2wLrSJXLztGmr7wXwM0hA/wuIOY9DznVdd+ZFofHOiXcj9JnVt+2ZeLRJ7v5ZVlmheSkUOSg3Q3O4Ce7yji79A==
-
 "@types/prop-types@*":
   version "15.7.9"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.9.tgz#b6f785caa7ea1fe4414d9df42ee0ab67f23d8a6d"
@@ -4040,15 +4035,6 @@ next@14.0.2:
     "@next/swc-win32-ia32-msvc" "14.0.2"
     "@next/swc-win32-x64-msvc" "14.0.2"
 
-nextjs-progressbar@^0.0.16:
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/nextjs-progressbar/-/nextjs-progressbar-0.0.16.tgz#d2c1e54ffc2c6d52b64282c0d764a44241fbc36e"
-  integrity sha512-GV0fD38EMD3vSDCmkq+tObmoup6QA91a6a9MxGuhJZuRk/9TNsrHGnIQQQ/sggkMkXuT4fBgF6jRjFwScDT3zA==
-  dependencies:
-    "@types/nprogress" "^0.2.0"
-    nprogress "^0.2.0"
-    prop-types "^15.8.1"
-
 node-releases@^2.0.13:
   version "2.0.13"
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.13.tgz#d5ed1627c23e3461e819b02e57b75e4899b1c81d"
@@ -4063,11 +4049,6 @@ normalize-range@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/normalize-range/-/normalize-range-0.1.2.tgz#2d10c06bdfd312ea9777695a4d28439456b75942"
   integrity sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA==
-
-nprogress@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/nprogress/-/nprogress-0.2.0.tgz#cb8f34c53213d895723fcbab907e9422adbcafb1"
-  integrity sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==
 
 nth-check@^2.0.1:
   version "2.1.1"
