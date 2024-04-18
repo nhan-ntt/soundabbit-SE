@@ -125,11 +125,12 @@ export default function Playing({ isOpen, handleClose }: any) {
                         className="backdrop-blur-[100px] w-full h-full flex flex-row 
         items-center justify-center
         tablet:block mobile:block"
+                        onClick={() => handleClose()}
                     >
                         <div
-                            className="w-screen m-auto  flex flex-row 
+                            className="w-max m-auto  flex flex-row 
         justify-center items-center tablet:items-start mobile:items-start"
-                        >
+                            onClick={(e) => { e.stopPropagation() }}>
                             <SongCoverImage
                                 activeSong={activeSong}
                                 className="tablet:hidden mobile:hidden"
