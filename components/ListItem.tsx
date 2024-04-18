@@ -48,7 +48,6 @@ function ListItem({
             return res.data.list;
         }
     );
-    console.log({ activeSong, song });
 
     if (!song) {
         return;

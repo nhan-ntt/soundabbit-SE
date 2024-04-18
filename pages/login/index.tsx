@@ -49,7 +49,6 @@ const Login: NextPage = () => {
         if (result?.ok) {
             router.replace("/home")
         } else {
-            console.log({ result })
             setMessage(result?.error);
             reset();
         }

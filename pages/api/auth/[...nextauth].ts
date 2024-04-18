@@ -21,13 +21,11 @@ export default NextAuth({
                         email: credentials?.email,
                         password: credentials?.password,
                     });
-                    console.log({ res });
 
                     if (res.data) {
                         return res.data
                     }
                 } catch (error: any) {
-                    console.log({ error });
                     if (error.response) {
                         throw {
                             status: error.request.status,
