@@ -313,8 +313,10 @@ hover:text-white cursor-pointer mx-3 mobile:text-[14px]"
 
                                             <Tooltip content="Queue">
                                                 <i
-                                                    onClick={() =>
+                                                    onClick={() => {
+                                                        handleClose()
                                                         router.push("/queue")
+                                                    }
                                                     }
                                                     className="icon-queue text-gray-400 text-[18px]
 hover:text-white cursor-pointer ml-3 mobile:text-[14px]"
