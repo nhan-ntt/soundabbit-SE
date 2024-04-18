@@ -4,9 +4,11 @@ import SidebarItem from "@/components/sidebarItem";
 import { Image } from "@nextui-org/react";
 import { useDispatch } from "react-redux";
 import { usePathname } from "next/navigation";
+import classNames from "classnames";
 
 export default function Sidebar() {
     const pathname = usePathname();
+    console.log({ pathname });
     const dispatch = useDispatch();
 
     return (
@@ -54,11 +56,10 @@ export default function Sidebar() {
                 </div>
                 <Link href={`/playlist/liked`}>
                     <div
-                        className={`${pathname == "/playlist/liked"
-                            ? "opacity-100"
-                            : "opacity-70"
-                            } hover:opacity-100 mini-laptop:hidden tablet:hidden mobile:hidden group select-none cursor-pointer mt-4 flex flex-row items-center 
-               mini-laptop:w-full mini-laptop:mt-6 mobile:mt-0 tablet:mt-0 mobile:mx-8 tablet:mx-10`}
+                        className={classNames(
+                            { "opacity-70": pathname != "/playlist/liked" },
+                            "transition-all hover:opacity-100 mini-laptop:hidden tablet:hidden mobile:hidden group select-none cursor-pointer mt-4 flex flex-row items-center mini-laptop:w-full mini-laptop:mt-6 mobile:mt-0 tablet:mt-0 mobile:mx-8 tablet:mx-10",
+                        )}
                     >
                         <div className=" rounded bg-gradient-to-tl to-[#4C17F3] from-[#ddd7d7] px-2 py-2 flex items-center mr-3">
                             <i className="icon-heart text-[12px]"></i>
@@ -67,7 +68,7 @@ export default function Sidebar() {
                         <p className=" text-white ">Liked Songs</p>
                     </div>
                 </Link>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }

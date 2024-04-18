@@ -12,7 +12,7 @@ export default function VerticalArtistCard({ artist }: { artist: Artist }) {
             onClick={() => router.push(`/artist/${artist.id}`)}
             className="flex flex-row items-center
                       w-full bg-[#5f5d5d60]
-                      rounded cursor-pointer hover:bg-[#5f5d5da1]"
+                      rounded cursor-pointer hover:bg-[#5f5d5da1] transition-all duration-100"
         >
             <Image
                 alt=""

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import AppLayout from "@/layouts/appLayout";
 import algoliaClient from "@/config/algolia";
 import { useState } from "react";
@@ -15,6 +15,7 @@ import axios from "axios";
 import { Genre } from "@/interfaces/genres";
 import { NextPage } from "next";
 import { Song } from "@/interfaces/song";
+import classNames from "classnames";
 
 const Search: NextPage = () => {
     const [searchResult, setSearchResult] = useState<Song[]>([]);
@@ -160,7 +161,7 @@ const Search: NextPage = () => {
                                         key={genre.id}
                                     >
                                         <div
-                                            className="hover:scale-105 transition-all cursor-pointer relative h-44 tablet:h-40 mobile:h-28 overflow-hidden rounded "
+                                            className="hover:scale-105 transition-all duration-100 cursor-pointer relative h-44 tablet:h-40 mobile:h-28 overflow-hidden rounded "
                                             style={{
                                                 backgroundColor: "black",
                                             }}
@@ -195,7 +196,6 @@ const Search: NextPage = () => {
 export default Search;
 
 function TopResult({ object, onTap }: any) {
-    const [showPlayButton, setPlayButton] = useState(false);
     const { activeSong, isPlaying } = useSelector((state: any) => state.player);
     const { data: artists, error: errorGetSongs } = useSWR<Artist[], Error>(
         object && object.id ? `${API_URL}/songs/${object.id}/artists` : null,
@@ -209,24 +209,15 @@ function TopResult({ object, onTap }: any) {
         return (
             <div
                 onClick={onTap}
-                onMouseEnter={() => setPlayButton(true)}
-                onMouseLeave={() => setPlayButton(false)}
                 className="mobile:hidden tablet:hidden h-[250px] flex flex-col bg-[#5f5d5d2f] relative
               hover:bg-[#5f5d5d72] rounded tablet:h-full mobile:h-full"
             >
                 <div>
-                    {activeSong?.id === object.id ? (
-                        <PlayPauseButton
-                            condition={activeSong?.id === object.id}
-                            isPlaying={isPlaying}
-                        />
-                    ) : showPlayButton ? (
-                        <PlayPauseButton
-                            condition={showPlayButton}
-                            isHover
-                            isPlaying={isPlaying}
-                        />
-                    ) : null}
+                    <PlayPauseButton
+                        isHover
+                        isPlaying={(activeSong?.id === object.id) && isPlaying}
+                        className={classNames("transition-all duration-75 opacity-0	group-hover:opacity-100", { ["opacity-100"]: (activeSong?.id === object.id) })}
+                    />
 
                     <div className="p-6 tablet:flex mobile:flex ">
                         <div className="rounded relative w-24 h-24 ">

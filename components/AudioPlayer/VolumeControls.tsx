@@ -16,7 +16,7 @@ function VolumeControls({ volume, updateVolume, isFullScreen }: IProps) {
         return (
             <div
                 className="flex flex-row justify-center 
-      items-center group transition-all"
+      items-center group transition-all duration-100"
             >
                 {volume <= 1 && volume > 0.5 && (
                     <Tooltip content="Mute">

@@ -56,7 +56,7 @@ function ListItem({
     return (
         <div className="relative" onClick={onTap}>
             <div
-                className={`cursor-default hover:bg-[#5f5d5d60] flex flex-row justify-between 
+                className={`transition-all duration-75 cursor-default hover:bg-[#5f5d5d60] flex flex-row justify-between 
               items-center py-2 w-full rounded group mobile:hover:bg-transparent tablet:hover:bg-transparent`}
             >
                 <div className="flex-grow flex flex-row items-center">

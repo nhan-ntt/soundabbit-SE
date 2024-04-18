@@ -7,11 +7,11 @@ export default function Navigation() {
 
     return (
         <div className="flex gap-2 items-center">
-            <Button isIconOnly radius="full" size="sm" className="bg-black" onClick={router.back}>
+            <Button isIconOnly radius="full" size="sm" className="bg-black hover:bg-gray-500 transition-color" onClick={router.back}>
                 <i className="icon-arrow_back text-[20px] text-center pl-2 py-2 mobile:text-base mobile:py-1"></i>
             </Button>
 
-            <Button isIconOnly radius="full" size="sm" className="bg-black" onClick={router.forward}>
+            <Button isIconOnly radius="full" size="sm" className="bg-black hover:bg-gray-500 transition-color" onClick={router.forward}>
                 <i className="icon-arrow_back rotate-180 text-[20px] text-center pl-2 py-2 mobile:text-base mobile:py-1"></i>
             </Button>
         </div>

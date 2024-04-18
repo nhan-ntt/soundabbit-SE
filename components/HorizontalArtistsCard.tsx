@@ -15,7 +15,7 @@ function HorizontalArtistCard({
                 className="p-4 bg-gradient-to-t from-[#2c2a2a4a] to-[#2c2a2ac7] hover:bg-[#4340409d]
            tablet:hover:bg-transparent mobile:hover:bg-transparent
            rounded h-full mini-laptop:p-3 tablet:p-0 tablet:from-transparent tablet:to-transparent
-           mobile:from-transparent mobile:to-transparent mobile:p-0
+           mobile:from-transparent mobile:to-transparent mobile:p-0 transition-all
            "
             >
                 <div
