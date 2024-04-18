@@ -128,7 +128,7 @@ export default function Playing({ isOpen, handleClose }: any) {
                         onClick={() => handleClose()}
                     >
                         <div
-                            className="w-max m-auto  flex flex-row 
+                            className="m-auto  flex flex-row 
         justify-center items-center tablet:items-start mobile:items-start"
                             onClick={(e) => { e.stopPropagation() }}>
                             <SongCoverImage
