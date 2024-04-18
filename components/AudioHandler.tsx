@@ -130,11 +130,11 @@ function AudioHandler() {
     }, [activeSong, currentIndex]);
 
     useEffect(() => {
-        if (fetchlikedStatus === LikedStatus.Initial) {
-            dispatch(getLikedSongs(session?.user.token));
+        if (session && fetchlikedStatus === LikedStatus.Initial) {
+            dispatch(getLikedSongs(session?.user));
         }
 
-        if (playlistStatus === PlaylistsStatus.Initial) {
+        if (session && playlistStatus === PlaylistsStatus.Initial) {
             dispatch(getPlaylists(session?.user.token || " "));
         }
 
@@ -144,7 +144,7 @@ function AudioHandler() {
             }
             cancelAnimationFrame(requestRef.current!);
         };
-    }, []);
+    }, [session]);
 
     return <></>;
 }

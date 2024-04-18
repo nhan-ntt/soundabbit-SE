@@ -8,7 +8,6 @@ import classNames from "classnames";
 
 export default function Sidebar() {
     const pathname = usePathname();
-    console.log({ pathname });
     const dispatch = useDispatch();
 
     return (
