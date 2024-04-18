@@ -1,9 +1,9 @@
-import API_URL from "@/config/apiUrl";
+import { API } from "@/config/api";
 import axios from "axios";
 
 const like = async ({ user, song_id }: any) => {
     await axios.post(
-        `${API_URL}/users/${user.id}/favorite/songs/${song_id}`,
+        API.favoriteSong({ userID: user.id, songID: song_id }),
         {},
         {
             headers: {
@@ -17,7 +17,7 @@ const like = async ({ user, song_id }: any) => {
 
 const unLike = async ({ user, song_id }: any) => {
     await axios.delete(
-        `${API_URL}/users/${user.id}/favorite/songs/${song_id}`,
+        API.favoriteSong({ userID: user.id, songID: song_id }),
         {
             headers: {
                 authorization: `Bearer ${user.token}`,
@@ -30,7 +30,7 @@ const unLike = async ({ user, song_id }: any) => {
 
 const idsOflikedSongs = async (user: any) => {
     const response = await axios.get(
-        `${API_URL}/users/${user.id}/favorite/songs`,
+        API.favoriteSongs({ userID: user.id }),
         {
             headers: {
                 authorization: `Bearer ${user.token}`,
@@ -42,7 +42,7 @@ const idsOflikedSongs = async (user: any) => {
 };
 
 const getPlaylists = async (token: string) => {
-    const response = await axios.get(`${API_URL}/playlists`, {
+    const response = await axios.get(API.playlists, {
         headers: {
             authorization: `Bearer ${token}`,
         },
@@ -61,7 +61,7 @@ const addSongToPlaylist = async ({
     song_id: string;
 }) => {
     await axios.post(
-        `${API_URL}/playlists/${playlist_id}/songs/${song_id}`,
+        API.playlistSong({ playlistID: playlist_id, songID: song_id }),
         {},
         {
             headers: {
@@ -83,7 +83,7 @@ const removeSongFromPlaylist = async ({
     song_id: string;
 }) => {
     const response = await axios.delete(
-        `${API_URL}/playlists/${playlist_id}/songs/${song_id}`,
+        API.playlistSong({ playlistID: playlist_id, songID: song_id }),
         {
             headers: {
                 authorization: `Bearer ${token}`,
@@ -101,7 +101,7 @@ const createNewPlaylist = async ({
     name: string;
 }) => {
     const response = await axios.post(
-        `${API_URL}/playlists`,
+        API.playlists,
         {
             name,
             is_public: false,
@@ -127,7 +127,7 @@ const updatePlaylist = async ({
     update: any;
 }) => {
     const response = await axios.put(
-        `${API_URL}/playlists/${id}`,
+        API.playlist({ playlistID: id }),
         update,
         {
             headers: {
@@ -146,7 +146,7 @@ const deletePlaylist = async ({
     token: string;
     playlist_id: string;
 }) => {
-    const response = await axios.delete(`${API_URL}/playlists/${playlist_id}`, {
+    const response = await axios.delete(API.playlist({ playlistID: playlist_id }), {
         headers: {
             authorization: `Bearer ${token}`,
         },

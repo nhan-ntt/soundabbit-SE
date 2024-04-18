@@ -1,7 +1,7 @@
 import React from "react";
 import AppLayout from "@/layouts/appLayout";
 import axios from "axios";
-import API_URL from "@/config/apiUrl";
+import { API } from "@/config/api";
 import { useDispatch } from "react-redux";
 import { setActiveSong } from "@/stores/player/currentAudioPlayer";
 import { Song } from "@/interfaces/song";
@@ -23,7 +23,7 @@ const GenrePage: NextPage = () => {
         error: errorGetGenre,
         isLoading,
     } = useSWR<Genre, Error>(
-        params && params.id ? `${API_URL}/genres/${params.id}` : null,
+        params && params.id ? API.genre({ genreID: params.id }) : null,
         async (url: string) => {
             const res = await axios.get(url);
             return res.data;
@@ -32,7 +32,7 @@ const GenrePage: NextPage = () => {
 
     // Use SWR to fetch artist
     const { data: songs, error: errorGetSongs } = useSWR<Song[], Error>(
-        params && params.id ? `${API_URL}/genres/${params.id}/songs` : null,
+        params && params.id ? API.genreSongs({ genreID: params.id }) : null,
         async (url: string) => {
             const res = await axios.get(url);
             return res.data.list;

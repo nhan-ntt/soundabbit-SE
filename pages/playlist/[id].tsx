@@ -1,5 +1,5 @@
 import React from "react";
-import API_URL from "@/config/apiUrl";
+import { API } from "@/config/api";
 import axios from "axios";
 import AppLayout from "@/layouts/appLayout";
 import { Song } from "@/interfaces/song";
@@ -57,7 +57,7 @@ const Playlist: NextPage = () => {
         isLoading: isLoadingPlaylist,
     } = useSWR<Playlist, Error>(
         params && params.id
-            ? `${API_URL}/playlists/${params.id}`
+            ? API.playlist({ playlistID: params.id })
             : null,
         async (url: string) => {
             const res = await axios.get(url, {
@@ -71,7 +71,7 @@ const Playlist: NextPage = () => {
 
     const { data: songs, error: errorGetSongs } = useSWR<Song[], Error>(
         params && params.id
-            ? `${API_URL}/playlists/${params.id}/songs`
+            ? API.playlistSongs({ playlistID: params.id })
             : null,
         async (url: string) => {
             const res = await axios.get(url, {

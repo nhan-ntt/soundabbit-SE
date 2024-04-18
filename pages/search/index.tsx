@@ -5,17 +5,17 @@ import { useState } from "react";
 import { Artist } from "@/interfaces/artist";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveSong } from "@/stores/player/currentAudioPlayer";
-import { PlayPauseButton } from "@/components/HorizontalSongCard";
+import { PlayPauseButton } from "@/components/PlayPauseButton";
 import ListItem from "@/components/ListItem";
 import Link from "next/link";
 import { Image, Input } from "@nextui-org/react";
 import useSWR from "swr";
-import API_URL from "@/config/apiUrl";
+import { API } from "@/config/api";
 import axios from "axios";
 import { Genre } from "@/interfaces/genres";
 import { NextPage } from "next";
 import { Song } from "@/interfaces/song";
-import classNames from "classnames";
+import clsx from "clsx";
 
 const Search: NextPage = () => {
     const [searchResult, setSearchResult] = useState<Song[]>([]);
@@ -24,7 +24,7 @@ const Search: NextPage = () => {
 
     const dispatch = useDispatch<any>();
     const { data: genres } = useSWR<Genre[], Error>(
-        `${API_URL}/genres`,
+        API.genres,
         async (url: string) => {
             const res = await axios.get(url);
             return res.data.list;
@@ -198,7 +198,7 @@ export default Search;
 function TopResult({ object, onTap }: any) {
     const { activeSong, isPlaying } = useSelector((state: any) => state.player);
     const { data: artists, error: errorGetSongs } = useSWR<Artist[], Error>(
-        object && object.id ? `${API_URL}/songs/${object.id}/artists` : null,
+        object && object.id ? API.songArtists({ songID: object.id }) : null,
         async (url: string) => {
             const res = await axios.get(url);
             return res.data.list;
@@ -216,7 +216,7 @@ function TopResult({ object, onTap }: any) {
                     <PlayPauseButton
                         isHover
                         isPlaying={(activeSong?.id === object.id) && isPlaying}
-                        className={classNames("transition-all duration-75 opacity-0	group-hover:opacity-100", { ["opacity-100"]: (activeSong?.id === object.id) })}
+                        className={clsx("transition-all duration-75 opacity-0	group-hover:opacity-100", { ["opacity-100"]: (activeSong?.id === object.id) })}
                     />
 
                     <div className="p-6 tablet:flex mobile:flex ">

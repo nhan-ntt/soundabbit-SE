@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     ],
 };
 
-function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: AppProps) {
     const pathname = usePathname();
     const isKeyboardOpen = useDetectKeyboardOpen();
 
@@ -75,5 +75,3 @@ function App({ Component, pageProps }: AppProps) {
         </Provider>
     );
 }
-
-export default App;

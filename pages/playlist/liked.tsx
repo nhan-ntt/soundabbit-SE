@@ -1,5 +1,5 @@
 import React from "react";
-import API_URL from "@/config/apiUrl";
+import { API } from "@/config/api";
 import axios from "axios";
 import AppLayout from "@/layouts/appLayout";
 import { Song } from "@/interfaces/song";
@@ -21,7 +21,7 @@ const Liked: NextPage = () => {
     const { data: session, status } = useSession();
 
     const { data: songs, error, isLoading } = useSWR<Song[], Error>(
-        `${API_URL}/users/${session?.user.id}/favorite/songs`,
+        API.favoriteSongs({ userID: session?.user.id }),
         async (url: string) => {
             const res = await axios.get(url, {
                 headers: {

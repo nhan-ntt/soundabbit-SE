@@ -9,9 +9,6 @@ import {
     setSongProgress,
     setVolume,
     setCurrentTime,
-    toggleModal,
-    removeSongFromPlaylist,
-    addToQueue,
 } from "@/stores/player/currentAudioPlayer";
 import Controls from "./Controls";
 import SeekBar from "./SeekBar";
@@ -19,14 +16,9 @@ import Buttons from "./Buttons";
 import { useRouter } from "next/navigation";
 import {
     Image,
-    Dropdown,
-    DropdownTrigger,
-    DropdownMenu,
-    DropdownItem,
     Link,
-    Button,
 } from "@nextui-org/react";
-import API_URL from "@/config/apiUrl";
+import { API } from "@/config/api";
 import { Artist } from "@/interfaces/artist";
 import useSWR from "swr";
 import axios from "axios";
@@ -53,7 +45,7 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
 
     const { data: artists } = useSWR<Artist[], Error>(
         activeSong?.id
-            ? `${API_URL}/songs/${activeSong?.id}/artists`
+            ? API.songArtists({ songID: activeSong?.id })
             : null,
         async (url: string) => {
             const res = await axios.get(url);

@@ -4,7 +4,7 @@ import SidebarItem from "@/components/sidebarItem";
 import { Image } from "@nextui-org/react";
 import { useDispatch } from "react-redux";
 import { usePathname } from "next/navigation";
-import classNames from "classnames";
+import clsx from "clsx";
 
 export default function Sidebar() {
     const pathname = usePathname();
@@ -55,7 +55,7 @@ export default function Sidebar() {
                 </div>
                 <Link href={`/playlist/liked`}>
                     <div
-                        className={classNames(
+                        className={clsx(
                             { "opacity-70": pathname != "/playlist/liked" },
                             "transition-all hover:opacity-100 mini-laptop:hidden tablet:hidden mobile:hidden group select-none cursor-pointer mt-4 flex flex-row items-center mini-laptop:w-full mini-laptop:mt-6 mobile:mt-0 tablet:mt-0 mobile:mx-8 tablet:mx-10",
                         )}

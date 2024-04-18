@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import type { NextPage } from "next";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -6,15 +6,15 @@ import * as Yup from "yup";
 
 import { Button, Image, Link, Input, Card } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
-import { register, AuthStatus } from "@/stores/auth/authSlice";
 import InputPassword from "@/components/InputPassword";
+import axios from "axios";
+import { API } from "@/config/api";
 
 const Register: NextPage = () => {
-    const dispatch = useDispatch<any>();
     const router = useRouter();
 
-    const { status, message } = useSelector((state: any) => state.auth);
+    const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const validationSchema = Yup.object().shape({
         username: Yup.string().required("Username is required"),
@@ -41,18 +41,28 @@ const Register: NextPage = () => {
 
 
     const onSubmit = async (data: any) => {
-        const respone = await dispatch(
-            register({
+        try {
+            setLoading(true)
+
+            await axios.post(API.register, {
                 name: data.username,
                 email: data.email,
                 password: data.password,
+                image_link: null,
             })
-        );
-
-        if (respone.meta.requestStatus == "fulfilled") {
             router.push("/login");
+        } catch (error: any) {
+            if (error?.response) {
+                setMessage(error.response.data.message)
+            }
+        } finally {
+            setLoading(false)
         }
     };
+
+    const onChange = () => {
+        setMessage('');
+    }
 
     return (
         <div className=" text-white bg-[#000000]">
@@ -88,7 +98,7 @@ const Register: NextPage = () => {
                             Download & listen free music lifetime.
                         </h1>
 
-                        {status == AuthStatus.Error && (
+                        {message && (
                             <p
                                 className="bg-red-500 border border-red-800 
               bg-opacity-40 px-3 mt-6 mb-4 py-2 rounded-3xl  w-full text-center"
@@ -98,6 +108,7 @@ const Register: NextPage = () => {
                         )}
                         <form
                             onSubmit={handleSubmit(onSubmit)}
+                            onChange={onChange}
                             className="flex flex-col gap-5"
                         >
                             <Input
@@ -128,11 +139,11 @@ const Register: NextPage = () => {
                             />
 
                             <Button
-                                disabled={status == AuthStatus.Loading}
+                                disabled={loading}
                                 className="tracking-wider bg-[#2bb540] uppercase font-bold"
                                 type="submit"
                             >
-                                {status == AuthStatus.Loading ? (
+                                {loading ? (
                                     <span className="inline-loader"></span>
                                 ) : (
                                     <div>Register</div>

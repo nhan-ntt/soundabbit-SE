@@ -5,10 +5,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import InputPassword from "@/components/InputPassword";
 import axios from "axios";
-import API_URL from "@/config/apiUrl";
+import { API } from "@/config/api";
 import { toast } from "react-toastify";
-import { updateUser } from "@/stores/auth/authSlice";
-import { useDispatch } from "react-redux";
 import {
     Modal,
     ModalContent,
@@ -25,7 +23,6 @@ import { NextPage } from "next";
 import { signOut, useSession } from "next-auth/react";
 
 const AccountPage: NextPage = () => {
-    const dispatch = useDispatch<any>();
     const { data: session, status } = useSession();
 
     const [avatar, setAvatar] = useState<string>(session?.user?.image_link || "");
@@ -81,7 +78,7 @@ const AccountPage: NextPage = () => {
 
     const onSubmitLogin = async (data: any) => {
         try {
-            const response = await axios.post(`${API_URL}/auth/login`, {
+            const response = await axios.post(API.login, {
                 email: session?.user.email,
                 password: data.password,
             });
@@ -114,13 +111,11 @@ const AccountPage: NextPage = () => {
                 return;
             }
 
-            await axios.put(`${API_URL}/users/${session?.user.id}`, update, {
+            await axios.put(API.user({ userID: session?.user.id }), update, {
                 headers: {
                     authorization: `Bearer ${token}`,
                 },
             });
-
-            dispatch(updateUser(update));
 
             toast.success("Account has been updated");
         } catch (error: any) {
@@ -130,7 +125,7 @@ const AccountPage: NextPage = () => {
 
     const onDeleteAccount = async () => {
         try {
-            await axios.delete(`${API_URL}/user/${session?.user.id}`, {
+            await axios.delete(API.user({ userID: session?.user.id }), {
                 headers: {
                     authorization: `Bearer ${token}`,
                 },

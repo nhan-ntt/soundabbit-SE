@@ -1,13 +1,13 @@
 import React from "react";
-import { playPause } from "@/stores/player/currentAudioPlayer";
 import { Song } from "@/interfaces/song";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Image, Link } from "@nextui-org/react";
 import { Artist } from "@/interfaces/artist";
 import useSWR from "swr";
 import axios from "axios";
-import API_URL from "@/config/apiUrl";
-import classNames from "classnames";
+import { API } from "@/config/api";
+import clsx from "clsx";
+import { PlayPauseButton } from "./PlayPauseButton";
 
 function HorizontalSongCard({
     song,
@@ -19,7 +19,7 @@ function HorizontalSongCard({
     const { activeSong, isPlaying } = useSelector((state: any) => state.player);
 
     const { data: artists, error: errorGetSongs } = useSWR<Artist[], Error>(
-        song && song.id ? `${API_URL}/songs/${song.id}/artists` : null,
+        song && song.id ? API.songArtists({ songID: song.id }) : null,
         async (url: string) => {
             const res = await axios.get(url);
             return res.data.list;
@@ -47,7 +47,7 @@ function HorizontalSongCard({
                     <PlayPauseButton
                         isHover
                         isPlaying={(activeSong?.id === song.id) && isPlaying}
-                        className={classNames("transition-all duration-75 opacity-0	group-hover:opacity-100", { ["opacity-100"]: (activeSong?.id === song.id) })}
+                        className={clsx("transition-all duration-75 opacity-0	group-hover:opacity-100", { ["opacity-100"]: (activeSong?.id === song.id) })}
                     />
 
                     <Image
@@ -95,33 +95,5 @@ function HorizontalSongCard({
     );
 }
 
-export function PlayPauseButton({
-    isPlaying,
-    className
-}: {
-    isPlaying: boolean;
-    isHover?: boolean;
-    className?: string;
-}) {
-    const dispatch = useDispatch();
-
-    return (
-        <div>
-            <div className={classNames("absolute w-full h-full bg-black bg-opacity-10 z-10 flex justify-end items-end rounded", className)}>
-                <div
-                    onClick={() => dispatch(playPause(!isPlaying))}
-                    className="transition-all duration-75 mx-2 my-3 bg-[#2bb540] rounded-full cursor-pointer hover:scale-110
-                     w-[45px] h-[45px] flex justify-center items-center mobile:w-[30px] mobile:h-[30px] shadow-xl"
-                >
-                    {isPlaying ? (
-                        <i className="icon-pause text-[20px] text-black mobile:text-[16px]" />
-                    ) : (
-                        <i className="icon-play text-[20px] ml-1 text-black mobile:text-[16px]" />
-                    )}
-                </div>
-            </div>
-        </div>
-    );
-}
 
 export default HorizontalSongCard;

@@ -29,7 +29,7 @@ import {
 import useSWR from "swr";
 import { Artist } from "@/interfaces/artist";
 import axios from "axios";
-import API_URL from "@/config/apiUrl";
+import { API } from "@/config/api";
 import { NextPage } from "next";
 
 const Playing: NextPage = () => {
@@ -56,7 +56,7 @@ const Playing: NextPage = () => {
     const changeSeekBarColor = (color: string) => setSeekBarColor(color);
     const { data: artists } = useSWR<Artist[], Error>(
         activeSong?.id
-            ? `${API_URL}/songs/${activeSong?.id}/artists`
+            ? API.songArtists({ songID: activeSong.id })
             : null,
         async (url: string) => {
             const res = await axios.get(url);
@@ -65,18 +65,19 @@ const Playing: NextPage = () => {
     );
 
     const toNextSong = () => {
+        let nextSongIndex = currentIndex + 1;
         if (isShuffle) {
-            dispatch(nextSong(Math.floor(Math.random() * songs.length)));
-        } else if (songs.length - 1 !== currentIndex) {
-            dispatch(nextSong(currentIndex + 1));
+            nextSongIndex = Math.floor(Math.random() * songs.length)
         }
+        dispatch(nextSong(nextSongIndex));
     };
+
     const toPrevSong = () => {
+        let nextSongIndex = currentIndex - 1;
         if (isShuffle) {
-            dispatch(nextSong(Math.floor(Math.random() * songs.length)));
-        } else if (currentIndex !== 0) {
-            dispatch(nextSong(currentIndex - 1));
+            nextSongIndex = Math.floor(Math.random() * songs.length)
         }
+        dispatch(nextSong(nextSongIndex));
     };
 
     const onScrub = (value: any) => {
@@ -95,13 +96,11 @@ const Playing: NextPage = () => {
         dispatch(setVolume(e));
     };
 
-    const currentPercentage = () => {
-        return duration ? `${(songProgress / duration) * 100}%` : "0%";
-    };
+    const currentPercentage = () => duration ? `${(songProgress / duration) * 100}%` : "0%";
 
     const songStyling = `
-    -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage()}, ${seekBarColor}), color-stop(${currentPercentage()}, #777))
-  `;
+        -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage()}, ${seekBarColor}), color-stop(${currentPercentage()}, #777))
+        `;
 
     if (!activeSong) {
         return

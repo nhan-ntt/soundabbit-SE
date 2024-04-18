@@ -17,7 +17,7 @@ import {
     Link,
 } from "@nextui-org/react";
 import { Image } from "@nextui-org/react";
-import API_URL from "@/config/apiUrl";
+import { API } from "@/config/api";
 import useSWR from "swr";
 import { Artist } from "@/interfaces/artist";
 import axios from "axios";
@@ -42,7 +42,7 @@ function ListItem({
     const dispatch = useDispatch<any>();
 
     const { data: artists } = useSWR<Artist[], Error>(
-        song && song.id ? `${API_URL}/songs/${song.id}/artists` : null,
+        song && song.id ? API.songArtists({ songID: song.id }) : null,
         async (url: string) => {
             const res = await axios.get(url);
             return res.data.list;

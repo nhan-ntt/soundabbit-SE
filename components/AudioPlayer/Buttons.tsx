@@ -8,12 +8,14 @@ import { useDispatch } from "react-redux";
 import {
     toggleModal,
 } from "@/stores/player/currentAudioPlayer";
+import clsx from "clsx";
+
 interface IProps {
     volume: number;
     updateVolume: (e: any) => void;
     className: string;
     showVolumeSeekBar: boolean;
-    song_id: number;
+    song_id: string;
     download_url: string;
 }
 
@@ -27,12 +29,10 @@ function Buttons({
 }: IProps) {
     const router = useRouter();
     const dispatch = useDispatch<any>();
+
     return (
         <div
-            className={
-                `w-full flex flex-row justify-end items-center
-       ` + className
-            }
+            className={clsx(`w-full flex flex-row justify-end items-center`, className)}
         >
             <div
                 className="flex flex-row items-center gap-1"

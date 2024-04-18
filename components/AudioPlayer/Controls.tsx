@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@nextui-org/react";
-import classNames from "classnames";
+import clsx from "clsx";
 
 interface IProps {
     isPlaying: boolean;
@@ -32,7 +32,7 @@ function Controls({
             >
                 <div className="flex flex-col items-center mr-6 ">
                     <i
-                        className={classNames(
+                        className={clsx(
                             `icon-shuffle mini-laptop:text-[18px] laptop:text-[20px]
               tablet:text-[18px] mobile:text-[18px]`,
                             isShuffle
@@ -42,7 +42,7 @@ function Controls({
                         onClick={onShuffle}
                     ></i>
                     <div
-                        className={classNames(
+                        className={clsx(
                             `w-[3px] h-[3px] rounded-full my-1`,
                             isShuffle ? "bg-[#2bb540] block" : "hidden"
                         )}
@@ -90,7 +90,7 @@ function Controls({
                 <div className="flex flex-col items-center ml-6 mr-2">
                     <i
                         onClick={onRepeat}
-                        className={classNames(
+                        className={clsx(
                             "icon-repeat mini-laptop:text-[18px] laptop:text-[20px] tablet:text-[18px] mobile:text-[18px]",
                             isRepeat
                                 ? "text-[#2bb540]"
@@ -98,7 +98,7 @@ function Controls({
                         )}
                     ></i>
                     <div
-                        className={classNames(
+                        className={clsx(
                             `w-[3px] h-[3px] rounded-full my-1 `,
                             isRepeat ? "bg-[#2bb540] block" : "hidden"
                         )}
@@ -114,7 +114,7 @@ function Controls({
         >
             <div className="flex flex-col items-center mr-6 mobile:hidden">
                 <i
-                    className={classNames(
+                    className={clsx(
                         `icon-shuffle text-[14px]`,
                         isShuffle
                             ? "text-[#2bb540]"
@@ -126,7 +126,7 @@ function Controls({
                     }}
                 ></i>
                 <div
-                    className={classNames(
+                    className={clsx(
                         `w-[3px] h-[3px] rounded-full my-1`,
                         isShuffle ? "bg-[#2bb540] block" : "hidden"
                     )}
@@ -175,7 +175,7 @@ function Controls({
                         e.stopPropagation();
                         onRepeat();
                     }}
-                    className={classNames(
+                    className={clsx(
                         "icon-repeat text-[14px]",
                         isRepeat
                             ? "text-[#2bb540]"
@@ -183,7 +183,7 @@ function Controls({
                     )}
                 ></i>
                 <div
-                    className={classNames(
+                    className={clsx(
                         `w-[3px] h-[3px] rounded-full my-1 `,
                         isRepeat ? "bg-[#2bb540] block" : "hidden"
                     )}

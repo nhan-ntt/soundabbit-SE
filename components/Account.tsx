@@ -35,12 +35,19 @@ export default function Account() {
             </DropdownTrigger>
 
             <DropdownMenu>
-                <DropdownSection content="test" showDivider>
+                <DropdownSection content="Actions" showDivider>
                     <DropdownItem onClick={() => router.push("/account")}>
                         Account
                     </DropdownItem>
+                    <DropdownItem onClick={() => router.push("/account")}>
+                        Settings
+                    </DropdownItem>
                 </DropdownSection>
-                <DropdownItem onClick={onLogout}>Log out</DropdownItem>
+                <DropdownItem onClick={onLogout}>
+                    <span className="text-rose-500">
+                        Log out
+                    </span>
+                </DropdownItem>
             </DropdownMenu>
         </Dropdown>
     );

@@ -1,12 +1,12 @@
-import API_URL from "@/config/apiUrl";
+import { API } from "@/config/api";
 import axios from "axios";
 
 // Register user
 const getRandomArtists = async () => {
     try {
         const response = await axios.all([
-            axios.get(`${API_URL}/artists`),
-            axios.get(`${API_URL}/songs`),
+            axios.get(API.artists),
+            axios.get(API.songs),
         ]);
 
         return {

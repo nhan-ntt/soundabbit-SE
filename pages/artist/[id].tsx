@@ -1,7 +1,7 @@
 import React from "react";
 import AppLayout from "@/layouts/appLayout";
 import axios from "axios";
-import API_URL from "@/config/apiUrl";
+import { API } from "@/config/api";
 import { Artist } from "@/interfaces/artist";
 import { useParams } from "next/navigation";
 import { useDispatch } from "react-redux";
@@ -19,7 +19,7 @@ const ArtistProfile: NextPage = () => {
     const params = useParams();
 
     const { data: artist, error: errorGetArtist, isLoading } = useSWR<Artist, Error>(
-        params && params.id ? `${API_URL}/artists/${params.id}` : null,
+        params && params.id ? API.artist({ artistID: params.id }) : null,
         async (url: string) => {
             const res = await axios.get(url);
             return res.data;
@@ -27,7 +27,7 @@ const ArtistProfile: NextPage = () => {
     );
 
     const { data: songs, error: errorGetSongs } = useSWR<Song[], Error>(
-        params && params.id ? `${API_URL}/artists/${params.id}/songs` : null,
+        params && params.id ? API.artistSongs({ artistID: params.id }) : null,
         async (url: string) => {
             const res = await axios.get(url);
             return res.data.list;

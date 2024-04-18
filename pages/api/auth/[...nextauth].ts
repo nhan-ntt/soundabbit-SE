@@ -1,4 +1,4 @@
-import API_URL from "@/config/apiUrl";
+import { API } from "@/config/api";
 import axios from "axios";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -17,7 +17,7 @@ export default NextAuth({
             },
             async authorize(credentials, req) {
                 try {
-                    const res = await axios.post(`${API_URL}/auth/login`, {
+                    const res = await axios.post(API.login, {
                         email: credentials?.email,
                         password: credentials?.password,
                     });

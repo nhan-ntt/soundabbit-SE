@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import AppLayout from "@/layouts/appLayout";
 import { useSelector } from "react-redux";
-import Link from "next/link";
 import {
     PlaylistsStatus,
     getPlaylists,
@@ -11,7 +10,7 @@ import PlaylistCard from "@/components/PlaylistCard";
 import { NextPage } from "next";
 import { Playlist } from "@/interfaces/playlist";
 import { ContentLoading } from "@/components/ContentLoading";
-import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
+import { Card, CardBody, CardFooter } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
