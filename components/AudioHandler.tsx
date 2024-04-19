@@ -144,7 +144,7 @@ function AudioHandler() {
             }
             cancelAnimationFrame(requestRef.current!);
         };
-    }, [session]);
+    }, []);
 
     return <></>;
 }
