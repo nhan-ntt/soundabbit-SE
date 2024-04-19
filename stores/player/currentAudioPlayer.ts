@@ -29,8 +29,8 @@ export interface IStateProps {
     activeSong?: Song | null;
     volume: number;
     duration: number;
+    seekTime: number;
     currentTime: number;
-    songProgress: number;
     isShuffle: boolean;
     isRepeat: boolean;
     playlists: Playlist[];
@@ -48,7 +48,7 @@ const initialState: IStateProps = {
     isModalOpen: false,
     volume: 1,
     duration: 0,
-    currentTime: 0,
+    seekTime: 0,
     playingPlaylist: "",
     liked: [],
     playlists: [],
@@ -61,7 +61,7 @@ const initialState: IStateProps = {
     showBanner: false,
     isPlaying: false,
     activeSong: null,
-    songProgress: 0,
+    currentTime: 0,
 };
 
 const playerSlice = createSlice({
@@ -90,8 +90,8 @@ const playerSlice = createSlice({
         onRepeat: (state, action) => {
             state.isRepeat = action.payload;
         },
-        setSongProgress: (state, action) => {
-            state.songProgress = action.payload;
+        setCurrentTime: (state, action) => {
+            state.currentTime = action.payload;
         },
 
         playPause: (state, action) => {
@@ -127,8 +127,8 @@ const playerSlice = createSlice({
         setVolume: (state, action) => {
             state.volume = action.payload;
         },
-        setCurrentTime: (state, action) => {
-            state.currentTime = action.payload;
+        setSeekTime: (state, action) => {
+            state.seekTime = action.payload;
         },
         setDuration: (state, action) => {
             state.duration = action.payload;
@@ -324,9 +324,9 @@ export const {
     addToQueue,
     setVolume,
     setDuration,
-    setCurrentTime,
+    setSeekTime,
     onRepeat,
-    setSongProgress,
+    setCurrentTime,
     removeFromQueue,
     addLike,
     removeLike,

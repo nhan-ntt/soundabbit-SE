@@ -5,12 +5,12 @@ import {
     IStateProps,
     nextSong,
     playPause,
-    setSongProgress,
     setVolume,
     setCurrentTime,
     onRepeat,
     onShuffle,
     toggleModal,
+    setSeekTime,
 } from "@/stores/player/currentAudioPlayer";
 import { useRouter } from "next/router";
 import Controls from "@/components/AudioPlayer/Controls";
@@ -36,7 +36,7 @@ export default function Playing({ isOpen, handleClose }: any) {
         isPlaying,
         activeSong,
         currentIndex,
-        songProgress,
+        currentTime,
         volume,
         duration,
         queue: songs,
@@ -77,8 +77,8 @@ export default function Playing({ isOpen, handleClose }: any) {
 
     const onScrub = (value: any) => {
         clearInterval(intervalRef.current);
+        dispatch(setSeekTime(value));
         dispatch(setCurrentTime(value));
-        dispatch(setSongProgress(value));
     };
 
     const onScrubEnd = () => {
@@ -91,7 +91,7 @@ export default function Playing({ isOpen, handleClose }: any) {
         dispatch(setVolume(e));
     };
 
-    const currentPercentage = () => duration ? `${(songProgress / duration) * 100}%` : "0%";
+    const currentPercentage = () => duration ? `${(currentTime / duration) * 100}%` : "0%";
 
     const songStyling = `
         -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage()}, ${seekBarColor}), color-stop(${currentPercentage()}, #777))
@@ -258,7 +258,7 @@ tablet:text-sm mobile:text-xs hover:underline cursor-pointer"
                                         <SeekBar
                                             changeSeekBarColor={changeSeekBarColor}
                                             isFullScreen={true}
-                                            songProgress={songProgress}
+                                            songProgress={currentTime}
                                             duration={duration}
                                             onScrubEnd={onScrubEnd}
                                             onScrub={onScrub}

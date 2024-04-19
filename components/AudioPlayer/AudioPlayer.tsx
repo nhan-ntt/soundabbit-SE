@@ -6,9 +6,9 @@ import {
     onRepeat,
     onShuffle,
     playPause,
-    setSongProgress,
     setVolume,
     setCurrentTime,
+    setSeekTime,
 } from "@/stores/player/currentAudioPlayer";
 import Controls from "./Controls";
 import SeekBar from "./SeekBar";
@@ -28,7 +28,7 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
         isPlaying,
         activeSong,
         currentIndex,
-        songProgress,
+        currentTime,
         volume,
         duration,
         queue: songs,
@@ -68,27 +68,23 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
     };
 
     const onScrub = (value: any) => {
-        // Clear any timers already running
         clearInterval(intervalRef.current);
+        dispatch(setSeekTime(value));
         dispatch(setCurrentTime(value));
-        dispatch(setSongProgress(value));
     };
 
     const onScrubEnd = () => {
-        // If not already playing, start
         if (!isPlaying) {
             dispatch(playPause(true));
         }
     };
-    // get formated time in 0:00
 
-    // update volume function
     const updateVolume = (e: any) => {
         dispatch(setVolume(e));
     };
 
     const currentPercentage = () => {
-        return duration ? `${(songProgress / duration) * 100}%` : "0%";
+        return duration ? `${(currentTime / duration) * 100}%` : "0%";
     };
 
     const songStyling = `
@@ -175,7 +171,7 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
                         />
                         <SeekBar
                             changeSeekBarColor={changeSeekBarColor}
-                            songProgress={songProgress}
+                            songProgress={currentTime}
                             songBarStyling={songStyling}
                             duration={duration}
                             isFullScreen={false}

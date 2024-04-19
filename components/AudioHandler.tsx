@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Howl, Howler } from "howler";
+import { Howl } from "howler";
 import { useSelector, useDispatch } from "react-redux";
 import {
     PlaylistsStatus,
@@ -8,7 +8,7 @@ import {
     LikedStatus,
     nextSong,
     playPause,
-    setSongProgress,
+    setCurrentTime,
     setDuration,
 } from "@/stores/player/currentAudioPlayer";
 import { useEffect } from "react";
@@ -17,10 +17,12 @@ import { useSession } from "next-auth/react";
 
 function AudioHandler() {
     const { data: session, status } = useSession();
+
     const {
         isPlaying,
         activeSong,
         currentIndex,
+        seekTime,
         currentTime,
         volume,
         fetchlikedStatus,
@@ -37,7 +39,7 @@ function AudioHandler() {
 
     const animate = () => {
         if (audioRef.current) {
-            dispatch(setSongProgress(audioRef.current.seek()));
+            dispatch(setCurrentTime(audioRef.current.seek()));
             requestRef.current = requestAnimationFrame(animate);
         }
     };
@@ -86,9 +88,9 @@ function AudioHandler() {
 
     useEffect(() => {
         if (audioRef.current) {
-            audioRef.current.seek(currentTime);
+            audioRef.current.seek(seekTime);
         }
-    }, [currentTime]);
+    }, [seekTime]);
 
     useEffect(() => {
         if (audioRef.current) {
@@ -138,6 +140,10 @@ function AudioHandler() {
 
         if (session && playlistStatus === PlaylistsStatus.Initial) {
             dispatch(getPlaylists(session?.user.token || " "));
+        }
+
+        if (audioRef.current) {
+            audioRef.current.seek(currentTime);
         }
 
         return () => {
