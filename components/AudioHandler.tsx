@@ -130,6 +130,8 @@ function AudioHandler() {
     }, [activeSong, currentIndex]);
 
     useEffect(() => {
+        dispatch(playPause(false));
+
         if (session && fetchlikedStatus === LikedStatus.Initial) {
             dispatch(getLikedSongs(session?.user));
         }
