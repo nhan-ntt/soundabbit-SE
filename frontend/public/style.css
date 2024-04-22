@@ -1,0 +1,136 @@
+@font-face {
+  font-family: 'musive-icons';
+  src:  url('fonts/musive-icons.eot?r3ghfj');
+  src:  url('fonts/musive-icons.eot?r3ghfj#iefix') format('embedded-opentype'),
+    url('fonts/musive-icons.ttf?r3ghfj') format('truetype'),
+    url('fonts/musive-icons.woff?r3ghfj') format('woff'),
+    url('fonts/musive-icons.svg?r3ghfj#musive-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+i {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'musive-icons' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-heart-o:before {
+  content: "\e923";
+}
+.icon-heart:before {
+  content: "\e924";
+}
+.icon-pause:before {
+  content: "\e920";
+}
+.icon-play:before {
+  content: "\e921";
+}
+.icon-chevron-down:before {
+  content: "\e922";
+}
+.icon-close:before {
+  content: "\e91e";
+}
+.icon-more-vertical:before {
+  content: "\e90b";
+}
+.icon-more-horizontal:before {
+  content: "\e90d";
+}
+.icon-volume-x:before {
+  content: "\e907";
+}
+.icon-volume-1:before {
+  content: "\e91d";
+}
+.icon-volume-2:before {
+  content: "\e91f";
+}
+.icon-about:before {
+  content: "\e908";
+}
+.icon-add-to-playlist:before {
+  content: "\e909";
+}
+.icon-add-to-queue:before {
+  content: "\e90a";
+}
+.icon-full-screen:before {
+  content: "\e90c";
+}
+.icon-hide-song:before {
+  content: "\e90e";
+}
+.icon-Like:before {
+  content: "\e90f";
+}
+.icon-lyrics:before {
+  content: "\e910";
+}
+.icon-Next:before {
+  content: "\e911";
+}
+.icon-Previous:before {
+  content: "\e913";
+}
+.icon-queue:before {
+  content: "\e914";
+}
+.icon-repeat:before {
+  content: "\e915";
+}
+.icon-share:before {
+  content: "\e917";
+}
+.icon-shuffle:before {
+  content: "\e918";
+}
+.icon-sleep-timer:before {
+  content: "\e919";
+}
+.icon-view-album:before {
+  content: "\e91b";
+}
+.icon-view-artist:before {
+  content: "\e91c";
+}
+.icon-create_new:before {
+  content: "\e900";
+  color: #fff;
+}
+.icon-home_filled:before {
+  content: "\e901";
+  color: #fff;
+}
+.icon-home:before {
+  content: "\e902";
+  color: #fff;
+}
+.icon-library_filled:before {
+  content: "\e903";
+  color: #fff;
+}
+.icon-library:before {
+  content: "\e904";
+  color: #fff;
+}
+.icon-search_filled:before {
+  content: "\e905";
+  color: #fff;
+}
+.icon-search:before {
+  content: "\e906";
+  color: #fff;
+}
