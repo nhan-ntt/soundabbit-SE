@@ -21,12 +21,6 @@ def get_application() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-
-    application.add_middleware(
-        DBSessionMiddleware,
-        db_url=settings.DATABASE_URL,
-    )
-
     application.include_router(router, prefix="/api")
     return application
 

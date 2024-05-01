@@ -22,7 +22,7 @@ class UserCreate(UserBase):
     password: str
     email: EmailStr
     is_active: bool = True
-    role: UserRole = UserRole.GUEST
+    role: str = 'guest'
 
 
 class UserRegister(UserBase):
@@ -30,7 +30,7 @@ class UserRegister(UserBase):
     username: str
     password: str
     email: EmailStr
-    role: UserRole = UserRole.GUEST
+    role: str = 'guest'
 
 
 class UserUpdate(UserBase):
@@ -38,4 +38,17 @@ class UserUpdate(UserBase):
     username: str | None = None
     email: EmailStr | None = None
     is_active: bool | None = None
-    role: UserRole | None = None
+    role: str | None = None
+
+
+class UserResponse(UserBase):
+    id: int
+    full_name: str
+    username: str
+    email: EmailStr
+    is_active: bool
+    role: str
+
+    class Config:
+        orm_mode = True
+

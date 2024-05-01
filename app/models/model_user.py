@@ -10,5 +10,5 @@ class User(BareBase):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
-    role = Column(Boolean, default='guest')
+    role = Column(String, default='guest')
     full_name = Column(String, index=True)
