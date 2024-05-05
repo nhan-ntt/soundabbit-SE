@@ -34,6 +34,7 @@ const SONG = {
     songs: `${BASE_API_URL}/songs`,
     song: ({ songID }: { songID: any }) => `${SONG.songs}/${songID}`,
     songArtists: ({ songID }: { songID: string }) => `${SONG.song({ songID })}/artists`,
+    listen: ({ songID }: { songID: string }) => `${SONG.song({ songID })}/listen`,
 }
 
 export const API = {

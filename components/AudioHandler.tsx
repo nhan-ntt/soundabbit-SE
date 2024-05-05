@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Howl } from "howler";
+import { Howl, } from "howler";
 import { useSelector, useDispatch } from "react-redux";
 import {
     PlaylistsStatus,
@@ -14,6 +14,8 @@ import {
 import { useEffect } from "react";
 import { getPlaylists } from "@/stores/player/currentAudioPlayer";
 import { useSession } from "next-auth/react";
+import axios from "axios";
+import { API } from "@/config/api";
 
 function AudioHandler() {
     const { data: session, status } = useSession();
@@ -116,6 +118,13 @@ function AudioHandler() {
             onpause: handlePause,
         });
 
+        const listen = async () => {
+            await axios.all([
+                axios.get(API.listen({ songID: activeSong.id })),
+            ])
+        }
+        listen();
+
         if (isReady.current) {
             audioRef.current.play();
             dispatch(playPause(true));
@@ -134,11 +143,11 @@ function AudioHandler() {
     useEffect(() => {
         dispatch(playPause(false));
 
-        if (session && fetchlikedStatus === LikedStatus.Initial) {
+        if (session && (fetchlikedStatus === LikedStatus.Initial)) {
             dispatch(getLikedSongs(session?.user));
         }
 
-        if (session && playlistStatus === PlaylistsStatus.Initial) {
+        if (session && (playlistStatus === PlaylistsStatus.Initial)) {
             dispatch(getPlaylists(session?.user.token || " "));
         }
 

@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { Artist } from "@/interfaces/artist";
 import {
-    getRecentUsers,
+    getData,
     HomePageState,
     RequestStatus,
 } from "@/stores/homePage/homePageSlice";
@@ -27,7 +27,7 @@ const Home: NextPage = () => {
     const dispatch = useDispatch<any>();
 
     useEffect(() => {
-        dispatch(getRecentUsers());
+        dispatch(getData());
     }, []);
 
     return (

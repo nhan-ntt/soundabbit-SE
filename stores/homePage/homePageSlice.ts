@@ -30,24 +30,24 @@ const homePageSlice = createSlice({
         reset: () => { },
     },
     extraReducers: (builder) => {
-        builder.addCase(getRecentUsers.pending, (state, action) => {
+        builder.addCase(getData.pending, (state, action) => {
             state.status = RequestStatus.Loading;
         });
-        builder.addCase(getRecentUsers.fulfilled, (state, action) => {
+        builder.addCase(getData.fulfilled, (state, action) => {
             state.status = RequestStatus.Success;
             state.recentUsers = action.payload.randomArtists;
             state.topHits = action.payload.topHits;
             state.popularHits = action.payload.popular;
             state.trendingArtists = action.payload.trendingArtists;
         });
-        builder.addCase(getRecentUsers.rejected, (state, action) => {
+        builder.addCase(getData.rejected, (state, action) => {
             state.status = RequestStatus.Error;
         });
     },
 });
 
-export const getRecentUsers = createAsyncThunk("homePage/random", async () => {
-    return await homePageApi.getRandomArtists();
+export const getData = createAsyncThunk("homePage/getData", async () => {
+    return await homePageApi.getHomePageData();
 });
 
 export const { reset } = homePageSlice.actions;

@@ -36,7 +36,6 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
         isRepeat,
     }: IStateProps = useSelector((state: any) => state.player);
 
-    const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>();
     const dispatch = useDispatch<any>();
     const [seekBarColor, setSeekBarColor] = useState("#fff");
     const changeSeekBarColor = (color: string) => setSeekBarColor(color);
@@ -68,7 +67,6 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
     };
 
     const onScrub = (value: any) => {
-        clearInterval(intervalRef.current);
         dispatch(setSeekTime(value));
         dispatch(setCurrentTime(value));
     };

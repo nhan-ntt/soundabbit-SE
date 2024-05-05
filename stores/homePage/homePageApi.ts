@@ -1,20 +1,24 @@
 import { API } from "@/config/api";
+import { Song } from "@/interfaces/song";
 import axios from "axios";
 
-// Register user
-const getRandomArtists = async () => {
+const getHomePageData = async () => {
     try {
-        const response = await axios.all([
+        const respone = await axios.all([
             axios.get(API.artists),
             axios.get(API.songs),
         ]);
 
+        const artists = respone[0].data.list
+        const songs = respone[1].data.list.sort((songA: Song, songB: Song) => songB.streams - songA.streams)
+        console.log({songs})
+
         return {
-            randomArtists: response[0].data.list.slice(0, 6),
-            trendingArtists: response[0].data.list.slice(6, 16),
-            topArtists: response[0].data.list.slice(16, 26),
-            topHits: response[1].data.list.slice(0, 10),
-            popular: response[1].data.list.slice(10, 20),
+            randomArtists: artists.slice(0, 6),
+            trendingArtists: artists.slice(6, 16),
+            topArtists: songs.slice(16, 26),
+            topHits: songs.slice(0, 10),
+            popular: songs.slice(10, 20),
         };
     } catch (error: any) {
         if (error.response) {
@@ -29,6 +33,4 @@ const getRandomArtists = async () => {
     }
 };
 
-const homePageApi = { getRandomArtists };
-
-export default homePageApi;
+export default { getHomePageData }
