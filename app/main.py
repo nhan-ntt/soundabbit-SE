@@ -1,10 +1,8 @@
 import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
-from fastapi_sqlalchemy import DBSessionMiddleware
 
 from app.api.router import router
-from app.core.config import settings
 from app.database import engine
 from app.models import Base
 
@@ -27,4 +25,4 @@ def get_application() -> FastAPI:
 
 app = get_application()
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

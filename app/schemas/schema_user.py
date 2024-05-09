@@ -13,7 +13,7 @@ class UserBase(BaseModel):
     is_active: bool
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserCreate(UserBase):
@@ -35,10 +35,9 @@ class UserRegister(UserBase):
 
 class UserUpdate(UserBase):
     full_name: str | None = None
-    username: str | None = None
     email: EmailStr | None = None
-    is_active: bool | None = None
-    role: str | None = None
+    username: str | None = None
+    password: str | None = None
 
 
 class UserResponse(UserBase):
@@ -50,5 +49,4 @@ class UserResponse(UserBase):
     role: str
 
     class Config:
-        orm_mode = True
-
+        from_attributes = True
