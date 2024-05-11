@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from starlette import status
 
-from app.database import db_dependency
-from app.schemas.schema_user import UserCreate, UserResponse, UserUpdate
+from database import db_dependency
+from schemas.schema_user import UserCreate, UserResponse, UserUpdate
 from models import User
 from services import auth, sv_user
 from services.auth import user_dependency
