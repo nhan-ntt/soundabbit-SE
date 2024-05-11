@@ -116,6 +116,7 @@ function AudioHandler() {
             onload: handleLoad,
             onplay: handlePlay,
             onpause: handlePause,
+            volume: volume
         });
 
         const listen = async () => {
