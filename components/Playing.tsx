@@ -75,6 +75,7 @@ export default function Playing({ isOpen, handleClose }: any) {
     };
 
     const onScrub = (value: any) => {
+        dispatch(playPause(false));
         dispatch(setSeekTime(value));
         dispatch(setCurrentTime(value));
     };

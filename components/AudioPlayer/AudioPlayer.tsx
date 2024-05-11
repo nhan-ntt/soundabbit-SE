@@ -67,6 +67,7 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
     };
 
     const onScrub = (value: any) => {
+        dispatch(playPause(false));
         dispatch(setSeekTime(value));
         dispatch(setCurrentTime(value));
     };
