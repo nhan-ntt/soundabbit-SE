@@ -84,8 +84,13 @@ const Playlist: NextPage = () => {
     );
 
     const [playlistImage, setPlaylistImage] = useState<string>(
-        playlist?.image_link || " "
+        playlist?.image_link || ""
     );
+
+    useEffect(() => {
+        setPlaylistImage(playlist?.image_link || "")
+    }, [playlist]);
+
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     useEffect(() => {
@@ -271,6 +276,7 @@ const Playlist: NextPage = () => {
                                 />
                                 <Input
                                     label="Image link"
+                                    value={playlistImage}
                                     defaultValue={playlistImage}
                                     onChange={(e) =>
                                         setPlaylistImage(e.target.value)
@@ -278,7 +284,7 @@ const Playlist: NextPage = () => {
                                 />
                             </ModalBody>
                             <ModalFooter>
-                                <Button onPress={onClose}>Cancle</Button>
+                                <Button onPress={onClose}>Cancel</Button>
                                 <Button
                                     color="primary"
                                     isDisabled={!playlistImage}

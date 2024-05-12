@@ -273,7 +273,7 @@ const AccountPage: NextPage = () => {
                                 Please think carefully before proceeding.
                             </ModalBody>
                             <ModalFooter>
-                                <Button onPress={onClose}>Cancle</Button>
+                                <Button onPress={onClose}>Cancel</Button>
                                 <Button
                                     color="danger"
                                     onPress={onDeleteAccount}
