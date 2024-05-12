@@ -1,4 +1,4 @@
-import { Tooltip } from "@nextui-org/react";
+import { Slider, SliderValue, Tooltip } from "@nextui-org/react";
 import React from "react";
 
 interface IProps {
@@ -12,127 +12,65 @@ function VolumeControls({ volume, updateVolume, isFullScreen }: IProps) {
     const songStyling = `
     -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, #fff), color-stop(${currentPercentage}, #777))
   `;
-    if (isFullScreen) {
+    const volumeIcon = () => {
+        if (volume <= 1 && volume > 0.5) {
+            return (
+                <Tooltip content="Mute">
+                    <i
+                        className="cursor-pointer icon-volume-2
+            text-gray-400 hover:text-white text-[22px] mobile:text-[18px]"
+                        onClick={(e) => {
+                            e.stopPropagation();
+
+                            updateVolume(0);
+                        }}
+                    ></i>
+                </Tooltip>
+            )
+        }
+
+        if (volume <= 0.5 && volume > 0) {
+            return (
+                <Tooltip content="Mute">
+                    <i
+                        className=" cursor-pointer icon-volume-1
+            text-gray-400 hover:text-white text-[22px] mobile:text-[18px]"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            updateVolume(0);
+                        }}
+                    ></i>
+                </Tooltip>
+            )
+        }
         return (
-            <div
-                className="flex flex-row justify-center 
-      items-center group transition-all duration-100"
-            >
-                {volume <= 1 && volume > 0.5 && (
-                    <Tooltip content="Mute">
-                        <i
-                            className="cursor-pointer icon-volume-2
+            <Tooltip content="Unmute">
+                <i
+                    className="cursor-pointer icon-volume-x
             text-gray-400 hover:text-white text-[22px] mobile:text-[18px]"
-                            onClick={(e) => {
-                                e.stopPropagation();
-
-                                updateVolume(0);
-                            }}
-                        ></i>
-                    </Tooltip>
-                )}
-                {volume <= 0.5 && volume > 0 && (
-                    <Tooltip content="Mute">
-                        <i
-                            className=" cursor-pointer icon-volume-1
-            text-gray-400 hover:text-white text-[22px] mobile:text-[18px]"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                updateVolume(0);
-                            }}
-                        ></i>
-                    </Tooltip>
-                )}
-
-                {volume == 0 && (
-                    <Tooltip content="Unmute">
-                        <i
-                            style={{ fontSize: "20px" }}
-                            className="cursor-pointer icon-volume-x
-            text-gray-400 hover:text-white text-[22px] mobile:text-[18px]"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                updateVolume(1);
-                            }}
-                        ></i>
-                    </Tooltip>
-                )}
-
-                <input
-                    type="range"
-                    value={volume}
-                    step="any"
-                    min={0}
-                    max={1}
-                    style={{ background: songStyling }}
-                    className="max-h-1 cursor-pointer  w-[6rem] bg-gray-600
-           mx-2 hidden group-hover:block"
-                    onChange={(e) => {
+                    onClick={(e) => {
                         e.stopPropagation();
-                        updateVolume(e.target.value);
+                        updateVolume(1);
                     }}
-                />
-            </div>
-        );
+                ></i>
+            </Tooltip>
+        )
     }
 
     return (
-        <div className="flex flex-row justify-center items-center ml-1">
-            {volume <= 1 && volume > 0.5 && (
-                <Tooltip content="Mute">
-                    <i
-                        className="cursor-pointer icon-volume-2 text-gray-400 hover:text-white"
-                        onClick={(e) => {
-                            e.stopPropagation();
-
-                            updateVolume(0);
-                        }}
-                    ></i>
-                </Tooltip>
-            )}
-
-            {volume <= 0.5 && volume > 0 && (
-                <Tooltip content="Mute">
-                    <i
-                        className="cursor-pointer icon-volume-1 text-gray-400 hover:text-white"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            updateVolume(0);
-                        }}
-                    ></i>
-                </Tooltip>
-            )}
-
-            {volume == 0 && (
-                <Tooltip content="Unmute">
-                    <i
-                        className="cursor-pointer icon-volume-x text-gray-400 hover:text-white"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            updateVolume(1);
-                        }}
-                    ></i>
-                </Tooltip>
-            )}
-
-            <input
-                type="range"
-                value={volume}
-                step="any"
-                min={0}
-                max={1}
-                onClick={(e) => {
-                    e.stopPropagation();
-                }}
-                style={{ background: songStyling }}
-                className="max-h-1 cursor-pointer w-[8rem] bg-gray-600 mx-2
-            mini-laptop:w-[4rem]"
-                onChange={(e) => {
-                    e.stopPropagation();
-                    updateVolume(e.target.value);
-                }}
-            />
-        </div>
+        <Slider
+            size="sm"
+            className="w-[120px]"
+            color={"foreground"}
+            step={0.01}
+            value={volume}
+            maxValue={1}
+            minValue={0}
+            aria-label="Temperature"
+            defaultValue={0}
+            onChange={(value: SliderValue) => updateVolume(value)}
+            startContent={volumeIcon()}
+        />
     );
 }
 

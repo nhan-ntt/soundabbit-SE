@@ -27,8 +27,7 @@ function Controls({
     if (isFullScreen) {
         return (
             <div
-                className="flex flex-row justify-between 
-    items-center mt-6 tablet:w-[400px] mobile:w-[320px]"
+                className="flex flex-row justify-between items-center mt-6 tablet:w-[400px] mobile:w-[320px]"
             >
                 <div className="flex flex-col items-center mr-6 ">
                     <i
@@ -109,8 +108,7 @@ function Controls({
     }
     return (
         <div
-            className="flex flex-row justify-center 
-    items-center mb-2 tablet:justify-end"
+            className="flex flex-row justify-center items-center mb-2 mobile:justify-end"
         >
             <div className="flex flex-col items-center mr-6 mobile:hidden">
                 <i

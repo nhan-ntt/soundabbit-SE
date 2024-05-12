@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
     IStateProps,
@@ -7,8 +7,6 @@ import {
     onShuffle,
     playPause,
     setVolume,
-    setCurrentTime,
-    setSeekTime,
 } from "@/stores/player/currentAudioPlayer";
 import Controls from "./Controls";
 import SeekBar from "./SeekBar";
@@ -28,18 +26,13 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
         isPlaying,
         activeSong,
         currentIndex,
-        currentTime,
         volume,
-        duration,
         queue: songs,
         isShuffle,
         isRepeat,
     }: IStateProps = useSelector((state: any) => state.player);
 
     const dispatch = useDispatch<any>();
-    const [seekBarColor, setSeekBarColor] = useState("#fff");
-    const changeSeekBarColor = (color: string) => setSeekBarColor(color);
-
 
     const { data: artists } = useSWR<Artist[], Error>(
         activeSong?.id
@@ -66,29 +59,9 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
         }
     };
 
-    const onScrub = (value: any) => {
-        dispatch(playPause(false));
-        dispatch(setSeekTime(value));
-        dispatch(setCurrentTime(value));
-    };
-
-    const onScrubEnd = () => {
-        if (!isPlaying) {
-            dispatch(playPause(true));
-        }
-    };
-
     const updateVolume = (e: any) => {
         dispatch(setVolume(e));
     };
-
-    const currentPercentage = () => {
-        return duration ? `${(currentTime / duration) * 100}%` : "0%";
-    };
-
-    const songStyling = `
-    -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage()}, ${seekBarColor}), color-stop(${currentPercentage()}, #777))
-  `;
 
     const [isOpenPlayingModal, setOpenPlayingModal] = useState(false);
 
@@ -100,22 +73,24 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
     return (
         <>
             <PlayingModal isOpen={isOpenPlayingModal} handleClose={() => setOpenPlayingModal(false)} />
+
             <div
-                onClick={() => setOpenPlayingModal(!isOpenPlayingModal)}
                 className={` 
       fixed bottom-0 left-0 right-0 py-3 px-4 pb-4
      border-t-[#242424] border-t
      mobile:py-1 mobile:px-2 z-20
      mobile:bottom-12 tablet:bottom-12
       bg-[#121212]/70 backdrop-blur-xl 
-      cursor-pointer select-none ${isHidden ? "invisible" : "visible"}`}
+      ${isHidden ? "invisible" : "visible"}`}
             >
                 <div
                     className="flex flex-row 
       items-center justify-between 
       w-screen max-w-full mini-laptop:px-2 mobile:p-2 mobile:pb-0 "
                 >
-                    <div className="flex flex-row items-center w-full cursor-pointer">
+                    <div className="flex flex-row items-center w-full cursor-pointer"
+                        onClick={() => setOpenPlayingModal(!isOpenPlayingModal)}
+                    >
                         <div
                             className="w-[50px] h-[50px] min-w-[50px]
          relative mini-laptop:w-[40px] mini-laptop:h-[40px]
@@ -156,7 +131,7 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
                             </p>
                         </div>
                     </div>
-                    <div>
+                    <div className="w-full">
                         <Controls
                             isFullScreen={false}
                             isShuffle={isShuffle}
@@ -168,15 +143,8 @@ function AudioPlayer({ isHidden }: { isHidden?: boolean }) {
                             nextSong={toNextSong}
                             prevSong={toPrevSong}
                         />
-                        <SeekBar
-                            changeSeekBarColor={changeSeekBarColor}
-                            songProgress={currentTime}
-                            songBarStyling={songStyling}
-                            duration={duration}
-                            isFullScreen={false}
-                            onScrubEnd={onScrubEnd}
-                            onScrub={onScrub}
-                        />
+
+                        <SeekBar className="tablet:hidden mobile:hidden" />
                     </div>
                     <Buttons
                         download_url={activeSong!.audio_link}

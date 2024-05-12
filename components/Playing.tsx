@@ -6,11 +6,9 @@ import {
     nextSong,
     playPause,
     setVolume,
-    setCurrentTime,
     onRepeat,
     onShuffle,
     toggleModal,
-    setSeekTime,
 } from "@/stores/player/currentAudioPlayer";
 import { useRouter } from "next/router";
 import Controls from "@/components/AudioPlayer/Controls";
@@ -36,9 +34,7 @@ export default function Playing({ isOpen, handleClose }: any) {
         isPlaying,
         activeSong,
         currentIndex,
-        currentTime,
         volume,
-        duration,
         queue: songs,
         isShuffle,
         isRepeat,
@@ -46,8 +42,7 @@ export default function Playing({ isOpen, handleClose }: any) {
     const router = useRouter();
 
     const dispatch = useDispatch<any>();
-    const [seekBarColor, setSeekBarColor] = useState("#fff");
-    const changeSeekBarColor = (color: string) => setSeekBarColor(color);
+
     const { data: artists } = useSWR<Artist[], Error>(
         activeSong?.id
             ? API.songArtists({ songID: activeSong.id })
@@ -74,27 +69,9 @@ export default function Playing({ isOpen, handleClose }: any) {
         dispatch(nextSong(nextSongIndex));
     };
 
-    const onScrub = (value: any) => {
-        dispatch(playPause(false));
-        dispatch(setSeekTime(value));
-        dispatch(setCurrentTime(value));
-    };
-
-    const onScrubEnd = () => {
-        if (!isPlaying) {
-            dispatch(playPause(true));
-        }
-    };
-
     const updateVolume = (e: any) => {
         dispatch(setVolume(e));
     };
-
-    const currentPercentage = () => duration ? `${(currentTime / duration) * 100}%` : "0%";
-
-    const songStyling = `
-        -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage()}, ${seekBarColor}), color-stop(${currentPercentage()}, #777))
-        `;
 
     if (!activeSong) {
         return
@@ -253,34 +230,27 @@ tablet:text-sm mobile:text-xs hover:underline cursor-pointer"
                                             />
                                         </div>
                                     </div>
-                                    <div>
-                                        <SeekBar
-                                            changeSeekBarColor={changeSeekBarColor}
-                                            isFullScreen={true}
-                                            songProgress={currentTime}
-                                            duration={duration}
-                                            onScrubEnd={onScrubEnd}
-                                            onScrub={onScrub}
-                                            songBarStyling={songStyling}
-                                        />
-                                        <Controls
-                                            isFullScreen={true}
-                                            isShuffle={isShuffle}
-                                            isRepeat={isRepeat}
-                                            onRepeat={() =>
-                                                dispatch(onRepeat(!isRepeat))
-                                            }
-                                            onShuffle={() =>
-                                                dispatch(onShuffle(!isShuffle))
-                                            }
-                                            playPause={() =>
-                                                dispatch(playPause(!isPlaying))
-                                            }
-                                            isPlaying={isPlaying}
-                                            nextSong={toNextSong}
-                                            prevSong={toPrevSong}
-                                        />
-                                    </div>
+
+
+                                    <SeekBar />
+                                    <Controls
+                                        isFullScreen={true}
+                                        isShuffle={isShuffle}
+                                        isRepeat={isRepeat}
+                                        onRepeat={() =>
+                                            dispatch(onRepeat(!isRepeat))
+                                        }
+                                        onShuffle={() =>
+                                            dispatch(onShuffle(!isShuffle))
+                                        }
+                                        playPause={() =>
+                                            dispatch(playPause(!isPlaying))
+                                        }
+                                        isPlaying={isPlaying}
+                                        nextSong={toNextSong}
+                                        prevSong={toPrevSong}
+                                    />
+
 
                                     <div
                                         className="flex flex-row justify-between mt-10 w-full 
