@@ -11,7 +11,7 @@ from core.config import settings
 from database import db_dependency
 from models import User
 from schemas.schema_token import Token, TokenData
-from schemas.schema_user import UserCreate
+from schemas.schema_user import UserUpdate, UserLoginResponse
 
 # to get a string like this run:
 # openssl rand -hex 32
@@ -21,26 +21,24 @@ ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/token")
 
 # used for log out
 blacklisted_tokens = set()
 
 
-async def create_user(db: db_dependency, data: UserCreate):
+async def create_user(db: db_dependency, data: UserUpdate):
     if data.username is None:
-        raise ValueError("Username must be provided")
+        raise ValueError("username must be provided")
     exist_user = db.query(User).filter(User.username == data.username).first()
     if exist_user:
         raise Exception("User already exist")
 
     new_user = User(
-        full_name=data.full_name,
-        username=data.username,
+        name=data.name,
         hashed_password=get_password_hash(data.password),
-        email=data.email,
-        is_active=data.is_active,
-        role=data.role
+        username=data.username,
+        image_link=data.image_link
     )
 
     db.add(new_user)
@@ -65,6 +63,32 @@ async def login_for_access_token(
         expires_delta=access_token_expires
     )
     return Token(access_token=access_token, token_type="bearer")
+    # return UserLoginResponse(
+    #     id=user.id,
+    #     username=user.username,
+    #     name=user.name,
+    #     image_link=user.image_link,
+    #     is_admin=user.is_admin,
+    #     token=access_token,
+    #     token_type="bearer"
+    # )
+
+
+async def login(
+        form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+        db: db_dependency
+) -> UserLoginResponse:
+    token = await login_for_access_token(form_data, db)
+    user = authenticate_user(form_data.username, form_data.password, db)
+
+    return UserLoginResponse(
+        id=user.id,
+        username=user.username,
+        name=user.name,
+        image_link=user.image_link,
+        is_admin=user.is_admin,
+        token=token.access_token,
+    )
 
 
 def verify_password(plain_password, hashed_password):

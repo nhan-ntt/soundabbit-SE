@@ -1,52 +1,35 @@
-from pydantic import BaseModel, EmailStr
-import enum
+from pydantic import BaseModel
 
 
-class UserRole(enum.Enum):
-    ADMIN = 'admin'
-    GUEST = 'guest'
-
-
-class UserBase(BaseModel):
-    full_name: str | None = None
-    email: EmailStr | None = None
-    is_active: bool
-
-    class Config:
-        from_attributes = True
-
-
-class UserCreate(UserBase):
-    full_name: str
-    username: str
-    password: str
-    email: EmailStr
-    is_active: bool = True
-    role: str = 'guest'
-
-
-class UserRegister(UserBase):
-    full_name: str
-    username: str
-    password: str
-    email: EmailStr
-    role: str = 'guest'
-
-
-class UserUpdate(UserBase):
-    full_name: str | None = None
-    email: EmailStr | None = None
-    username: str | None = None
-    password: str | None = None
-
-
-class UserResponse(UserBase):
+class UserInfo(BaseModel):
     id: int
-    full_name: str
     username: str
-    email: EmailStr
-    is_active: bool
-    role: str
+    name: str
+    image_link: str | None
+    is_admin: bool = False
+    deleted: bool = False
 
     class Config:
         from_attributes = True
+
+
+class UserUpdate(BaseModel):
+    username: str
+    password: str
+    name: str
+    image_link: str | None
+
+    class Config:
+        from_attributes = True
+
+
+class UserLoginResponse(BaseModel):
+    id: int
+    username: str
+    name: str
+    image_link: str | None
+    is_admin: bool = False
+    token: str
+
+
+

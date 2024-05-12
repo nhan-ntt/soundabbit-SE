@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from starlette import status
 
 from database import db_dependency
-from schemas.schema_user import UserCreate, UserResponse, UserUpdate
+from schemas.schema_user import UserUpdate, UserInfo, UserUpdate
 from models import User
 from services import auth, sv_user
 from services.auth import user_dependency
@@ -14,14 +14,18 @@ router = APIRouter(tags=["users"], prefix="/users")
 
 
 @router.get("/me", status_code=status.HTTP_200_OK)
-async def user(user: user_dependency, db: db_dependency):
+async def user(user: user_dependency):
+    """
+    API get User Detail
+    """
     if user is None:
-        raise HTTPException(status_code=401, detail="Unauthorasdized")
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    print(user)
     return {"data": user}
 
 
-@router.get("/", response_model=List[UserResponse])
-async def get_users(db: db_dependency) -> List[UserResponse]:
+@router.get("/", response_model=List[UserInfo])
+async def get_users(db: db_dependency) -> List[UserInfo]:
     """
     API get List User
     """
@@ -30,7 +34,7 @@ async def get_users(db: db_dependency) -> List[UserResponse]:
 
 
 @router.get("/{user_id}")
-async def get_user(user_id: int, db: db_dependency) -> UserResponse:
+async def get_user(user_id: int, db: db_dependency) -> UserInfo:
     """
     API get User by Id
     """
@@ -41,13 +45,16 @@ async def get_user(user_id: int, db: db_dependency) -> UserResponse:
 
 
 @router.post("/signup", status_code=status.HTTP_201_CREATED)
-async def create_user(db: db_dependency, user: UserCreate) -> UserResponse:
+async def create_user(db: db_dependency, user: UserUpdate) -> UserInfo:
+    """
+    API Create User
+    """
     new_user = await auth.create_user(db, user)
     return new_user
 
 
 @router.put("", status_code=status.HTTP_200_OK)
-async def update_user(user_db: UserUpdate, user: user_dependency, db: db_dependency) -> UserResponse:
+async def update_user(user_db: UserUpdate, user: user_dependency, db: db_dependency) -> UserInfo:
     """
     API Update User
     """
