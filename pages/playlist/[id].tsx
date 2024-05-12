@@ -278,8 +278,14 @@ const Playlist: NextPage = () => {
                                     label="Image link"
                                     value={playlistImage}
                                     defaultValue={playlistImage}
-                                    onChange={(e) =>
-                                        setPlaylistImage(e.target.value)
+                                    onChange={(e) => {
+                                        const url = e.target.value.trim();
+                                        if (url) {
+                                            setPlaylistImage(e.target.value)
+                                        } else {
+                                            setPlaylistImage('')
+                                        }
+                                    }
                                     }
                                 />
                             </ModalBody>
@@ -298,6 +304,7 @@ const Playlist: NextPage = () => {
                                                 },
                                             })
                                         );
+
                                         toast.success(
                                             "Playlist image has been updated"
                                         );
