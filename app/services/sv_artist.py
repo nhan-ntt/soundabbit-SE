@@ -1,6 +1,7 @@
 from database import db_dependency
-from models import Artist
+from models import Artist, Song
 from schemas.schema_artist import ArtistInfo, ArtistUpdate
+from schemas.schema_song import SongInfo
 
 
 async def get_artists(db: db_dependency) -> list[ArtistInfo]:
@@ -24,3 +25,13 @@ async def create_artist(db: db_dependency, artist: ArtistUpdate) -> ArtistInfo:
     return new_artist
 
 
+def delete_artist(db: db_dependency, artist_id: int):
+    artist = db.query(Artist).filter(Artist.id == artist_id).first()
+    db.delete(artist)
+    db.commit()
+    return
+
+
+async def get_songs_of_artist(db: db_dependency, artist_id: int) -> list[SongInfo]:
+    songs = db.query(Song).filter(Song.artist_id == artist_id).all()
+    return songs
