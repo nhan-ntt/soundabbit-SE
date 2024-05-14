@@ -18,7 +18,7 @@ const getHomePageData = async () => {
             trendingArtists: artists.slice(6, 16),
             topArtists: songs.slice(16, 26),
             topHits: songs.slice(0, 10),
-            popular: songs.slice(10, 20),
+            popular: songs.slice(10, 24),
         };
     } catch (error: any) {
         if (error.response) {

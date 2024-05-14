@@ -32,11 +32,11 @@ const Home: NextPage = () => {
 
     return (
         <AppLayout>
-            {/* {status == RequestStatus.Loading ? (
+            {status == RequestStatus.Loading ? (
                 <ContentLoading />
             ) : status == RequestStatus.Error ? (
                 <ErrorComponent />
-            ) : status == RequestStatus.Success ? ( */}
+            ) : status == RequestStatus.Success ? (
                 <div className="pt-10 mini-laptop:pt-2 mobile:pt-1 tablet:pt-2">
                     <h1 className="select-none pt-6 tablet:px-6 px-8 mobile:px-4 pb-6 text-3xl mini-laptop:text-2xl tablet:text-2xl mobile:text-xl">
                         Artist
@@ -70,9 +70,9 @@ const Home: NextPage = () => {
                     </div>
                     <div className="h-40"></div>
                 </div>
-            {/* ) : (
+            ) : (
                 <div className="w-full h-screen"></div>
-            )} */}
+            )}
         </AppLayout>
     );
 };
