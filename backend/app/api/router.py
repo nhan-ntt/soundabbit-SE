@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from backend.app.api import api_auth, api_playlist, api_genre, api_artist, api_song, algolia
-from backend.app.api import api_user
+from api import api_auth, api_playlist, api_genre, api_artist, api_song, algolia
+from api import api_user
 
 router = APIRouter()
 

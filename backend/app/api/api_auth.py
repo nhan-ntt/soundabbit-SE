@@ -4,11 +4,11 @@ from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from starlette import status
 
-from backend.app.database import db_dependency
-from backend.app.schemas.schema_token import Token
-from backend.app.schemas.schema_user import UserUpdate, UserInfo, UserLoginResponse
-from backend.app.services import auth
-from backend.app.services.auth import blacklisted_tokens
+from database import db_dependency
+from schemas.schema_token import Token
+from schemas.schema_user import UserUpdate, UserInfo, UserLoginResponse
+from services import auth
+from services.auth import blacklisted_tokens
 
 router = APIRouter(tags=["auth"], prefix="/auth")
 

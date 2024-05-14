@@ -1,12 +1,12 @@
 from fastapi import HTTPException
 
-from backend.app.database import db_dependency
-from backend.app.models import User, Playlist, Song
-from backend.app.models.model_base import user_song_association
-from backend.app.schemas.schema_playlist import PlaylistInfo
-from backend.app.schemas.schema_song import SongInfo
-from backend.app.schemas.schema_user import UserUpdate, UserInfo
-from backend.app.services.auth import user_dependency
+from database import db_dependency
+from models import User, Playlist, Song
+from models.model_base import user_song_association
+from schemas.schema_playlist import PlaylistInfo
+from schemas.schema_song import SongInfo
+from schemas.schema_user import UserUpdate, UserInfo
+from services.auth import user_dependency
 
 
 async def update_user(user_db: UserUpdate, user: user_dependency, db: db_dependency) -> UserInfo:

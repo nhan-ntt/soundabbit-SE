@@ -3,8 +3,8 @@ from dotenv import load_dotenv
 
 import os
 
-from backend.app.database import SessionLocal  # Import SessionLocal
-from backend.app.models import Song, Artist
+from database import SessionLocal  # Import SessionLocal
+from models import Song, Artist
 
 # Load environment variables
 load_dotenv()

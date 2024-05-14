@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException
 
-from backend.app.database import db_dependency
-from backend.app.schemas.schema_genre import GenreInfo, GenreUpdate
-from backend.app.schemas.schema_song import SongInfo
-from backend.app.services import sv_genre
+from database import db_dependency
+from schemas.schema_genre import GenreInfo, GenreUpdate
+from schemas.schema_song import SongInfo
+from services import sv_genre
 
 router = APIRouter(tags=["genres"], prefix="/genres")
 

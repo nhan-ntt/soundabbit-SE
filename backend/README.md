@@ -26,7 +26,7 @@ ALGOLIA_WRITE_API_KEY=yourwriteapikey
 ```
 6. Run the application
 ```
-uvicorn app.main:app --reload
+uvicorn main:app --reload
 ```
 
 ***Note:***

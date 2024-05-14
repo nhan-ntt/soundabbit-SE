@@ -1,10 +1,10 @@
 from fastapi import APIRouter, HTTPException
 
-from backend.app.database import db_dependency
-from backend.app.schemas.schema_playlist import PlaylistInfo, PlaylistUpdate
-from backend.app.schemas.schema_song import SongInfo
-from backend.app.services import sv_playlist
-from backend.app.services.auth import user_dependency
+from database import db_dependency
+from schemas.schema_playlist import PlaylistInfo, PlaylistUpdate
+from schemas.schema_song import SongInfo
+from services import sv_playlist
+from services.auth import user_dependency
 
 router = APIRouter(tags=["playlists"], prefix="/playlists")
 

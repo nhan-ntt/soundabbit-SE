@@ -6,11 +6,11 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
-from backend.app.core.config import settings
-from backend.app.database import db_dependency
-from backend.app.models import User
-from backend.app.schemas.schema_token import Token, TokenData
-from backend.app.schemas.schema_user import UserUpdate, UserLoginResponse
+from core.config import settings
+from database import db_dependency
+from models import User
+from schemas.schema_token import Token, TokenData
+from schemas.schema_user import UserUpdate, UserLoginResponse
 
 # to get a string like this run:
 # openssl rand -hex 32

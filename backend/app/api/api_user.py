@@ -3,14 +3,14 @@ from typing import List
 from fastapi import APIRouter, HTTPException
 from starlette import status
 
-from backend.app.database import db_dependency
-from backend.app.schemas.schema_playlist import PlaylistInfo
-from backend.app.schemas.schema_song import SongInfo
-from backend.app.schemas.schema_user import UserInfo, UserUpdate
-from backend.app.models import User
-from backend.app.services import auth
-from backend.app.services import sv_user
-from backend.app.services.auth import user_dependency
+from database import db_dependency
+from schemas.schema_playlist import PlaylistInfo
+from schemas.schema_song import SongInfo
+from schemas.schema_user import UserInfo, UserUpdate
+from models import User
+from services import auth
+from services import sv_user
+from services.auth import user_dependency
 
 router = APIRouter(tags=["users"], prefix="/users")
 

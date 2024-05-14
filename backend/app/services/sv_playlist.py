@@ -1,11 +1,11 @@
 from sqlalchemy import insert, delete
 
-from backend.app.database import db_dependency
-from backend.app.models import Playlist, Song
-from backend.app.models.model_base import playlist_song_association
-from backend.app.schemas.schema_playlist import PlaylistInfo, PlaylistUpdate
-from backend.app.schemas.schema_song import SongInfo
-from backend.app.services.auth import user_dependency
+from database import db_dependency
+from models import Playlist, Song
+from models.model_base import playlist_song_association
+from schemas.schema_playlist import PlaylistInfo, PlaylistUpdate
+from schemas.schema_song import SongInfo
+from services.auth import user_dependency
 
 
 async def read_playlist(db: db_dependency, user: user_dependency) -> list[PlaylistInfo]:

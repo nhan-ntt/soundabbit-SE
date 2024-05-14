@@ -1,9 +1,9 @@
-from backend.app.database import db_dependency
-from backend.app.models.model_base import artist_song_association
-from backend.app.schemas.schema_artist import ArtistInfo
-from backend.app.schemas.schema_genre import GenreInfo
-from backend.app.schemas.schema_song import SongInfo, SongUpdate
-from backend.app.models import Song, Artist, Genre
+from database import db_dependency
+from models.model_base import artist_song_association
+from schemas.schema_artist import ArtistInfo
+from schemas.schema_genre import GenreInfo
+from schemas.schema_song import SongInfo, SongUpdate
+from models import Song, Artist, Genre
 
 
 async def get_songs(db: db_dependency) -> list[SongInfo]:

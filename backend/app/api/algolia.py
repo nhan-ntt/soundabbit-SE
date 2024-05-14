@@ -2,8 +2,8 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 
-from backend.app.database import db_dependency
-from backend.app.services import algolia
+from database import db_dependency
+from services import algolia
 
 router = APIRouter(tags=["algolia"], prefix="/algolia")
 

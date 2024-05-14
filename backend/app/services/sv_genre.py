@@ -1,7 +1,7 @@
-from backend.app.database import db_dependency
-from backend.app.models import Genre, Song
-from backend.app.schemas.schema_genre import GenreInfo, GenreUpdate
-from backend.app.schemas.schema_song import SongInfo
+from database import db_dependency
+from models import Genre, Song
+from schemas.schema_genre import GenreInfo, GenreUpdate
+from schemas.schema_song import SongInfo
 
 
 async def get_genres(db: db_dependency) -> list[GenreInfo]:

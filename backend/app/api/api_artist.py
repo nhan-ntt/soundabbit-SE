@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException
 
-from backend.app.database import db_dependency
-from backend.app.schemas.schema_artist import ArtistInfo, ArtistUpdate
-from backend.app.schemas.schema_song import SongInfo
-from backend.app.services import sv_artist
+from database import db_dependency
+from schemas.schema_artist import ArtistInfo, ArtistUpdate
+from schemas.schema_song import SongInfo
+from services import sv_artist
 
 router = APIRouter(tags=["artists"], prefix="/artists")
 
