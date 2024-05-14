@@ -2,7 +2,7 @@ from database import db_dependency
 from schemas.schema_artist import ArtistInfo
 from schemas.schema_genre import GenreInfo
 from schemas.schema_song import SongInfo, SongUpdate
-from models import Song
+from models import Song, Artist
 
 
 async def get_songs(db: db_dependency) -> list[SongInfo]:
@@ -41,7 +41,7 @@ async def delete_song(db: db_dependency, song_id: int):
     return song
 
 
-async def get_artist_of_song(db: db_dependency, song_id: int) -> ArtistInfo:
+async def get_artist_of_song(db: db_dependency, song_id: int) -> Artist:
     """
     API Read artist of song
     """

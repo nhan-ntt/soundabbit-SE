@@ -1,3 +1,5 @@
+from typing import Any, Dict
+
 from fastapi import APIRouter, Depends, HTTPException
 from database import db_dependency
 from schemas.schema_artist import ArtistInfo
@@ -8,9 +10,10 @@ from services import sv_song
 router = APIRouter(tags=["songs"], prefix="/songs")
 
 
-@router.get("/", response_model=list[SongInfo])
-async def get_songs(db: db_dependency) -> list[SongInfo]:
-    return await sv_song.get_songs(db)
+@router.get("", response_model=dict[str, list[SongInfo]])
+async def get_songs(db: db_dependency) -> dict[str, list[SongInfo]]:
+    songs = await sv_song.get_songs(db)
+    return {"list": songs}
 
 
 @router.get("/{song_id}", response_model=SongInfo)
@@ -39,11 +42,14 @@ async def delete_song(song_id: int, db: db_dependency):
     await sv_song.delete_song(db, song_id)
 
 
-@router.get("/{song_id}/artists")
-async def get_artist_of_song(song_id: int, db: db_dependency) -> ArtistInfo:
-    return await sv_song.get_artist_of_song(db, song_id)
+@router.get("/{song_id}/artists", response_model=dict[str, list[ArtistInfo]])
+async def get_artist_of_song(song_id: int, db: db_dependency) -> dict[str, list[ArtistInfo]]:
+    artists = await sv_song.get_artist_of_song(db, song_id)
+
+    return {"list": artists}
 
 
-@router.get("/{song_id}/genres")
-async def get_genre_of_song(song_id: int, db: db_dependency) -> GenreInfo:
-    return await sv_song.get_genre_of_song(db, song_id)
+@router.get("/{song_id}/genres", response_model=dict[str, list[GenreInfo]])
+async def get_genre_of_song(song_id: int, db: db_dependency) -> dict[str, list[GenreInfo]]:
+    genres = await sv_song.get_genre_of_song(db, song_id).__dict__
+    return {"list": genres}

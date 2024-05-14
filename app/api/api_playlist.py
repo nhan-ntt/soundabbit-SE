@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import APIRouter, HTTPException
 
 from database import db_dependency
@@ -9,12 +11,13 @@ from services.auth import user_dependency
 router = APIRouter(tags=["playlists"], prefix="/playlists")
 
 
-@router.get("/", response_model=list[PlaylistInfo])
-async def get_playlists(user: user_dependency, db: db_dependency) -> list[PlaylistInfo]:
+@router.get("", response_model=dict[str, list[PlaylistInfo]])
+async def get_playlists(user: user_dependency, db: db_dependency) -> dict[str, list[PlaylistInfo]]:
     """
     API Read Playlist
     """
-    return await sv_playlist.read_playlist(db, user)
+    playlists = await sv_playlist.read_playlist(db, user)
+    return {"list": playlists}
 
 
 @router.get("/{playlist_id}", response_model=PlaylistInfo)
@@ -44,12 +47,13 @@ async def delete_playlist(playlist_id: int, db: db_dependency, user: user_depend
     return await sv_playlist.delete_playlist(db, playlist_id)
 
 
-@router.get("/{playlist_id}/songs", response_model=list[SongInfo])
-async def get_songs(playlist_id: int, db: db_dependency) -> list[SongInfo]:
+@router.get("/{playlist_id}/songs", response_model=dict[str, list[SongInfo]])
+async def get_songs(playlist_id: int, db: db_dependency) -> dict[str, list[SongInfo]]:
     """
     API Get Songs
     """
-    return await sv_playlist.get_songs(db, playlist_id)
+    songs = await sv_playlist.get_songs(db, playlist_id)
+    return {"list": songs}
 
 
 @router.post("/{playlist_id}/songs/{song_id}")

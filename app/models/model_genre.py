@@ -11,3 +11,11 @@ class Genre(BareBase):
     image_link = Column(String)
 
     songs = relationship('Song', back_populates='genre')
+
+    def dict(self, **kwargs):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "image_link": self.image_link,
+            **kwargs
+        }

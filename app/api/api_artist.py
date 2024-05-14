@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import APIRouter, HTTPException
 
 from database import db_dependency
@@ -9,12 +11,13 @@ from services.auth import user_dependency
 router = APIRouter(tags=["artists"], prefix="/artists")
 
 
-@router.get("", response_model=list[ArtistInfo])
-async def get_artists(db: db_dependency) -> list[ArtistInfo]:
+@router.get("", response_model=dict[str, list[ArtistInfo]])
+async def get_artists(db: db_dependency) -> dict[str, list[ArtistInfo]]:
     """
     API Read Artists
     """
-    return await sv_artist.get_artists(db)
+    artists = await sv_artist.get_artists(db)
+    return {"list": artists}
 
 
 @router.get("/{artist_id}", response_model=ArtistInfo)
@@ -44,10 +47,11 @@ async def delete_artist(artist_id: int, db: db_dependency = db_dependency):
     return await sv_artist.delete_artist(db, artist_id)
 
 
-@router.get("/{artist_id}/songs", response_model=list[SongInfo])
-async def get_songs_of_artist(artist_id: int, db: db_dependency) -> list[SongInfo]:
+@router.get("/{artist_id}/songs", response_model=dict[str, list[SongInfo]])
+async def get_songs_of_artist(artist_id: int, db: db_dependency) -> dict[str, list[SongInfo]]:
     """
     API Read songs of Artist
     """
-    return await sv_artist.get_songs_of_artist(db, artist_id)
+    songs = await sv_artist.get_songs_of_artist(db, artist_id)
+    return {"list": songs}
 

@@ -1,3 +1,5 @@
+from typing import Any, Dict, List
+
 from fastapi import APIRouter, HTTPException
 
 from database import db_dependency
@@ -9,12 +11,13 @@ from services.auth import user_dependency
 router = APIRouter(tags=["genres"], prefix="/genres")
 
 
-@router.get("", response_model=list[GenreInfo])
-async def get_genres(db: db_dependency) -> list[GenreInfo]:
+@router.get("", response_model=dict[str, list[GenreInfo]])
+async def get_genres(db: db_dependency) -> dict[str, list[GenreInfo]]:
     """
     API Read genres
     """
-    return await sv_genre.get_genres(db)
+    genres = await sv_genre.get_genres(db)
+    return {"list": genres}
 
 
 @router.get("/{genre_id}", response_model=GenreInfo)
@@ -44,9 +47,10 @@ async def delete_genre(genre_id: int, db: db_dependency):
     return await sv_genre.delete_genre(db, genre_id)
 
 
-@router.get("/{genre_id}/songs", response_model=list[SongInfo])
-async def get_songs_of_genre(genre_id: int, db: db_dependency) -> list[SongInfo]:
+@router.get("/{genre_id}/songs", response_model=dict[str, list[SongInfo]])
+async def get_songs_of_genre(genre_id: int, db: db_dependency) -> dict[str, list[SongInfo]]:
     """
     API Read songs of genre
     """
-    return await sv_genre.get_songs_of_genre(db, genre_id)
+    songs = await sv_genre.get_songs_of_genre(db, genre_id)
+    return {"list": songs}

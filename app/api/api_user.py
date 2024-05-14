@@ -26,13 +26,13 @@ async def user(user: user_dependency):
     return {"data": user.id}
 
 
-@router.get("/", response_model=List[UserInfo])
-async def get_users(db: db_dependency) -> List[UserInfo]:
+@router.get("", response_model=dict[str, List[UserInfo]])
+async def get_users(db: db_dependency) -> dict[str, List[UserInfo]]:
     """
     API get List User
     """
     users = db.query(User).all()
-    return users
+    return {"list": users}
 
 
 @router.get("/{user_id}")
@@ -76,26 +76,26 @@ async def delete_user(user_id: int, db: db_dependency, user: user_dependency):
     return {"message": "User deleted"}
 
 
-@router.get("/{user_id}/favorite/playlists", response_model=List[PlaylistInfo])
-async def get_favorite_playlists(user_id: int, db: db_dependency, user: user_dependency) -> List[PlaylistInfo]:
+@router.get("/{user_id}/favorite/playlists", response_model=dict[str, list[PlaylistInfo]])
+async def get_favorite_playlists(user_id: int, db: db_dependency, user: user_dependency) -> dict[str, list[PlaylistInfo]]:
     """
     API Get Favorite Playlists
     """
     if user_id != user.id:
         raise HTTPException(status_code=400, detail="User ID mismatch")
     playlists = await sv_user.get_favorite_playlists(user_id, db)
-    return playlists
+    return {"list": playlists}
 
 
-@router.get("/{user_id}/own/playlists", response_model=List[PlaylistInfo])
-async def get_favorite_playlists(user_id: int, db: db_dependency, user: user_dependency) -> List[PlaylistInfo]:
+@router.get("/{user_id}/own/playlists", response_model=dict[str, list[PlaylistInfo]])
+async def get_favorite_playlists(user_id: int, db: db_dependency, user: user_dependency) -> dict[str, list[PlaylistInfo]]:
     """
     API Get Favorite Playlists
     """
     if user_id != user.id:
         raise HTTPException(status_code=400, detail="User ID mismatch")
     playlists = await sv_user.get_favorite_playlists(user_id, db)
-    return playlists
+    return {"list": playlists}
 
 
 @router.post("/{user_id}/favorite/playlists/{playlist_id}", response_model=PlaylistInfo)
@@ -120,15 +120,15 @@ async def delete_favorite_playlist(user_id: int, playlist_id: int, db: db_depend
     return {"message": "Playlist deleted"}
 
 
-@router.get("/{user_id}/favorite/songs", response_model=List[SongInfo])
-async def get_favorite_songs(curr_user: user_dependency, db: db_dependency) -> List[SongInfo]:
+@router.get("/{user_id}/favorite/songs", response_model=dict[str, list[SongInfo]])
+async def get_favorite_songs(curr_user: user_dependency, db: db_dependency) -> dict[str, list[SongInfo]]:
     """
     API Get Favorite Songs
     """
     # if user_id != curr_user.id:
     #     raise HTTPException(status_code=400, detail="User ID mismatch")
     songs = await sv_user.get_favorite_song(curr_user, db)
-    return songs
+    return {"list": songs}
 
 
 @router.post("/{user_id}/favorite/songs/{song_id}")
