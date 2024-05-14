@@ -2,6 +2,7 @@ import { API } from "@/config/api";
 import axios from "axios";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import querystring from 'querystring';
 
 export default NextAuth({
     pages: {
@@ -12,14 +13,18 @@ export default NextAuth({
         CredentialsProvider({
             name: "credentials",
             credentials: {
-                email: { label: "email", type: "text" },
+                username: { label: "username", type: "text" },
                 password: { label: "password", type: "password" },
             },
             async authorize(credentials, req) {
                 try {
-                    const res = await axios.post(API.login, {
-                        email: credentials?.email,
+                    const res = await axios.post(API.login, querystring.stringify({
+                        username: credentials?.username,
                         password: credentials?.password,
+                    }), {
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
                     });
 
                     if (res.data) {

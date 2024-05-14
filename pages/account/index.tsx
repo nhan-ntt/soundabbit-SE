@@ -32,8 +32,6 @@ const AccountPage: NextPage = () => {
     const loginSchema = Yup.object().shape({
         password: Yup.string()
             .required("Password is required")
-            .min(8, "Password must be at least 8 characters")
-            .max(24, "Password is too long, maximum 24 characters"),
     });
 
     const updateSchema = Yup.object().shape({
@@ -41,9 +39,7 @@ const AccountPage: NextPage = () => {
         image_link: Yup.string().required("Avatar link is required"),
         newPassword: Yup.string()
             .nullable()
-            .transform((curr, orig) => (orig === "" ? null : curr))
-            .min(8, "Password must be at least 8 characters")
-            .max(24, "Password is too long, maximum 24 characters"),
+            .transform((curr, orig) => (orig === "" ? null : curr)),
         confirmNewPassword: Yup.string()
             .test(
                 "match",
@@ -79,7 +75,7 @@ const AccountPage: NextPage = () => {
     const onSubmitLogin = async (data: any) => {
         try {
             const response = await axios.post(API.login, {
-                email: session?.user.email,
+                username: session?.user.username,
                 password: data.password,
             });
             setToken(response.data.token);
@@ -273,7 +269,7 @@ const AccountPage: NextPage = () => {
                                 Please think carefully before proceeding.
                             </ModalBody>
                             <ModalFooter>
-                                <Button onPress={onClose}>Cancel</Button>
+                                <Button onPress={onClose}>Cancle</Button>
                                 <Button
                                     color="danger"
                                     onPress={onDeleteAccount}

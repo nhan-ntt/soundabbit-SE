@@ -185,11 +185,18 @@ const playerSlice = createSlice({
             state.playlists = updatedPlaylists;
         });
 
-        builder.addCase(createNewPlaylist.fulfilled, (state, action) => {
-            let playlists = state.playlists;
-            playlists.push(action.payload);
-            state.playlists = playlists;
+        // builder.addCase(createNewPlaylist.fulfilled, (state, action) => {
+        //     let playlists = state.playlists;
+        //     playlists.push(action.payload);
+        //     state.playlists = playlists;
 
+        //     state.createPlaylistStatus = CreatePlaylistStatus.done;
+        // });
+        builder.addCase(createNewPlaylist.fulfilled, (state, action) => {
+            if (!state.playlists) {
+                state.playlists = [];
+            }
+            state.playlists.push(action.payload);
             state.createPlaylistStatus = CreatePlaylistStatus.done;
         });
 

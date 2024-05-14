@@ -20,12 +20,9 @@ const Login: NextPage = () => {
 
 
     const validationSchema = Yup.object().shape({
-        email: Yup.string()
-            .required("Email is required")
-            .email("Email is invalid"),
+        username: Yup.string()
+            .required("Username is required"), 
         password: Yup.string()
-            .min(8, "Password must be at least 8 characters")
-            .max(24, "Password is too long, maximum 24 characters")
             .required("Password is required"),
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
@@ -41,7 +38,7 @@ const Login: NextPage = () => {
     const onSubmit = async (data: any) => {
         setLoading(true);
         const result = await signIn("credentials", {
-            email: data.email,
+            username: data.username,
             password: data.password,
             redirect: false,
         })
@@ -86,7 +83,7 @@ const Login: NextPage = () => {
                                 className="text-center uppercase mx-2 
               tracking-wider "
                             >
-                                Rhyme
+                                SOUNDABBIT
                             </h1>
                         </div>
 
@@ -108,11 +105,11 @@ const Login: NextPage = () => {
                             className="flex flex-col gap-5"
                         >
                             <Input
-                                label="Email"
+                                label="Username"
                                 type="text"
                                 variant="bordered"
-                                errorMessage={errors.email?.message}
-                                {...loginForm("email")}
+                                errorMessage={errors.username?.message}
+                                {...loginForm("username")}
                                 className="w-80 mobile:w-64"
                             />
 

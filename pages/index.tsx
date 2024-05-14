@@ -8,7 +8,6 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 import { GithubIcon } from "@/components/icons";
-import { siteConfig } from "@/config/site";
 
 const Intro: NextPage = () => {
     const router = useRouter();
@@ -31,7 +30,7 @@ const Intro: NextPage = () => {
                                     className="text-center uppercase mx-2 text-md 
                  tracking-wider mini-laptop:hidden"
                                 >
-                                    Rhyme
+                                    SOUNDABBIT
                                 </h1>
                             </div>
                         </Link>
@@ -50,6 +49,12 @@ const Intro: NextPage = () => {
                         onClick={() => router.push("/register")}
                     >
                         Register
+                    </Button>
+                    <Button
+                        variant="bordered"
+                        onClick={() => router.push("/home")}
+                    >
+                        Home
                     </Button>
                 </NavbarContent>
             </NextUINavbar>
@@ -192,9 +197,7 @@ const Intro: NextPage = () => {
                     className="mt-10  py-10 border-t 
          items-center flex flex-col border-t-slate-800"
                 >
-                    <Link href={siteConfig.links.github} aria-label="Github">
-                        <GithubIcon size={30} className="text-default-500" />
-                    </Link>
+
                 </div>
             </div>
         </div>

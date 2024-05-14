@@ -25,7 +25,7 @@ export default function Sidebar() {
                         className="text-center uppercase mx-2 text-md 
                  tracking-wider mini-laptop:hidden"
                     >
-                        Rhyme
+                        SOUNDABBIT
                     </h1>
                 </div>
             </Link>

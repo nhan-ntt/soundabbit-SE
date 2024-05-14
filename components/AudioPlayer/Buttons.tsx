@@ -64,16 +64,16 @@ function Buttons({
                             <path
                                 d="M6 12H18"
                                 stroke="currentColor"
-                                stroke-width="1"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="1"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                             />
                             <path
                                 d="M12 18V6"
                                 stroke="currentColor"
-                                stroke-width="1"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="1"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                             />
                         </svg>
                     </div>

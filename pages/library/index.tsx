@@ -70,7 +70,7 @@ const Library: NextPage = () => {
                         </CardFooter>
                     </Card>
 
-                    {playlists.map((playlist: Playlist, index: number) => (
+                    {playlists && playlists.map((playlist: Playlist, index: number) => (
                         <PlaylistCard key={index} playlist={playlist} />
                     ))}
                 </div>

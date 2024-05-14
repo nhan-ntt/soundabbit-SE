@@ -1,6 +1,9 @@
 import React from "react";
 import { Artist } from "@/interfaces/artist";
 import { Image } from "@nextui-org/react";
+import useSWR from "swr";
+import { API } from "@/config/api";
+import axios from "axios";
 
 function HorizontalArtistCard({
     artist,
@@ -9,6 +12,16 @@ function HorizontalArtistCard({
     artist: Artist;
     onClick: () => void;
 }) {
+    const { data: artists, error: errorGetSongs } = useSWR<Artist[], Error>(
+        artist && artist.id ? API.artistSongs({ artistID: artist.id }) : null,
+        async (url: string) => {
+            const res = await axios.get(url);
+            localStorage.setItem("vcl", res.data.list[0].image_link);
+            return res.data.list;
+        }
+    );
+    // console.log(artist.image_link)
+
     return (
         <div key={artist.id} className="mr-4 cursor-grab" onClick={onClick}>
             <div
@@ -30,6 +43,7 @@ function HorizontalArtistCard({
                     object-cover
           mini-laptop:w-[140px] mini-laptop:h-[140px] 
           tablet:w-[130px] tablet:h-[130px] mobile:w-[100px] mobile:h-[100px] rounded-full"
+                    
                     />
                 </div>
                 <p className="line-clamp-2 mobile:text-center tablet:text-center mt-4 text-base mobile:text-sm tablet:text-sm">

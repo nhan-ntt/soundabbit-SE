@@ -10,21 +10,9 @@ import AudioHandler from "@/components/AudioHandler";
 import MobileMenu from "@/components/MobileMenu";
 import { usePathname } from "next/navigation";
 import { Metadata } from "next";
-import { siteConfig } from "@/config/site";
 import Provider from "./providers";
 import PlayingModal from "@/components/Playing";
 
-export const metadata: Metadata = {
-    title: {
-        default: siteConfig.name,
-        template: `% s - ${siteConfig.name}`,
-    },
-    description: siteConfig.description,
-    themeColor: [
-        { media: "(prefers-color-scheme: light)", color: "white" },
-        { media: "(prefers-color-scheme: dark)", color: "black" },
-    ],
-};
 
 export default function App({ Component, pageProps }: AppProps) {
     const pathname = usePathname();

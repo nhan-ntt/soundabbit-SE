@@ -171,7 +171,7 @@ function AddToPlaylistModal() {
                                             setPlaylistID(value);
                                         }}
                                     >
-                                        {playlists.map((playlist: any) => (
+                                        {playlists && playlists.map((playlist: any) => (
                                             <AutocompleteItem key={playlist.id}>
                                                 {playlist.name}
                                             </AutocompleteItem>

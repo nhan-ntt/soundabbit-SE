@@ -14,7 +14,7 @@ function AppLayout({ children }: any) {
     return (
         <div>
             <Head>
-                <title>Rhyme</title>
+                <title>SOUNDABBIT</title>
             </Head>
 
             <div className={`bg-[#121212] relative ${inter.className}`}>

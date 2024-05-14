@@ -18,12 +18,8 @@ const Register: NextPage = () => {
 
     const validationSchema = Yup.object().shape({
         username: Yup.string().required("Username is required"),
-        email: Yup.string()
-            .required("Email is required")
-            .email("Email is invalid"),
+
         password: Yup.string()
-            .min(8, "Password must be at least 8 characters")
-            .max(24, "Password is too long, maximum 24 characters")
             .required("Password is required"),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref("password")], "Passwords must match")
@@ -46,7 +42,7 @@ const Register: NextPage = () => {
 
             await axios.post(API.register, {
                 name: data.username,
-                email: data.email,
+                username: data.username,
                 password: data.password,
                 image_link: null,
             })
@@ -90,7 +86,7 @@ const Register: NextPage = () => {
                                 className="text-center uppercase mx-2 
               tracking-wider "
                             >
-                                Rhyme
+                                SOUNDABBIT
                             </h1>
                         </div>
 
@@ -120,11 +116,11 @@ const Register: NextPage = () => {
                                 className="w-80 mobile:w-64"
                             />
                             <Input
-                                label="Email"
+                                label="Username"
                                 type="text"
                                 variant="bordered"
-                                errorMessage={errors.email?.message}
-                                {...registerForm("email")}
+                                errorMessage={errors.username?.message}
+                                {...registerForm("username")}
                                 className="w-80 mobile:w-64"
                             />
                             <InputPassword

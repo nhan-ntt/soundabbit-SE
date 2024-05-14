@@ -22,6 +22,8 @@ function HorizontalSongCard({
         song && song.id ? API.songArtists({ songID: song.id }) : null,
         async (url: string) => {
             const res = await axios.get(url);
+            localStorage.setItem("vcl", res.data.list[0].image_link);
+
             return res.data.list;
         }
     );
