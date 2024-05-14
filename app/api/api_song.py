@@ -44,12 +44,11 @@ async def delete_song(song_id: int, db: db_dependency):
 
 @router.get("/{song_id}/artists", response_model=dict[str, list[ArtistInfo]])
 async def get_artist_of_song(song_id: int, db: db_dependency) -> dict[str, list[ArtistInfo]]:
-    artists = await sv_song.get_artist_of_song(db, song_id)
-
+    artists = await sv_song.get_artists_of_song(db, song_id)
     return {"list": artists}
 
 
-@router.get("/{song_id}/genres", response_model=dict[str, list[GenreInfo]])
-async def get_genre_of_song(song_id: int, db: db_dependency) -> dict[str, list[GenreInfo]]:
-    genres = await sv_song.get_genre_of_song(db, song_id).__dict__
+@router.get("/{song_id}/genres", response_model=dict[str, GenreInfo])
+async def get_genre_of_song(song_id: int, db: db_dependency) -> dict[str, GenreInfo]:
+    genres = await sv_song.get_genre_of_song(db, song_id)
     return {"list": genres}

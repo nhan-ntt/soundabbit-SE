@@ -1,5 +1,8 @@
+from sqlalchemy import join
+
 from database import db_dependency
 from models import Artist, Song
+from models.model_base import artist_song_association
 from schemas.schema_artist import ArtistInfo, ArtistUpdate
 from schemas.schema_song import SongInfo
 
@@ -33,5 +36,7 @@ def delete_artist(db: db_dependency, artist_id: int):
 
 
 async def get_songs_of_artist(db: db_dependency, artist_id: int) -> list[SongInfo]:
-    songs = db.query(Song).filter(Song.artist_id == artist_id).all()
+
+    songs = db.query(Song).join(artist_song_association).filter(artist_song_association.c.artist_id == artist_id).all()
+
     return songs

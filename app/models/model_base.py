@@ -19,3 +19,8 @@ user_song_association = Table('user_song', BareBase.metadata,
                               Column('user_id', Integer, ForeignKey('users.id')),
                               Column('song_id', Integer, ForeignKey('songs.id'))
                               )
+
+artist_song_association = Table('artist_song', BareBase.metadata,
+                                Column('artist_id', Integer, ForeignKey('artists.id')),
+                                Column('song_id', Integer, ForeignKey('songs.id'))
+                                )

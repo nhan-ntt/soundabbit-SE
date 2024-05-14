@@ -31,7 +31,7 @@ async def get_playlist_by_id(playlist_id: int, db: db_dependency) -> PlaylistInf
     return playlist
 
 
-@router.post("/", response_model=PlaylistInfo)
+@router.post("", response_model=PlaylistInfo)
 async def create_playlist(playlist: PlaylistUpdate, db: db_dependency, user: user_dependency) -> PlaylistInfo:
     """
     API Create Playlist

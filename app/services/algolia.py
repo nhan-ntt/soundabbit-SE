@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 
 from database import SessionLocal  # Import SessionLocal
-from models import Song
+from models import Song, Artist
 
 # Load environment variables
 load_dotenv()
@@ -20,14 +20,13 @@ index = client.init_index(os.getenv('ALGOLIA_INIT_INDEX'))
 def sync_songs(db: SessionLocal):  # Change the type hint to SessionLocal
     # Query the database to get all songs
     songs = db.query(Song).all()
-
+    artists = db.query(Artist).all()
     # Format the songs as a list of dictionaries
     objects = [{'objectID': song.id,
                 'name': song.name,
                 'audio_link': song.audio_link,
                 'image_link': song.image_link,
-                'artist_id': song.artist_id,
-                'genre_id': song.genre_id} for song in songs]
+                } for song in songs]
     # print(objects)
     # Add the songs to the index
     index.save_objects(objects)

@@ -9,11 +9,4 @@ class Artist(BareBase):
     name = Column(String, index=True, nullable=False)
     image_link = Column(String)
 
-    songs = relationship('Song', back_populates='artist')
-
-    def dict(self, **kwargs):
-        return {
-            "id": self.id,
-            "name": self.name,
-            "image_link": self.image_link,
-        }
+    songs = relationship('Song', secondary='artist_song', back_populates='artists')
