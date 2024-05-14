@@ -28,7 +28,7 @@ def sync_songs(db: SessionLocal):  # Change the type hint to SessionLocal
                 'image_link': song.image_link,
                 'artist_id': song.artist_id,
                 'genre_id': song.genre_id} for song in songs]
-    print(objects)
+    # print(objects)
     # Add the songs to the index
     index.save_objects(objects)
 

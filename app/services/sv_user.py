@@ -1,8 +1,10 @@
 from fastapi import HTTPException
 
 from database import db_dependency
-from models import User, Playlist
+from models import User, Playlist, Song
+from models.model_base import user_song_association
 from schemas.schema_playlist import PlaylistInfo
+from schemas.schema_song import SongInfo
 from schemas.schema_user import UserUpdate, UserInfo
 from services.auth import user_dependency
 
@@ -49,3 +51,46 @@ async def delete_favorite_playlist(user_id: int, playlist_id: int, db: db_depend
     db.delete(playlist)
     db.commit()
     return {"message": "Playlist deleted"}
+
+
+async def get_favorite_song(curr_user: user_dependency, db: db_dependency) -> list[SongInfo]:
+    # if user_id != curr_user.id:
+    #     raise HTTPException(status_code=400, detail="User ID mismatch")
+    user_id = curr_user.id
+    songs = (db.query(Song)
+             .join(user_song_association)
+             .filter(user_song_association.c.user_id == user_id)
+             .all())
+    return songs
+
+
+async def add_favorite_song(user_id: int, song_id: int, db: db_dependency):
+    stmt = user_song_association.insert().values(user_id=user_id, song_id=song_id)
+    db.execute(stmt)
+    db.commit()
+    return {"message": "Song added",
+            "user_id": user_id,
+            "song_id": song_id
+            }
+
+
+async def delete_favorite_song(user_id: int, song_id: int, db: db_dependency):
+    stmt = user_song_association.delete().where(
+        (user_song_association.c.user_id == user_id) &
+        (user_song_association.c.song_id == song_id)
+    )
+    db.execute(stmt)
+    db.commit()
+    return {"message": "Song deleted",
+            "user_id": user_id,
+            "song_id": song_id
+            }
+
+
+def delete_user(user_id: int, db: db_dependency):
+    user = db.query(User).filter(User.id == user_id).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    db.delete(user)
+    db.commit()
+    return {"message": "User deleted"}

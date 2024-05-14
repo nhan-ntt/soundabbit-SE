@@ -29,10 +29,11 @@ async def create_playlist(db: db_dependency, user: user_dependency, playlist: Pl
     return new_playlist
 
 
-async def delete_playlist(db: db_dependency, user: user_dependency, playlist_id: int) -> None:
-    db.query(Playlist).filter(Playlist.id == playlist_id).delete()
+async def delete_playlist(db: db_dependency, playlist_id: int):
+    playlist = db.query(Playlist).filter(Playlist.id == playlist_id).first()
+    db.delete(playlist)
     db.commit()
-    return None
+    return
 
 
 async def get_songs(db: db_dependency, playlist_id: int) -> list[SongInfo]:
